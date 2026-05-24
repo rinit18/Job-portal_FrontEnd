@@ -13,11 +13,12 @@ import { setUser } from "../../Slices/UserSlice";
 import { setupResponseInterceptor } from "../../Interceptor/AxiosInterceptor";
 import { useDisclosure } from "@mantine/hooks";
 import { hideOverlay, showOverlay } from "../../Slices/OverlaySlice";
+import { WEBSITE_CONFIG } from "../../config";
 
 const allLinks = [
-    { name: "Find Jobs",   url: "find-jobs",     roles: ["APPLICANT", "ADMIN"] },
+    { name: "Find Jobs",   url: "find-jobs",     roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
     { name: "Job History", url: "job-history",   roles: ["APPLICANT", "ADMIN"] },
-    { name: "Find Talent", url: "find-talent",   roles: ["EMPLOYER",  "ADMIN"] },
+    { name: "Find Talent", url: "find-talent",   roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
     { name: "Post Job",    url: "post-job/0",    roles: ["EMPLOYER",  "ADMIN"] },
     { name: "Posted Jobs", url: "posted-jobs/0", roles: ["EMPLOYER",  "ADMIN"] },
 ]
@@ -58,7 +59,7 @@ const Header = () => {
     return (location.pathname != "/signup" && location.pathname != "/login") ? <div data-aos="zoom-out" className="w-full glass-header px-6 sm-mx:px-2 text-white h-20 flex justify-between items-center font-['poppins']">
         <div onClick={() => navigate("/")} className="flex gap-1 cursor-pointer items-center text-bright-sun-400">
             <IconAnchor className="h-8 w-8 sm-mx:h-6 sm-mx:w-6" stroke={2.5} />
-            <div className=" xs-mx:hidden text-3xl font-semibold">JobHook</div>
+            <div className=" xs-mx:hidden text-3xl font-semibold">{WEBSITE_CONFIG.name}</div>
         </div>
         <NavLinks />
         <div className="flex gap-3 items-center">

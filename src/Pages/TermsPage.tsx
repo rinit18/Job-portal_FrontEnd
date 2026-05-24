@@ -1,4 +1,5 @@
 import { Divider } from "@mantine/core";
+import { WEBSITE_CONFIG } from "../config";
 
 const TermsPage = () => {
     return (
@@ -8,7 +9,7 @@ const TermsPage = () => {
                 <div data-aos="fade-up" className="text-3xl font-bold text-mine-shaft-100 mb-6 text-center">Terms & Conditions</div>
                 <div data-aos="fade-up" data-aos-delay="100" className="glass-card p-8 rounded-xl text-mine-shaft-300 leading-relaxed text-justify space-y-6">
                     <p>
-                        Welcome to JobHook. By accessing or using our platform, you agree to be bound by these Terms and Conditions and our Privacy Policy.
+                        Welcome to {WEBSITE_CONFIG.name}. By accessing or using our platform, you agree to be bound by these Terms and Conditions and our Privacy Policy.
                     </p>
                     
                     <div>
@@ -23,7 +24,7 @@ const TermsPage = () => {
 
                     <div>
                         <div className="text-mine-shaft-100 font-semibold text-lg mb-1">3. Intellectual Property</div>
-                        <p>The platform and its original content, features, and functionality are owned by JobHook and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.</p>
+                        <p>The platform and its original content, features, and functionality are owned by {WEBSITE_CONFIG.name} and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.</p>
                     </div>
 
                     <div>

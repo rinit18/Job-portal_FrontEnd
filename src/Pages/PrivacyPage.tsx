@@ -1,4 +1,5 @@
 import { Divider } from "@mantine/core";
+import { WEBSITE_CONFIG } from "../config";
 
 const PrivacyPage = () => {
     return (
@@ -9,7 +10,7 @@ const PrivacyPage = () => {
                 <div data-aos="fade-up" data-aos-delay="100" className="glass-card p-8 rounded-xl text-mine-shaft-300 leading-relaxed text-justify space-y-6">
                     <p>Last updated: August 2024</p>
                     <p>
-                        At JobHook, we are committed to protecting your personal information and your right to privacy. This policy outlines how we collect, use, and safeguard your data when you use our platform.
+                        At {WEBSITE_CONFIG.name}, we are committed to protecting your personal information and your right to privacy. This policy outlines how we collect, use, and safeguard your data when you use our platform.
                     </p>
                     
                     <div>

@@ -14,12 +14,14 @@ const Talents=()=>{
     const sort=useSelector((state:any)=>state.sort);
     const [filteredTalents, setFilteredTalents] = useState<any>([]);
     useEffect(() => {
-        dispatch(resetFilter());
         dispatch(showOverlay())
         getAllProfiles().then((res) => {
             setTalents(res);
         }).catch((err) => console.log(err))
         .finally(()=>dispatch(hideOverlay()))
+        return ()=>{
+            if(!filter.page)dispatch(resetFilter());
+        }
     },[])
     useEffect(()=>{
         if(sort=="Experience: Low to High"){

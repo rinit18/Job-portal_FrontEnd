@@ -2,6 +2,7 @@ import { Accordion, Divider, Loader } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { getFAQs } from "../Services/SupportService";
 import { IconPlus } from "@tabler/icons-react";
+import { WEBSITE_CONFIG } from "../config";
 
 const FaqPage = () => {
     const [faqs, setFaqs] = useState<any[]>([]);
@@ -21,7 +22,7 @@ const FaqPage = () => {
             <Divider size="xs" mx="md"/>
             <div className="max-w-4xl mx-auto px-5 py-10">
                 <div data-aos="fade-up" className="text-3xl font-bold text-mine-shaft-100 mb-2 text-center">Frequently Asked Questions</div>
-                <div data-aos="fade-up" className="text-mine-shaft-400 mb-10 text-center">Everything you need to know about JobHook.</div>
+                <div data-aos="fade-up" className="text-mine-shaft-400 mb-10 text-center">Everything you need to know about {WEBSITE_CONFIG.name}.</div>
                 
                 {loading ? (
                     <div className="flex justify-center my-20"><Loader color="brightSun.4" /></div>

@@ -3,13 +3,18 @@ import { DateInput, TimeInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { IconCalendarMonth, IconHeart, IconMapPin } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { getProfile } from "../../Services/ProfileService";
 import { formatInterviewTime, openPDF } from "../../Services/Utilities";
 import { changeAppStatus } from "../../Services/JobService";
 import { errorNotification, successNotification } from "../../Services/NotificationService";
+import { useSelector } from "react-redux";
+import { getOrCreateRoom } from "../../Services/ChatService";
 
 const TalentCard = (props: any) => {
+    const navigate = useNavigate();
+    const currentProfile = useSelector((state: any) => state.profile);
+    const currentProfileId = currentProfile?.id;
     const {id}=useParams();
     const ref = useRef<HTMLInputElement>(null);
     const [opened, { open, close }] = useDisclosure(false);
@@ -36,13 +41,32 @@ const TalentCard = (props: any) => {
         });
     
     }
+
+    const handleStartChat = () => {
+        if (!currentProfileId) {
+            errorNotification("Authentication Required", "Please set up your profile to chat.");
+            return;
+        }
+        const targetProfileId = profile?.id;
+        if (!targetProfileId) return;
+
+        getOrCreateRoom(currentProfileId, targetProfileId)
+            .then((room) => {
+                navigate(`/messages?roomId=${room.id}`);
+            })
+            .catch((err) => {
+                console.error("Failed to start chat", err);
+                errorNotification("Error", "Could not start conversation.");
+            });
+    };
+
     useEffect(()=>{
         if(props.applicantId)getProfile(props.applicantId).then((res)=>{
             setProfile(res);
         }).catch((err)=>console.log(err))
         else setProfile(props);
     }, [props])
-    return <div data-aos="fade-up" className="p-4 rounded-xl bg-mine-shaft-900   hover:shadow-[0_0_5px_1px_yellow] !shadow-bright-sun-400  transition duration-300 ease-in-out w-96 bs-mx:w-[48%] md-mx:w-full flex flex-col gap-3">
+    return <div data-aos="fade-up" className="p-4 rounded-xl glass-card hover:shadow-[0_0_5px_1px_yellow] !shadow-bright-sun-400  transition duration-300 ease-in-out w-96 bs-mx:w-[48%] md-mx:w-full flex flex-col gap-3">
         <div className="flex justify-between">
             <div className="flex gap-2 items-center">
                 <div className="p-2 bg-mine-shaft-800 rounded-full">
@@ -85,7 +109,7 @@ const TalentCard = (props: any) => {
                     </Link>
 
                     <div>
-                        {props.posted ? <Button color="brightSun.4" variant="light" onClick={open} rightSection={<IconCalendarMonth className="w-5 h-5" />} fullWidth>Schedule</Button> : <Button color="brightSun.4" variant="light" fullWidth>Message</Button>}
+                        {props.posted ? <Button color="brightSun.4" variant="light" onClick={open} rightSection={<IconCalendarMonth className="w-5 h-5" />} fullWidth>Schedule</Button> : <Button color="brightSun.4" variant="light" onClick={handleStartChat} fullWidth>Message</Button>}
                     </div>
                 </>
             }{

@@ -2,11 +2,11 @@ import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const allLinks = [
-    { name: "Find Jobs",    url: "find-jobs",     roles: ["APPLICANT", "ADMIN"] },
-    { name: "Companies",    url: "companies",     roles: ["APPLICANT", "ADMIN"] },
+    { name: "Find Jobs",    url: "find-jobs",     roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
+    { name: "Companies",    url: "companies",     roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
     { name: "Messages",     url: "messages",      roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
     { name: "Job History",  url: "job-history",   roles: ["APPLICANT", "ADMIN"] },
-    { name: "Find Talent",  url: "find-talent",   roles: ["EMPLOYER",  "ADMIN"] },
+    { name: "Find Talent",  url: "find-talent",   roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
     { name: "Post Job",     url: "post-job/0",    roles: ["EMPLOYER",  "ADMIN"] },
     { name: "Posted Jobs",  url: "posted-jobs/0", roles: ["EMPLOYER",  "ADMIN"] },
 ];

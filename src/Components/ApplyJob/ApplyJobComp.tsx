@@ -8,7 +8,7 @@ const ApplyJobComp = (props:any) => {
         <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
                 <div className="p-3 bg-mine-shaft-800 rounded-xl flex shrink-0 ">
-                    <img className="h-14  xs-mx:h-10 xs-mx:w-10" src={`/Icons/${props.company}.png`} alt="" />
+                    <img className="h-14  xs-mx:h-10 xs-mx:w-10 object-contain" src={`/Icons/${props.company}.png`} alt="" onError={(e) => e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(props.company || 'Company')}&color=fab005&background=2a2a2a`} />
                 </div>
                 <div className="flex flex-col gap-1">
                     <div className="font-semibold text-2xl  xs-mx:text-xl">{props.jobTitle}</div>

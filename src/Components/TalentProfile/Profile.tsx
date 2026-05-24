@@ -2,13 +2,14 @@ import { Avatar, Button, Divider, Pill } from "@mantine/core";
 import { IconBriefcase, IconMapPin } from "@tabler/icons-react";
 import ExpCard from "./ExpCard";
 import CertiCard from "./CertiCard";
-import { profile } from "../../Data/TalentData";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProfile } from "../../Services/ProfileService";
 import { useMediaQuery } from "@mantine/hooks";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { hideOverlay, showOverlay } from "../../Slices/OverlaySlice";
+import { getOrCreateRoom } from "../../Services/ChatService";
+import { errorNotification } from "../../Services/NotificationService";
 
 const Profile = () => {
     const { id } = useParams();
@@ -16,6 +17,27 @@ const Profile = () => {
     const matches = useMediaQuery('(max-width: 475px)');
 
     const dispatch=useDispatch();
+    const navigate = useNavigate();
+    const currentProfile = useSelector((state: any) => state.profile);
+    const currentProfileId = currentProfile?.id;
+
+    const handleStartChat = () => {
+        if (!currentProfileId) {
+            errorNotification("Authentication Required", "Please set up your profile to chat.");
+            return;
+        }
+        if (!profile?.id) return;
+
+        getOrCreateRoom(currentProfileId, profile.id)
+            .then((room) => {
+                navigate(`/messages?roomId=${room.id}`);
+            })
+            .catch((err) => {
+                console.error("Failed to start chat from profile", err);
+                errorNotification("Error", "Could not connect with user.");
+            });
+    };
+
     useEffect(() => {
         dispatch(showOverlay());
         window.scrollTo(0, 0);
@@ -36,7 +58,7 @@ const Profile = () => {
 
             </div>
             <div className="px-3 mt-16">
-                <div className="text-3xl xs-mx:text-2xl font-semibold flex justify-between">{profile?.name} <Button size={matches?"sm":"md"} color="brightSun.4" variant="light">Message</Button></div>
+                <div className="text-3xl xs-mx:text-2xl font-semibold flex justify-between">{profile?.name} <Button size={matches?"sm":"md"} color="brightSun.4" variant="light" onClick={handleStartChat}>Message</Button></div>
                 <div className="text-xl xs-mx:text-base flex gap-1 items-center"> <IconBriefcase className="h-5 w-5" stroke={1.5} />{profile?.jobTitle}  &bull; {profile?.company}</div>
                 <div className="text-lg flex xs-mx:text-base gap-1 items-center text-mine-shaft-300">
                     <IconMapPin className="h-5 w-5" stroke={1.5} /> {profile?.location}

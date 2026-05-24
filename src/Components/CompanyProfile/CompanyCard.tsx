@@ -7,7 +7,7 @@ const CompanyCard=(props:any)=>{
         <div className="flex justify-between bg-mine-shaft-900 rounded-lg items-center p-2">
         <div className="flex gap-2 items-center">
             <div className="p-2 bg-mine-shaft-800 rounded-md">
-                <img className="h-7" src={`/Icons/${props.name}.png`} alt="" />
+                <img className="h-7 object-contain" src={`/Icons/${props.name}.png`} alt="" onError={(e) => e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(props.name || 'Company')}&color=fab005&background=2a2a2a`} />
             </div>
             <div className="flex flex-col ">
                 <div className="font-semibold ">{props.name}</div>

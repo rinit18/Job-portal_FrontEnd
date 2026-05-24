@@ -19,11 +19,11 @@ const Card = (props: any) => {
         let updatedProfile={...profile,savedJobs:savedJobs};
         dispatch(changeProfile(updatedProfile));
     }
-    return <div data-aos="zoom-out" className="p-4 rounded-xl bg-mine-shaft-900   hover:shadow-[0_0_5px_1px_yellow] !shadow-bright-sun-400  transition duration-300 ease-in-out w-72 flex flex-col gap-3">
+    return <div data-aos="zoom-out" className="p-4 rounded-xl glass-card hover:shadow-[0_0_5px_1px_yellow] !shadow-bright-sun-400  transition duration-300 ease-in-out w-72 flex flex-col gap-3">
         <div className="flex justify-between">
             <div className="flex gap-2 items-center">
                 <div className="p-2 bg-mine-shaft-800 rounded-md">
-                    <img className="h-7" src={`/Icons/${props.company}.png`} alt="" />
+                    <img className="h-7 object-contain" src={`/Icons/${props.company}.png`} alt="" onError={(e) => e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(props.company || 'Company')}&color=fab005&background=2a2a2a`} />
                 </div>
                 <div className="flex flex-col gap-1">
                     <div className="font-semibold ">{props.jobTitle}</div>

@@ -1,13 +1,17 @@
 import { Button, Divider, Text } from "@mantine/core";
 import { IconBookmark, IconBookmarkFilled, IconClockHour3 } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { timeAgo } from "../../Services/Utilities";
 import { useDispatch, useSelector } from "react-redux";
 import { changeProfile } from "../../Slices/ProfileSlice";
+import { getOrCreateRoomByUser } from "../../Services/ChatService";
+import { errorNotification } from "../../Services/NotificationService";
 
 const JobCard = (props: any) => {
     const dispatch=useDispatch();
+    const navigate=useNavigate();
     const profile=useSelector((state:any)=>state.profile);
+    const currentProfileId = profile?.id;
     const handleSaveJob = () => {
         let savedJobs:any=profile.savedJobs?[...profile.savedJobs]:[];
         if(savedJobs.includes(props.id)){
@@ -18,6 +22,23 @@ const JobCard = (props: any) => {
         let updatedProfile={...profile,savedJobs:savedJobs};
         dispatch(changeProfile(updatedProfile));
     }
+    
+    const handleMessageRecruiter = () => {
+        if (!currentProfileId) {
+            errorNotification("Authentication Required", "Please set up your profile to chat.");
+            return;
+        }
+        if (!props.postedBy) return;
+
+        getOrCreateRoomByUser(currentProfileId, props.postedBy)
+            .then((room) => {
+                navigate(`/messages?roomId=${room.id}`);
+            })
+            .catch((err) => {
+                console.error("Failed to start chat with recruiter", err);
+                errorNotification("Error", "Could not connect to recruiter.");
+            });
+    };
     
     return <div data-aos="fade-up"  className="p-4 rounded-xl glass-card hover:shadow-[0_0_5px_1px_yellow] !shadow-bright-sun-400  transition duration-300 ease-in-out w-72 sm-mx:w-full flex flex-col gap-3">
         <div className="flex justify-between">
@@ -49,9 +70,12 @@ const JobCard = (props: any) => {
                 <IconClockHour3 className="h-5 w-5" stroke={1.5} />Posted {timeAgo(props.postTime)}
             </div>
         </div>
-        <Link to={`/jobs/${props.id}`}>
-            <Button fullWidth  color="brightSun.4" variant="light">View Job</Button>
-        </Link>
+        <div className="flex gap-2">
+            <Link className="w-1/2" to={`/jobs/${props.id}`}>
+                <Button fullWidth color="brightSun.4" variant="light">View Job</Button>
+            </Link>
+            <Button className="w-1/2" color="brightSun.4" variant="outline" onClick={handleMessageRecruiter}>Message</Button>
+        </div>
     </div>
 }
 export default JobCard;

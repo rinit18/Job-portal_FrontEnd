@@ -5,7 +5,7 @@ const CertiCard = (props:any) => {
         <div className="flex justify-between sm-mx:flex-wrap gap-2">
             <div className="flex gap-2 items-center">
                 <div className="p-2 bg-mine-shaft-800 rounded-md shrink-0">
-                    <img className="h-7" src={`/Icons/${props.issuer}.png`} alt="" />
+                    <img className="h-7 object-contain" src={`/Icons/${props.issuer}.png`} alt="" onError={(e) => e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(props.issuer || 'Issuer')}&color=fab005&background=2a2a2a`} />
                 </div>
                 <div className="flex flex-col">
                     <div className="font-semibold xs-mx:text-xs">{props.name}</div>
