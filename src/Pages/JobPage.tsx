@@ -1,4 +1,5 @@
 import { Button, Divider } from "@mantine/core";
+import { Helmet } from "react-helmet-async";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Job from "../Components/JobDesc/Job";
@@ -23,6 +24,12 @@ const JobPage = () => {
         .finally(()=>dispatch(hideOverlay()));
     },[id])
     return <div className="min-h-[90vh] bg-mine-shaft-950 font-['poppins'] p-4">
+        {job && (
+            <Helmet>
+                <title>{job.jobTitle} at {job.company} | JobPortal</title>
+                <meta name="description" content={job.about || `Apply for the ${job.jobTitle} role at ${job.company} on JobPortal.`} />
+            </Helmet>
+        )}
         <Divider size="xs" />
         <Link className="my-5 inline-block" to="/find-jobs">
             <Button color="brightSun.4" leftSection={<IconArrowLeft size={20} />} variant="light">Back</Button>

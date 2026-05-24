@@ -1,41 +1,44 @@
 
 
+import { Suspense, lazy } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import FindJobsPage from './FindJobsPage';
+import { HelmetProvider } from 'react-helmet-async';
 import Header from '../Components/Header/Header';
-import JobPage from './JobPage';
-import ApplyJobPage from './ApplyJobPage';
-import FindTalentPage from './FindTalentPage';
-import TalentProfilePage from './TalentProfilePage';
-import CompanyPage from './CompanyPage';
-import CompaniesPage from './CompaniesPage';
-import MessagesPage from './MessagesPage';
-import JobHistoryPage from './JobHistoryPage';
-import PostedJobPage from './PostedJobPage';
-import PostJobPage from './PostJobPage';
-import SignUpPage from './SignUpPage';
-import HomePage from './HomePage';
-import AboutPage from './AboutPage';
-import PrivacyPage from './PrivacyPage';
-import TermsPage from './TermsPage';
-import SupportPage from './SupportPage';
-import ContactPage from './ContactPage';
-import FeedbackPage from './FeedbackPage';
-import FaqPage from './FaqPage';
-import AdminDashboardPage from './AdminDashboardPage';
-import AdminLoginPage from './AdminLoginPage';
-import { useSelector } from 'react-redux';
 import Footer from '../Components/Footer/Footer';
-import ProfilePage from './ProfilePage';
 import ProtectedRoute from '../Services/ProtectedRoute';
 import PublicRoute from '../Services/PublicRoute';
-import Unauthorized from './UnauthroizedPage';
-import NotFoundPage from './NotFoundPage';
-import { LoadingOverlay } from '@mantine/core';
+import { useSelector } from 'react-redux';
+import { LoadingOverlay, Loader } from '@mantine/core';
+
+const FindJobsPage = lazy(() => import('./FindJobsPage'));
+const JobPage = lazy(() => import('./JobPage'));
+const ApplyJobPage = lazy(() => import('./ApplyJobPage'));
+const FindTalentPage = lazy(() => import('./FindTalentPage'));
+const TalentProfilePage = lazy(() => import('./TalentProfilePage'));
+const CompanyPage = lazy(() => import('./CompanyPage'));
+const CompaniesPage = lazy(() => import('./CompaniesPage'));
+const MessagesPage = lazy(() => import('./MessagesPage'));
+const JobHistoryPage = lazy(() => import('./JobHistoryPage'));
+const PostedJobPage = lazy(() => import('./PostedJobPage'));
+const PostJobPage = lazy(() => import('./PostJobPage'));
+const SignUpPage = lazy(() => import('./SignUpPage'));
+const HomePage = lazy(() => import('./HomePage'));
+const AboutPage = lazy(() => import('./AboutPage'));
+const PrivacyPage = lazy(() => import('./PrivacyPage'));
+const TermsPage = lazy(() => import('./TermsPage'));
+const SupportPage = lazy(() => import('./SupportPage'));
+const ContactPage = lazy(() => import('./ContactPage'));
+const FeedbackPage = lazy(() => import('./FeedbackPage'));
+const FaqPage = lazy(() => import('./FaqPage'));
+const AdminDashboardPage = lazy(() => import('./AdminDashboardPage'));
+const AdminLoginPage = lazy(() => import('./AdminLoginPage'));
+const ProfilePage = lazy(() => import('./ProfilePage'));
+const Unauthorized = lazy(() => import('./UnauthroizedPage'));
+const NotFoundPage = lazy(() => import('./NotFoundPage'));
 
 const AppRoutes = () => {
   const overlay = useSelector((state: any) => state.overlay);
-  return <BrowserRouter>
+  return <HelmetProvider><BrowserRouter>
     <div className='relative overflow-hidden'>
       {overlay && <div className='fixed !z-[2000] w-full h-full flex  items-center justify-center'>
         <LoadingOverlay
@@ -47,6 +50,7 @@ const AppRoutes = () => {
 
       </div>}
       <Header />
+      <Suspense fallback={<div className="h-[90vh] w-full flex justify-center items-center bg-mine-shaft-950"><Loader color="brightSun.4" size="lg" /></div>}>
       <Routes>
         <Route path='/' element={<HomePage />} />
 
@@ -79,8 +83,9 @@ const AppRoutes = () => {
 
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
+      </Suspense>
       <Footer />
     </div>
-  </BrowserRouter>
+  </BrowserRouter></HelmetProvider>
 }
 export default AppRoutes;
