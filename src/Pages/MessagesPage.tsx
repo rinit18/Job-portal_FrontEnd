@@ -1,4 +1,5 @@
-import { ActionIcon, Avatar, Divider, ScrollArea, TextInput, Indicator, Loader } from "@mantine/core";
+import { ActionIcon, Avatar, Divider, ScrollArea, TextInput, Indicator, Loader, Skeleton } from "@mantine/core";
+import { WEBSITE_CONFIG } from "../config";
 import { IconSend, IconSearch, IconDotsVertical, IconPaperclip, IconPhone, IconVideo } from "@tabler/icons-react";
 import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
@@ -139,10 +140,24 @@ const MessagesPage = () => {
                     
                     <ScrollArea className="flex-1">
                         {loading ? (
-                            <div className="flex justify-center py-10"><Loader color="brightSun.4" size="sm" /></div>
+                            <div className="flex flex-col gap-4 p-4">
+                                {[1, 2, 3, 4].map((i) => (
+                                    <div key={i} className="flex gap-3 items-center">
+                                        <Skeleton height={48} circle mb="xl" />
+                                        <div className="flex-1">
+                                            <Skeleton height={12} radius="xl" width="60%" />
+                                            <Skeleton height={8} mt={6} radius="xl" />
+                                            <Skeleton height={8} mt={6} width="80%" radius="xl" />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         ) : conversations.length === 0 ? (
-                            <div className="text-center text-sm text-mine-shaft-400 py-10 px-4 sm-mx:hidden">
-                                No conversations yet. Go to Find Talent or Job postings to connect!
+                            <div className="flex flex-col items-center justify-center h-full opacity-70 p-4 mt-10">
+                                <img src={WEBSITE_CONFIG.assets.workingGirl || "/Working/Girl.png"} className="w-24 h-24 mb-4 opacity-50 grayscale hover:grayscale-0 transition-all duration-300" alt="No messages" />
+                                <div className="text-center text-sm font-medium text-mine-shaft-300 sm-mx:hidden">
+                                    No conversations yet. Go to Find Talent or Job postings to connect!
+                                </div>
                             </div>
                         ) : (
                             conversations.map((conv) => {
@@ -254,7 +269,8 @@ const MessagesPage = () => {
                         </>
                     ) : (
                         <div className="flex-1 flex flex-col justify-center items-center text-mine-shaft-400 p-8">
-                            <p className="text-lg font-medium">Select a conversation or start a new one to begin messaging.</p>
+                            <img src={WEBSITE_CONFIG.assets.heroImage} className="w-48 mb-6 opacity-30 grayscale" alt="Start messaging" />
+                            <p className="text-lg font-medium text-mine-shaft-300">Select a conversation or start a new one to begin messaging.</p>
                         </div>
                     )}
                 </div>

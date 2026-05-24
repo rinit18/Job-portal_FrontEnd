@@ -8,7 +8,7 @@
 export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
 export const WEBSITE_CONFIG = {
-  name: "JobHook",
+  name: "CareerConnect",
   tagline: "Find your dream job with us",
   aboutParagraph: "Job portal with user profiles, skill updates, certifications, work experience and admin job postings.",
   footerDeveloperText: "Designed & Developed By Rinit Bhowmick and team",
@@ -18,6 +18,21 @@ export const WEBSITE_CONFIG = {
     instagram: "https://www.instagram.com",
     telegram: "https://",
     youtube: "https://www.youtube.com/",
+  },
+  
+  assets: {
+    logoUrl: "", // If empty, IconAnchor will be used
+    heroImage: "/Boy.png", // The main landing page illustration
+    heroAvatars: ["/avatar.png", "/avatar1.png", "/avatar2.png"],
+    heroCompanyLogo: "/Google.png",
+    profileBanner: "/Profile/banner.jpg",
+    defaultAvatar: "/avatar.png",
+    workingGirl: "/Working/Girl.png",
+    workingLogos: {
+      "Build Your Resume": "/Working/Build Your Resume.png",
+      "Apply for Job": "/Working/Apply for Job.png",
+      "Get Hired": "/Working/Get Hired.png"
+    }
   },
   
   landing: {

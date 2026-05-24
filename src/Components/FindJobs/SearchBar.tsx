@@ -103,14 +103,8 @@ const SearchBar = () => {
                 </div>
             </div>
 
-            <div className="flex justify-between items-center xs-mx:flex-col xs-mx:items-start xs-mx:gap-3 z-10 border-t border-mine-shaft-900 pt-5 mt-2">
-                <div className="flex items-center gap-3 flex-wrap">
-                    <span className="text-sm font-semibold text-mine-shaft-300">Refine Search Details</span>
-                    <span className="text-xs text-mine-shaft-500 xs-mx:hidden">|</span>
-                    <Link to="/find-talent" className="text-xs text-bright-sun-400 hover:text-bright-sun-300 hover:underline font-medium transition-colors">
-                        Looking for Talents? Search Talents instead &rarr;
-                    </Link>
-                </div>
+            <div className="flex justify-between items-center z-10 border-t border-mine-shaft-900 pt-5 mt-2">
+                <span className="text-sm font-semibold text-mine-shaft-300">Refine Search Details</span>
                 {matches && (
                     <Button 
                         onClick={toggle} 

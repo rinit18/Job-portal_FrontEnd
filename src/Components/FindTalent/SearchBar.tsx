@@ -26,14 +26,8 @@ const SearchBar = () => {
 
     return (
         <div className="flex flex-col px-6 py-6 gap-6 bg-mine-shaft-950/40 rounded-3xl border border-mine-shaft-900/60 backdrop-blur-xl shadow-2xl relative overflow-hidden mb-6">
-            <div className="flex justify-between items-center xs-mx:flex-col xs-mx:items-start xs-mx:gap-3 z-10">
-                <div className="flex items-center gap-3 flex-wrap">
-                    <span className="text-sm font-semibold text-mine-shaft-300">Filter Talents</span>
-                    <span className="text-xs text-mine-shaft-500 xs-mx:hidden">|</span>
-                    <Link to="/find-jobs" className="text-xs text-bright-sun-400 hover:text-bright-sun-300 hover:underline font-medium transition-colors">
-                        Looking for Jobs? Search Jobs instead &rarr;
-                    </Link>
-                </div>
+            <div className="flex justify-between items-center z-10">
+                <span className="text-sm font-semibold text-mine-shaft-300">Filter Talents</span>
                 {matches && (
                     <Button 
                         onClick={toggle} 

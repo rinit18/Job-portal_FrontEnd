@@ -1,21 +1,38 @@
 import { Indicator, Menu, Notification, rem, Stack } from "@mantine/core";
 import { IconBell, IconCheck } from "@tabler/icons-react";
-import { get } from "http";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getNotifications, readNotification } from "../../Services/NotiService";
-import { read } from "fs";
+import { successNotification } from "../../Services/NotificationService";
 
 const NotiMenu = () => {
     const navigate=useNavigate();
     const user = useSelector((state: any) => state.user);
     const [notifications, setNotifications] = useState<any>([]);
+
     useEffect(() => {
-        getNotifications(user.id).then((res) => {
-            setNotifications(res);
-        }).catch((err) => console.log(err));
+        let prevCount = 0;
+
+        const fetchNotis = () => {
+            getNotifications(user.id).then((res: any[]) => {
+                if (res.length > prevCount && prevCount > 0) {
+                    // New notifications arrived! Show toasts for the newest ones.
+                    const newCount = res.length - prevCount;
+                    for (let i = 0; i < newCount; i++) {
+                        successNotification(res[i].action, res[i].message);
+                    }
+                }
+                prevCount = res.length;
+                setNotifications(res);
+            }).catch((err) => console.log(err));
+        };
+
+        fetchNotis();
+        const interval = setInterval(fetchNotis, 3000); // Poll every 3 seconds for real-time feel
+        return () => clearInterval(interval);
     }, [user]);
+
     const unread=(index:number)=>{
         let notis=[...notifications];
         notis=notis.filter((noti:any, i:number)=>i!=index);

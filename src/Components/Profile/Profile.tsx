@@ -12,6 +12,7 @@ import { successNotification, errorNotification } from "../../Services/Notificat
 import { IconEdit, IconFileUpload, IconSparkles } from "@tabler/icons-react";
 import { getBase64 } from "../../Services/Utilities";
 import { parseResume } from "../../Services/AiService";
+import { WEBSITE_CONFIG } from "../../config";
 
 const getProfileCompletion = (profile: any) => {
     let score = 0;
@@ -75,13 +76,13 @@ const Profile = () => {
             {/* Hero Banner */}
             <div data-aos="zoom-out" className="relative">
                 <div className="relative h-52 xs-mx:h-32 rounded-t-2xl overflow-hidden">
-                    <img className="w-full h-full object-cover" src="/Profile/banner.jpg" alt="" />
+                    <img className="w-full h-full object-cover" src={WEBSITE_CONFIG.assets.profileBanner} alt="" />
                     <div className="absolute inset-0 bg-gradient-to-t from-mine-shaft-950/80 via-transparent to-transparent" />
                 </div>
 
                 {/* Avatar */}
                 <div ref={ref} className="absolute cursor-pointer flex items-center justify-center !rounded-full -bottom-16 md-mx:-bottom-10 sm-mx:-bottom-14 left-8">
-                    <Avatar className="!w-36 !h-36 md-mx:!w-28 md-mx:!h-28 border-mine-shaft-950 border-4 rounded-full sm-mx:!w-24 sm-mx:!h-24" src={profile.picture ? `data:image/jpeg;base64,${profile.picture}` : '/avatar.png'} alt="" />
+                    <Avatar className="!w-36 !h-36 md-mx:!w-28 md-mx:!h-28 border-mine-shaft-950 border-4 rounded-full sm-mx:!w-24 sm-mx:!h-24" src={profile.picture ? `data:image/jpeg;base64,${profile.picture}` : WEBSITE_CONFIG.assets.defaultAvatar} alt="" />
                     {hovered && <Overlay ref={ref} className="!rounded-full" color="#000" backgroundOpacity={0.75} />}
                     {hovered && <IconEdit className="absolute z-[300] !w-10 !h-10" />}
                     {hovered && <FileInput onChange={handleFileChange} className="absolute [&_*]:!rounded-full z-[301] [&_*]:!h-full w-full !h-full" variant="unstyled" accept="image/png,image/jpeg" />}

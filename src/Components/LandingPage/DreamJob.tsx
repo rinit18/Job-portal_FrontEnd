@@ -1,7 +1,7 @@
 import { Avatar, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateFilter } from "../../Slices/FilterSlice";
 import { useNavigate } from "react-router-dom";
 import { WEBSITE_CONFIG } from "../../config";
@@ -9,9 +9,10 @@ import { WEBSITE_CONFIG } from "../../config";
 const DreamJob = () => {
     const dispatch=useDispatch();
     const navigate=useNavigate();
+    const user = useSelector((state: any) => state.user);
     const [jobTitle, setJobTitle]=useState("");
     const [type, setType]=useState("");
-    const [searchType, setSearchType] = useState<"jobs" | "talents">("jobs");
+    const searchType = user?.accountType === "EMPLOYER" ? "talents" : "jobs";
 
     const handleClick=()=>{
         if (searchType === "jobs") {
@@ -24,6 +25,7 @@ const DreamJob = () => {
     }
     
     const { hero } = WEBSITE_CONFIG.landing;
+    const { assets } = WEBSITE_CONFIG;
 
     return (
         <div className="flex sm-mx:flex-col-reverse items-center px-16 bs-mx:px-10 md-mx:px-5 py-12 relative overflow-hidden">
@@ -39,21 +41,6 @@ const DreamJob = () => {
                     {hero.subtitle}
                 </div>
                 
-                {/* Search Type Selector Tabs */}
-                <div className="flex gap-4 mt-4 pl-1">
-                    <button 
-                        onClick={() => { setSearchType("jobs"); setJobTitle(""); setType(""); }} 
-                        className={`text-sm font-bold pb-1.5 border-b-2 transition-all duration-200 ${searchType === "jobs" ? "text-bright-sun-400 border-bright-sun-400 scale-[1.02]" : "text-mine-shaft-400 border-transparent hover:text-mine-shaft-200"}`}
-                    >
-                        Search Jobs
-                    </button>
-                    <button 
-                        onClick={() => { setSearchType("talents"); setJobTitle(""); setType(""); }} 
-                        className={`text-sm font-bold pb-1.5 border-b-2 transition-all duration-200 ${searchType === "talents" ? "text-bright-sun-400 border-bright-sun-400 scale-[1.02]" : "text-mine-shaft-400 border-transparent hover:text-mine-shaft-200"}`}
-                    >
-                        Search Talent
-                    </button>
-                </div>
 
                 {/* Modernized Search Form: Floating glass panel with subtle glow */}
                 <div className="flex sm-mx:flex-col gap-3 p-2 bg-mine-shaft-900/60 border border-mine-shaft-800 rounded-2xl backdrop-blur-xl shadow-2xl shadow-black/40 focus-within:border-bright-sun-400/50 transition-all duration-300">
@@ -89,15 +76,15 @@ const DreamJob = () => {
             
             <div data-aos="zoom-out-left" className="w-[55%] sm-mx:w-full flex items-center justify-center z-10">
                 <div className="w-[30rem] sm-mx:w-[24rem] relative">
-                    <img className="hover:scale-[1.02] transition-transform duration-500" src="/Boy.png" alt="boy" />
+                    <img className="hover:scale-[1.02] transition-transform duration-500" src={assets.heroImage} alt="boy" />
                     
                     {/* Glass card floating badges */}
                     <div className="absolute -right-6 bs-mx:right-0 w-fit xs-mx:top-[10%] top-[50%] border-mine-shaft-800 bg-mine-shaft-900/60 rounded-2xl p-3 border backdrop-blur-md shadow-xl hover:-translate-y-1 transition-all duration-300">
                         <div className="text-center mb-1 text-xs font-semibold text-bright-sun-400">{hero.statsText}</div>
                         <Avatar.Group>
-                            <Avatar src="/avatar.png" />
-                            <Avatar src="/avatar1.png" />
-                            <Avatar src="/avatar2.png" />
+                            <Avatar src={assets.heroAvatars[0]} />
+                            <Avatar src={assets.heroAvatars[1]} />
+                            <Avatar src={assets.heroAvatars[2]} />
                             <Avatar color="brightSun.4" className="text-xs font-semibold">{hero.statsCount}</Avatar>
                         </Avatar.Group>
                     </div>
@@ -105,7 +92,7 @@ const DreamJob = () => {
                     <div className="absolute -left-6 w-fit bs-mx:top-[35%] xs-mx:top-[60%] top-[28%] border-mine-shaft-800 bg-mine-shaft-900/60 rounded-2xl p-4 border backdrop-blur-md gap-3 flex flex-col shadow-xl hover:-translate-y-1 transition-all duration-300">
                         <div className="flex gap-3 items-center ">
                             <div className="w-10 h-10 p-1 bg-mine-shaft-900 rounded-xl flex items-center justify-center">
-                                <img src="/Google.png" alt="" className="w-6 h-6 object-contain" />
+                                <img src={assets.heroCompanyLogo} alt="" className="w-6 h-6 object-contain" />
                             </div>
                             <div className="text-sm text-mine-shaft-100">
                                 <div className="font-bold">{hero.cardTitle}</div>

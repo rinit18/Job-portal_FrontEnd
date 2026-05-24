@@ -42,12 +42,15 @@
 }
 
 @layer utilities {
-    .glass-card {
-        @apply bg-mine-shaft-900/40 backdrop-blur-md border border-mine-shaft-800 shadow-xl;
-    }
     .glass-header {
         @apply bg-mine-shaft-950/70 backdrop-blur-lg border-b border-mine-shaft-800;
     }
+}
+
+/* Custom Text Selection */
+::selection {
+    background-color: rgba(255, 189, 32, 0.3); /* Transparent bright-sun */
+    color: #ffbd20; /* bright-sun text */
 }
 
 ::-webkit-scrollbar-track {
@@ -62,6 +65,11 @@
 
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #ffbd20;
+    background-color: #4a4a4a; /* subtle grey */
     @apply border-2 border-mine-shaft-950;
+    transition: background-color 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #ffbd20; /* bright-sun on hover */
 }
