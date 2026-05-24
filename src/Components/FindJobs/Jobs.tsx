@@ -50,7 +50,7 @@ const Jobs = () => {
           if(filter.salary && filter.salary.length>0)filtered=filtered.filter((jobs:any)=>filter.salary[0]<=jobs.packageOffered && jobs.packageOffered<=filter.salary[1]);
         setFilteredJobs(filtered);
     },[filter,jobList])
-    return <div className="px-5 py-5">
+    return <div className="p-5 sm-mx:p-2">
         <div className="flex justify-between flex-wrap mt-5">
             <div className="text-2xl xs-mx:text-xl flex gap-3 items-center font-semibold">Recommended jobs   {Object.keys(filter).length>0&&<Button onClick={()=>dispatch(resetFilter())} className="font-body transition duration-300 " size="compact-sm" leftSection={<IconX stroke={1.5} size={20}/>} variant="filled" color="brightSun.4" autoContrast >Clear Filters</Button>}</div>
             <Sort sort="job" />

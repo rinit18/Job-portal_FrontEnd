@@ -56,7 +56,7 @@ const SearchBar = () => {
     };
 
     return (
-        <div className="flex flex-col px-5 py-5 gap-5">
+        <div className="flex flex-col px-5 sm-mx:px-2 py-5 gap-5 sm-mx:gap-3">
             {/* LinkedIn-Style AI Natural Language Search Bar */}
             <div className="w-full flex flex-col items-center mt-2">
                 <div className="w-full max-w-3xl flex items-center bg-mine-shaft-900 border border-mine-shaft-800 rounded-full px-2 py-1 shadow-md focus-within:border-bright-sun-400 focus-within:ring-1 focus-within:ring-bright-sun-400 transition-all">

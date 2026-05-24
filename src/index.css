@@ -5,11 +5,30 @@
 @tailwind utilities;
 
 @layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
         font-family: 'Inter', sans-serif;
         @apply bg-mine-shaft-950 text-mine-shaft-100;
+        /* Subtle global background gradient for a more premium feel */
+        background: radial-gradient(circle at top right, #3d3d3d 0%, #2d2d2d 30%, #1f1f1f 100%);
+        background-attachment: fixed;
     }
     
+    a, button, .mantine-Button-root, .mantine-ActionIcon-root {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Enhanced Glass Card with subtle hover lift */
+    .glass-card {
+        @apply bg-mine-shaft-900/60 backdrop-blur-md border border-mine-shaft-800 rounded-xl transition-all duration-300;
+    }
+    .glass-card:hover {
+        @apply border-bright-sun-400/50 shadow-[0_0_15px_rgba(255,189,32,0.15)] transform -translate-y-1;
+    }
+
     ul, ol {
       list-style: revert;
       font-size: medium;

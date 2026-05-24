@@ -55,9 +55,9 @@ const Header = () => {
             // .finally(()=>dispatch(hideOverlay()));
         }
     }, [token, navigate]);
-    return (location.pathname != "/signup" && location.pathname != "/login") ? <div data-aos="zoom-out" className="w-full glass-header px-6 text-white h-20 flex justify-between items-center font-['poppins']">
+    return (location.pathname != "/signup" && location.pathname != "/login") ? <div data-aos="zoom-out" className="w-full glass-header px-6 sm-mx:px-2 text-white h-20 flex justify-between items-center font-['poppins']">
         <div onClick={() => navigate("/")} className="flex gap-1 cursor-pointer items-center text-bright-sun-400">
-            <IconAnchor className="h-8 w-8" stroke={2.5} />
+            <IconAnchor className="h-8 w-8 sm-mx:h-6 sm-mx:w-6" stroke={2.5} />
             <div className=" xs-mx:hidden text-3xl font-semibold">JobHook</div>
         </div>
         <NavLinks />

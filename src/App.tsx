@@ -18,8 +18,9 @@ function App() {
   useEffect(()=>{
     AOS.init({
       offset: 0,
-      duration:800,
-      easing:'ease-out'
+      duration: 1000,
+      easing: 'ease-in-out-cubic',
+      once: true
     });
     AOS.refresh();
   }, []);

@@ -1,5 +1,7 @@
 import axios from 'axios';
-const base_url = `${process.env.REACT_APP_API_URL || 'http://localhost:8080'}/auth/`;
+import { API_BASE_URL } from '../config';
+
+const base_url = `${API_BASE_URL}/auth/`;
 const loginUser = async (login:any)=> {
     return axios.post(`${base_url}login`, login)
         .then((result:any) => result.data)

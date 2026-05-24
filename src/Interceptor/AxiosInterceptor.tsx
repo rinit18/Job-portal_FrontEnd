@@ -1,9 +1,10 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { removeUser } from "../Slices/UserSlice";
 import { removeJwt } from "../Slices/JwtSlice";
+import { API_BASE_URL } from "../config";
 
 const axiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8080'
+    baseURL: API_BASE_URL
 });
 
 axiosInstance.interceptors.request.use(
