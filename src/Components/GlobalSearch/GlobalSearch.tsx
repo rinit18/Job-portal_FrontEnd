@@ -43,10 +43,20 @@ const GlobalSearch = () => {
                     setAiFilters(null);
                 }
 
-                const [jobsRes, profilesRes] = await Promise.all([
-                    getAllJobs(),
-                    getAllProfiles()
-                ]);
+                let jobsRes, profilesRes;
+                if (parsedFilters) {
+                    [jobsRes, profilesRes] = await Promise.all([
+                        getAllJobs(),
+                        getAllProfiles()
+                    ]);
+                } else {
+                    const { searchJobs } = await import("../../Services/JobService");
+                    const { searchProfiles } = await import("../../Services/ProfileService");
+                    [jobsRes, profilesRes] = await Promise.all([
+                        searchJobs(query),
+                        searchProfiles(query)
+                    ]);
+                }
 
                 // Filter Jobs
                 const matchedJobs = jobsRes.filter((job: any) => {
@@ -62,10 +72,8 @@ const GlobalSearch = () => {
                         if (t.length === 0 && l.length === 0) isMatch = true; // Fallback
                         return isMatch;
                     } else {
-                        // Standard filtering
-                        return job.jobTitle?.toLowerCase().includes(query) || 
-                               job.company?.toLowerCase().includes(query) ||
-                               job.skillsRequired?.some((s: string) => s.toLowerCase().includes(query));
+                        // Backend fuzzy search already filtered the jobs
+                        return true;
                     }
                 });
                 setJobs(matchedJobs);
@@ -81,9 +89,8 @@ const GlobalSearch = () => {
                         if (t.length === 0 && l.length === 0) isMatch = true;
                         return isMatch;
                     } else {
-                        return profile.name?.toLowerCase().includes(query) || 
-                               profile.jobTitle?.toLowerCase().includes(query) ||
-                               profile.skills?.some((s: string) => s.toLowerCase().includes(query));
+                        // Backend fuzzy search already filtered the profiles
+                        return true;
                     }
                 });
                 setProfiles(matchedProfiles);

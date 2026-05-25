@@ -11,6 +11,11 @@ const getAllJobs=async ()=>{
     .then((result:any) => result.data)
     .catch((error:any) =>{throw error;});
 }
+const searchJobs=async (query: string)=>{
+    return axiosInstance.get(`/jobs/search?query=${encodeURIComponent(query)}`)
+    .then((result:any) => result.data)
+    .catch((error:any) =>{throw error;});
+}
 const getJob=async (id:any)=>{
     return axiosInstance.get(`/jobs/get/${id}`)
     .then((result:any) => result.data)
@@ -35,4 +40,4 @@ const changeAppStatus=async (interview:any)=>{
     .then((result:any) => result.data)
     .catch((error:any) =>{throw error;});
 }
-export {postJob, getAllJobs, getJob, applyJob, getHistory, getJobsPostedBy, changeAppStatus};
+export {postJob, getAllJobs, searchJobs, getJob, applyJob, getHistory, getJobsPostedBy, changeAppStatus};

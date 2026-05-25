@@ -15,4 +15,9 @@ const getAllProfiles = async ()=>{
         .then((result:any) => result.data)
         .catch((error:any) =>{throw error;});
 }
-export {getProfile, updateProfile, getAllProfiles};
+const searchProfiles = async (query: string)=>{
+    return axiosInstance.get(`/profiles/search?query=${encodeURIComponent(query)}`)
+        .then((result:any) => result.data)
+        .catch((error:any) =>{throw error;});
+}
+export {getProfile, updateProfile, getAllProfiles, searchProfiles};
