@@ -14,15 +14,15 @@ const BottomNav = () => {
     if (user?.accountType === "APPLICANT") {
         links = [
             { name: "Home", url: "/", icon: IconHome },
-            { name: "Find Jobs", url: "/find-jobs", icon: IconSearch },
-            { name: "History", url: "/job-history", icon: IconHistory },
+            { name: "Jobs", url: "/find-jobs", icon: IconBriefcase },
+            { name: "Connect", url: "/network", icon: IconSearch },
             { name: "Messages", url: "/messages", icon: IconMessage },
             { name: "Profile", url: "/profile", icon: IconUser },
         ];
     } else if (user?.accountType === "EMPLOYER") {
         links = [
             { name: "Home", url: "/", icon: IconHome },
-            { name: "Talents", url: "/find-talent", icon: IconSearch },
+            { name: "Connect", url: "/network", icon: IconSearch },
             { name: "Posted", url: "/posted-jobs/0", icon: IconBriefcase },
             { name: "Messages", url: "/messages", icon: IconMessage },
             { name: "Profile", url: "/profile", icon: IconUser },

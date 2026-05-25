@@ -13,16 +13,10 @@ const DreamJob = () => {
     const navigate=useNavigate();
     const user = useSelector((state: any) => state.user);
     const [query, setQuery] = useState("");
-    const searchType = user?.accountType === "EMPLOYER" ? "talents" : "jobs";
 
     const handleClick = () => {
-        if (searchType === "jobs") {
-            dispatch(updateFilter({ "Job Title": query ? [query] : null, "page": 1 }));
-            navigate("/find-jobs");
-        } else {
-            dispatch(updateFilter({ "globalSearch": query, "page": 1 }));
-            navigate("/network");
-        }
+        dispatch(updateFilter({ "globalSearch": query, "page": 1 }));
+        navigate("/network");
     }
     
     const { hero } = WEBSITE_CONFIG.landing;
