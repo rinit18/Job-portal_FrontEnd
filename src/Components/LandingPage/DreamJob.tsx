@@ -40,10 +40,10 @@ const DreamJob = () => {
                     {hero.titlePart1}{" "}
                     <TypeAnimation
                         sequence={[
-                            'Developer', 2000,
-                            'Designer', 2000,
-                            'Manager', 2000,
-                            'Analyst', 2000,
+                            'Connection', 2000,
+                            'Colleague', 2000,
+                            'Mentor', 2000,
+                            'Job', 2000,
                         ]}
                         wrapper="span"
                         speed={50}
@@ -88,7 +88,7 @@ const DreamJob = () => {
                         className="flex items-center justify-center gap-2 sm-mx:w-full h-auto px-8 bg-bright-sun-400 text-mine-shaft-950 font-extrabold text-lg rounded-lg hover:bg-bright-sun-500 shadow-lg shadow-bright-sun-400/20 active:scale-95 transition-all duration-200"
                     >
                         <IconSearch className="h-6 w-6 stroke-[2.5]" />
-                        <span className="hidden lg:block">Search Jobs</span>
+                        <span className="hidden lg:block">Search</span>
                     </button>
                 </div>
             </div>

@@ -38,9 +38,9 @@ export const WEBSITE_CONFIG = {
   landing: {
     hero: {
       titlePart1: "Find your",
-      titleHighlight: "dream job",
+      titleHighlight: "next connection",
       titlePart2: "with us",
-      subtitle: "Good life begins with a good company. Start explore thousands of jobs in one place.",
+      subtitle: "Good life begins with a great network. Connect with thousands of professionals and discover new opportunities in one place.",
       jobTitlePlaceholder: "Software Engineer",
       jobTypePlaceholder: "Fulltime",
       statsText: "10K+ got job",
