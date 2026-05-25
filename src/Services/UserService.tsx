@@ -35,4 +35,16 @@ const resetPassword=async (email:string, password:string, token:string)=>{
         .catch((error:any) =>{throw error;});
 }
 
-export {registerUser, loginUser, sendOtp, sendRegistrationOtp, verifyOtp, resetPassword};
+const updatePassword=async (passwordData:any)=>{
+    return axiosInstance.post(`/users/updatePassword`, passwordData)
+        .then((result:any) => result.data)
+        .catch((error:any) =>{throw error;});
+}
+
+const deleteAccount=async (email:string)=>{
+    return axiosInstance.post(`/users/deleteAccount/${email}`)
+        .then((result:any) => result.data)
+        .catch((error:any) =>{throw error;});
+}
+
+export {registerUser, loginUser, sendOtp, sendRegistrationOtp, verifyOtp, resetPassword, updatePassword, deleteAccount};

@@ -38,6 +38,7 @@ const FaqPage = lazy(() => import('./FaqPage'));
 const AdminDashboardPage = lazy(() => import('./AdminDashboardPage'));
 const AdminLoginPage = lazy(() => import('./AdminLoginPage'));
 const ProfilePage = lazy(() => import('./ProfilePage'));
+const SettingsPage = lazy(() => import('./SettingsPage'));
 const Unauthorized = lazy(() => import('./UnauthroizedPage'));
 const NotFoundPage = lazy(() => import('./NotFoundPage'));
 
@@ -62,6 +63,7 @@ const AnimatedRoutes = () => {
         <Route path='/signup' element={<PublicRoute><AnimatedPage><SignUpPage /></AnimatedPage></PublicRoute>} />
         <Route path='/login' element={<PublicRoute><AnimatedPage><SignUpPage /></AnimatedPage></PublicRoute>} />
         <Route path='/profile' element={<ProtectedRoute allowedRoles={['APPLICANT', 'ADMIN', 'EMPLOYER']}><AnimatedPage><ProfilePage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/settings' element={<ProtectedRoute allowedRoles={['APPLICANT', 'ADMIN', 'EMPLOYER']}><AnimatedPage><SettingsPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/admin/dashboard' element={<ProtectedRoute allowedRoles={['ADMIN']}><AnimatedPage><AdminDashboardPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/admin/login' element={<PublicRoute><AnimatedPage><AdminLoginPage /></AnimatedPage></PublicRoute>} />
         

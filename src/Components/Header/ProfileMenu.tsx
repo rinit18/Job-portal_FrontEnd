@@ -8,6 +8,7 @@ import {
     IconMoonStars,
     IconMoon,
     IconLayoutDashboard,
+    IconSettings
 } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -55,6 +56,11 @@ const ProfileMenu = () => {
                 <Link to="/profile">
                     <Menu.Item leftSection={<IconFileText style={{ width: rem(14), height: rem(14) }} />}>
                         Resume
+                    </Menu.Item>
+                </Link>
+                <Link to="/settings">
+                    <Menu.Item leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} />}>
+                        Settings
                     </Menu.Item>
                 </Link>
                 <Menu.Item
