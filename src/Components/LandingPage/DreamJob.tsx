@@ -1,4 +1,4 @@
-import { Avatar, TextInput } from "@mantine/core";
+import { Avatar, Autocomplete } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { WEBSITE_CONFIG } from "../../config";
 import { TypeAnimation } from 'react-type-animation';
 import CountUp from 'react-countup';
+
+const popularSearchTerms = [
+    "Software Engineer", "React Developer", "Product Designer", 
+    "Data Scientist", "Java Developer", "Remote Jobs", 
+    "Google", "Microsoft", "Project Manager", "Sales"
+];
 
 const DreamJob = () => {
     const dispatch=useDispatch();
@@ -53,15 +59,16 @@ const DreamJob = () => {
                 {/* Hero Search Bar (Indeed-style): High contrast, large inputs, prominent button */}
                 <div className="flex sm-mx:flex-col gap-3 mt-4 p-3 bg-mine-shaft-900 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-mine-shaft-800 focus-within:border-bright-sun-400/50 transition-all duration-300">
                     <div className="flex-1 flex sm-mx:flex-col gap-2">
-                        <TextInput 
+                        <Autocomplete 
                             value={query} 
-                            onChange={(e) => setQuery(e.currentTarget.value)} 
+                            onChange={setQuery} 
+                            data={popularSearchTerms}
                             className="flex-1 rounded-lg bg-mine-shaft-950 p-1 text-mine-shaft-100" 
                             variant="unstyled" 
                             size="lg"
                             label={<span className="text-xs text-mine-shaft-400 font-bold px-2 uppercase tracking-wider">Search</span>}
                             placeholder="Find professionals, companies, or jobs..." 
-                            classNames={{ input: 'px-2 font-bold text-lg placeholder:text-mine-shaft-500 placeholder:font-medium' }}
+                            classNames={{ input: 'px-2 font-bold text-lg placeholder:text-mine-shaft-500 placeholder:font-medium', dropdown: 'bg-mine-shaft-900 border-mine-shaft-800' }}
                             onKeyDown={(e) => e.key === 'Enter' && handleClick()}
                         />
                     </div>

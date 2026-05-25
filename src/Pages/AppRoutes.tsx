@@ -23,6 +23,7 @@ const TalentProfilePage = lazy(() => import('./TalentProfilePage'));
 const CompanyPage = lazy(() => import('./CompanyPage'));
 const CompaniesPage = lazy(() => import('./CompaniesPage'));
 const MessagesPage = lazy(() => import('./MessagesPage'));
+const GlobalSearchPage = lazy(() => import('./GlobalSearchPage'));
 const JobHistoryPage = lazy(() => import('./JobHistoryPage'));
 const PostedJobPage = lazy(() => import('./PostedJobPage'));
 const PostJobPage = lazy(() => import('./PostJobPage'));
@@ -54,6 +55,7 @@ const AnimatedRoutes = () => {
         <Route path='/apply-job/:id' element={<ProtectedRoute allowedRoles={['APPLICANT', 'ADMIN']}><AnimatedPage><ApplyJobPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/companies' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><CompaniesPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/messages' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><MessagesPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/search' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><GlobalSearchPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/network' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><FindTalentPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/user/:id' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><TalentProfilePage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/company/:name' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><CompanyPage /></AnimatedPage></ProtectedRoute>} />
