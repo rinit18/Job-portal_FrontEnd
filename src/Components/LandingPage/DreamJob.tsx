@@ -21,8 +21,7 @@ const DreamJob = () => {
     const [query, setQuery] = useState("");
 
     const handleClick = () => {
-        dispatch(updateFilter({ "globalSearch": query, "page": 1 }));
-        navigate("/network");
+        navigate(`/search?query=${encodeURIComponent(query)}`);
     }
     
     const { hero } = WEBSITE_CONFIG.landing;
