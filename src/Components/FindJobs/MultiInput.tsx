@@ -3,7 +3,7 @@ import { Checkbox, Combobox, Group, Input, Pill, PillsInput, ScrollArea, useComb
 import { IconSelector } from '@tabler/icons-react';
 import { updateFilter } from '../../Slices/FilterSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { current } from '@reduxjs/toolkit';
+
 
 const MultiInput = (props:any) => {
     const dispatch=useDispatch();
@@ -11,9 +11,12 @@ const MultiInput = (props:any) => {
     useEffect(()=>{
         setData(props.options);
         
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(()=>{
         setValue(filter[props.title]??[])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filter])
     const combobox = useCombobox({
         onDropdownClose: () =>

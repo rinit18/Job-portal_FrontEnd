@@ -1,8 +1,8 @@
-import { Avatar, Button, Divider, FileButton, FileInput, Indicator, Overlay, Progress, Tooltip } from "@mantine/core";
-import { useEffect, useRef, useState } from "react";
+import { Avatar, Button, Divider, FileButton, FileInput, Overlay, RingProgress, Text } from "@mantine/core";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Info from "./Info";
-import { changeProfile, setProfile } from "../../Slices/ProfileSlice";
+import { changeProfile } from "../../Slices/ProfileSlice";
 import About from "./About";
 import Skills from "./Skills";
 import Experience from "./Experience";
@@ -92,18 +92,27 @@ const Profile = () => {
             {/* Profile Content */}
             <div className="px-4 pt-20 sm-mx:pt-16 flex flex-col gap-0">
 
-                {/* Profile Completion Bar */}
-                <div data-aos="fade-up" className="glass-card rounded-xl p-4 mb-4">
-                    <div className="flex justify-between items-center mb-2">
-                        <div className="text-sm font-semibold text-mine-shaft-200">Profile Strength</div>
-                        <div className={`text-sm font-bold ${completion >= 80 ? 'text-teal-400' : completion >= 50 ? 'text-bright-sun-400' : 'text-red-400'}`}>
-                            {completion}% {completion >= 80 ? '🌟 All Star' : completion >= 50 ? '💪 Intermediate' : '🚀 Beginner'}
+                {/* Profile Completion Ring */}
+                <div data-aos="fade-up" className="glass-card rounded-xl p-6 mb-4 flex items-center gap-6 sm-mx:flex-col sm-mx:text-center">
+                    <RingProgress
+                        size={100}
+                        thickness={10}
+                        roundCaps
+                        sections={[{ value: completion, color: completion >= 80 ? 'teal' : completion >= 50 ? 'yellow' : 'red' }]}
+                        label={
+                            <Text c={completion >= 80 ? 'teal' : completion >= 50 ? 'yellow' : 'red'} fw={700} ta="center" size="xl">
+                                {completion}%
+                            </Text>
+                        }
+                    />
+                    <div className="flex flex-col gap-2">
+                        <div className="text-lg font-bold text-mine-shaft-100">
+                            Profile Strength: {completion >= 80 ? '🌟 All Star' : completion >= 50 ? '💪 Intermediate' : '🚀 Beginner'}
                         </div>
+                        <p className="text-mine-shaft-300 text-sm">
+                            {completion < 100 ? 'Complete your profile (add skills, experience, and certifications) to get more visibility to employers.' : 'Your profile is complete! You are ready to stand out.'}
+                        </p>
                     </div>
-                    <Progress value={completion} color={completion >= 80 ? 'teal' : completion >= 50 ? 'yellow' : 'red'} size="sm" radius="xl" animated />
-                    <p className="text-mine-shaft-400 text-xs mt-1">
-                        {completion < 100 ? 'Complete your profile to get more visibility to employers.' : 'Your profile is complete!'}
-                    </p>
                 </div>
 
                 {/* AI Resume Import Card */}

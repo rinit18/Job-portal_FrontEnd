@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import SelectInput from "./SelectInput";
 import fields from "../../Data/Profile";
 import { MonthPickerInput } from "@mantine/dates";
@@ -34,6 +34,7 @@ const ExpInput = (props: any) => {
     });
     useEffect(() => {
         if (!props.add) form.setValues({ 'title': props.title, 'company': props.company, 'location': props.location, 'description': props.description, 'startDate': new Date(props.startDate), 'endDate': new Date(props.endDate), 'working': props.working });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSave = () => {

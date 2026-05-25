@@ -1,9 +1,14 @@
 
 
 import { Suspense, lazy } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+import AnimatedPage from '../Components/AnimatedPage';
 import { HelmetProvider } from 'react-helmet-async';
 import Header from '../Components/Header/Header';
+import BottomNav from '../Components/Header/BottomNav';
+import ScrollToTop from '../Components/ScrollToTop';
+import ErrorBoundary from '../Components/ErrorBoundary';
 import Footer from '../Components/Footer/Footer';
 import ProtectedRoute from '../Services/ProtectedRoute';
 import PublicRoute from '../Services/PublicRoute';
@@ -36,6 +41,45 @@ const ProfilePage = lazy(() => import('./ProfilePage'));
 const Unauthorized = lazy(() => import('./UnauthroizedPage'));
 const NotFoundPage = lazy(() => import('./NotFoundPage'));
 
+const AnimatedRoutes = () => {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path='/' element={<AnimatedPage><HomePage /></AnimatedPage>} />
+        <Route path='/unauthorized' element={<AnimatedPage><Unauthorized /></AnimatedPage>} />
+        <Route path='/find-jobs' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><FindJobsPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/jobs/:id' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><JobPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/apply-job/:id' element={<ProtectedRoute allowedRoles={['APPLICANT', 'ADMIN']}><AnimatedPage><ApplyJobPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/companies' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><CompaniesPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/messages' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><MessagesPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/find-talent' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><FindTalentPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/talent-profile/:id' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><TalentProfilePage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/company/:name' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><CompanyPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/job-history' element={<ProtectedRoute allowedRoles={['APPLICANT', 'ADMIN']}><AnimatedPage><JobHistoryPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/posted-jobs/:id' element={<ProtectedRoute allowedRoles={['EMPLOYER', 'ADMIN']}><AnimatedPage><PostedJobPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/post-job/:id' element={<ProtectedRoute allowedRoles={['EMPLOYER', 'ADMIN']}><AnimatedPage><PostJobPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/signup' element={<PublicRoute><AnimatedPage><SignUpPage /></AnimatedPage></PublicRoute>} />
+        <Route path='/login' element={<PublicRoute><AnimatedPage><SignUpPage /></AnimatedPage></PublicRoute>} />
+        <Route path='/profile' element={<ProtectedRoute allowedRoles={['APPLICANT', 'ADMIN', 'EMPLOYER']}><AnimatedPage><ProfilePage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/admin/dashboard' element={<ProtectedRoute allowedRoles={['ADMIN']}><AnimatedPage><AdminDashboardPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/admin/login' element={<PublicRoute><AnimatedPage><AdminLoginPage /></AnimatedPage></PublicRoute>} />
+        
+        {/* Static & Dynamic Footer Pages */}
+        <Route path='/about' element={<AnimatedPage><AboutPage /></AnimatedPage>} />
+        <Route path='/contact' element={<AnimatedPage><ContactPage /></AnimatedPage>} />
+        <Route path='/privacy' element={<AnimatedPage><PrivacyPage /></AnimatedPage>} />
+        <Route path='/terms' element={<AnimatedPage><TermsPage /></AnimatedPage>} />
+        <Route path='/support' element={<AnimatedPage><SupportPage /></AnimatedPage>} />
+        <Route path='/feedback' element={<AnimatedPage><FeedbackPage /></AnimatedPage>} />
+        <Route path='/faqs' element={<AnimatedPage><FaqPage /></AnimatedPage>} />
+
+        <Route path='*' element={<AnimatedPage><NotFoundPage /></AnimatedPage>} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
 const AppRoutes = () => {
   const overlay = useSelector((state: any) => state.overlay);
   return <HelmetProvider><BrowserRouter>
@@ -51,40 +95,13 @@ const AppRoutes = () => {
       </div>}
       <Header />
       <Suspense fallback={<div className="h-[90vh] w-full flex justify-center items-center bg-mine-shaft-950"><Loader color="brightSun.4" size="lg" /></div>}>
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-
-        <Route path='/unauthorized' element={<Unauthorized />} />
-        <Route path='/find-jobs' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><FindJobsPage /></ProtectedRoute>} />
-        <Route path='/jobs/:id' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><JobPage /></ProtectedRoute>} />
-        <Route path='/apply-job/:id' element={<ProtectedRoute allowedRoles={['APPLICANT', 'ADMIN']}><ApplyJobPage /></ProtectedRoute>} />
-        <Route path='/companies' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><CompaniesPage /></ProtectedRoute>} />
-        <Route path='/messages' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><MessagesPage /></ProtectedRoute>} />
-        <Route path='/find-talent' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><FindTalentPage /></ProtectedRoute>} />
-        <Route path='/talent-profile/:id' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><TalentProfilePage /></ProtectedRoute>} />
-        <Route path='/company/:name' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><CompanyPage /></ProtectedRoute>} />
-        <Route path='/job-history' element={<ProtectedRoute allowedRoles={['APPLICANT', 'ADMIN']}><JobHistoryPage /></ProtectedRoute>} />
-        <Route path='/posted-jobs/:id' element={<ProtectedRoute allowedRoles={['EMPLOYER', 'ADMIN']}><PostedJobPage /></ProtectedRoute>} />
-        <Route path='/post-job/:id' element={<ProtectedRoute allowedRoles={['EMPLOYER', 'ADMIN']}><PostJobPage /></ProtectedRoute>} />
-        <Route path='/signup' element={<PublicRoute><SignUpPage /></PublicRoute>} />
-        <Route path='/login' element={<PublicRoute><SignUpPage /></PublicRoute>} />
-        <Route path='/profile' element={<ProtectedRoute allowedRoles={['APPLICANT', 'ADMIN', 'EMPLOYER']}><ProfilePage /></ProtectedRoute>} />
-        <Route path='/admin/dashboard' element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminDashboardPage /></ProtectedRoute>} />
-        <Route path='/admin/login' element={<PublicRoute><AdminLoginPage /></PublicRoute>} />
-        
-        {/* Static & Dynamic Footer Pages */}
-        <Route path='/about' element={<AboutPage />} />
-        <Route path='/contact' element={<ContactPage />} />
-        <Route path='/privacy' element={<PrivacyPage />} />
-        <Route path='/terms' element={<TermsPage />} />
-        <Route path='/support' element={<SupportPage />} />
-        <Route path='/feedback' element={<FeedbackPage />} />
-        <Route path='/faqs' element={<FaqPage />} />
-
-        <Route path='*' element={<NotFoundPage />} />
-      </Routes>
+        <ErrorBoundary>
+          <AnimatedRoutes />
+        </ErrorBoundary>
       </Suspense>
       <Footer />
+      <BottomNav />
+      <ScrollToTop />
     </div>
   </BrowserRouter></HelmetProvider>
 }

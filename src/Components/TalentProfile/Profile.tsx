@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, Pill } from "@mantine/core";
+import { Avatar, Button, Divider } from "@mantine/core";
 import { IconBriefcase, IconMapPin } from "@tabler/icons-react";
 import ExpCard from "./ExpCard";
 import CertiCard from "./CertiCard";
@@ -46,6 +46,7 @@ const Profile = () => {
             setProfile(res);
         }).catch((err) => console.log(err))
         .finally(()=>dispatch(hideOverlay()));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id])
     return <div data-aos="zoom-out" className="w-2/3 lg-mx:w-full">
         <div className="" >

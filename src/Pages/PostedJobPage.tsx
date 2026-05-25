@@ -23,20 +23,21 @@ const PostedJobPage = () => {
         dispatch(showOverlay());
         getJobsPostedBy(user.id).then((res)=>{
             setJobList(res);
-            if(res && res.length>0 && Number(id) == 0){
+            if(res && res.length>0 && Number(id) === 0){
                 res.forEach((x:any)=>{
-                    if(x.jobStatus=="ACTIVE"){
+                    if(x.jobStatus==="ACTIVE"){
                         navigate(`/posted-jobs/${x.id}`);
                     }
 
                 }, [])
             }
             res.forEach((item:any)=>{
-                if(id==item.id)setJob(item);
+                if(String(id)===String(item.id))setJob(item);
             })
             window.scrollTo(0,0);
         }).catch((err)=>console.log(err))
         .finally(()=>dispatch(hideOverlay()));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id])
     return (
         <div className="min-h-[90vh] bg-mine-shaft-950 font-['poppins'] px-5  ">

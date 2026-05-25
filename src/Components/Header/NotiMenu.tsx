@@ -1,8 +1,8 @@
-import { Indicator, Menu, Notification, rem, Stack } from "@mantine/core";
+import { Indicator, Menu, Notification, rem } from "@mantine/core";
 import { IconBell, IconCheck } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getNotifications, readNotification } from "../../Services/NotiService";
 import { successNotification } from "../../Services/NotificationService";
 
@@ -35,7 +35,7 @@ const NotiMenu = () => {
 
     const unread=(index:number)=>{
         let notis=[...notifications];
-        notis=notis.filter((noti:any, i:number)=>i!=index);
+        notis=notis.filter((noti:any, i:number)=>i!==index);
         setNotifications(notis);
         readNotification(notifications[index].id).then((_res)=>{}).catch((err)=>console.log(err));
     }
@@ -62,7 +62,7 @@ const NotiMenu = () => {
                     </Notification>
 )}
 {
-    notifications.length==0 && <div className="text-center text-mine-shaft-300">No Notifications</div>
+    notifications.length===0 && <div className="text-center text-mine-shaft-300">No Notifications</div>
 }
             </div>
 

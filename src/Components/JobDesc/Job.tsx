@@ -1,4 +1,4 @@
-import { ActionIcon, Badge, Button, Divider, RingProgress, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Badge, Button, Divider, RingProgress, Text } from "@mantine/core";
 import { card} from "../../Data/JobDescData";
 import { IconBookmark, IconBookmarkFilled, IconSparkles } from "@tabler/icons-react";
 // @ts-ignore
@@ -20,7 +20,7 @@ const Job = (props:any) => {
     const handleSaveJob = () => {
         let savedJobs:any=profile.savedJobs?[...profile.savedJobs]:[];
         if(savedJobs.includes(props.id)){
-            savedJobs=savedJobs.filter((job:any)=>job!=props.id);
+            savedJobs=savedJobs.filter((job:any)=>job!==props.id);
         }else{ 
             savedJobs.push(props.id);
         }
@@ -31,11 +31,12 @@ const Job = (props:any) => {
     const [matchScore, setMatchScore] = useState<any>(null);
     const [matchLoading, setMatchLoading] = useState(false);
     useEffect(()=>{
-        if(props.applicants?.filter((applicant:any)=>applicant.applicantId==user.id).length>0){
+        if(props.applicants?.filter((applicant:any)=>applicant.applicantId===user.id).length>0){
             setApplied(true);
         }
         else setApplied(false);
         setMatchScore(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props])
     const cleanHTML = DOMPurify.sanitize(props.description);
     const handleClose = () => {
@@ -46,24 +47,34 @@ const Job = (props:any) => {
         }).catch((err)=>console.log(err))
         .finally(()=>dispatch(hideOverlay()));
     }
-    return <div data-aos="zoom-out" className="w-2/3 bs-mx:w-full">
-        <div className="flex justify-between items-center flex-wrap">
-            <div className="flex items-center gap-2">
-                <div className="p-3 bg-mine-shaft-800 rounded-xl shrink-0 flex ">
-                    <img className="h-14 xs-mx:h-10 xs-mx:w-10" src={`/Icons/${props.company}.png`} alt="" onError={(e) => e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(props.company)}&color=fab005&background=2a2a2a`} />
+    return <div data-aos="zoom-out" className="w-full">
+        {/* Premium Glassmorphic Hero Section */}
+        <div className="relative overflow-hidden bg-mine-shaft-900/40 backdrop-blur-xl border border-mine-shaft-800/60 rounded-3xl p-6 sm-mx:p-4 mb-8 shadow-[0_10px_40px_rgba(0,0,0,0.3)]">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-bright-sun-400/10 rounded-full blur-[80px] pointer-events-none"></div>
+            
+            <div className="flex justify-between items-start flex-wrap gap-4 relative z-10">
+                <div className="flex items-center gap-4">
+                    <div className="p-3 bg-mine-shaft-950/80 border border-mine-shaft-800/80 rounded-2xl shrink-0 flex shadow-[inset_0_0_15px_rgba(0,0,0,0.4)] hover:scale-105 transition-transform duration-300">
+                        <img className="h-16 w-16 xs-mx:h-12 xs-mx:w-12 object-contain drop-shadow-lg" src={`/Icons/${props.company}.png`} alt="" onError={(e) => e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(props.company)}&color=fab005&background=2a2a2a`} />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <div className="font-bold text-3xl xs-mx:text-2xl tracking-tight text-white">{props.jobTitle}</div>
+                        <div className="text-lg font-medium text-mine-shaft-300 flex flex-wrap gap-2 xs-mx:text-base items-center">
+                            <Link to={`/company/${props.company}`} className="text-bright-sun-400 hover:text-bright-sun-300 transition-colors drop-shadow-[0_0_8px_rgba(255,189,32,0.3)]">{props.company}</Link>
+                            <span className="text-mine-shaft-600">&bull;</span>
+                            <span>{timeAgo(props.postTime||"")}</span>
+                            <span className="text-mine-shaft-600">&bull;</span>
+                            <span>{props.applicants?props.applicants.length:0} Applicants</span>
+                        </div>
+                    </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                    <div className="font-semibold text-2xl xs-mx:text-xl">{props.jobTitle}</div>
-                    <div className="text-lg text-mine-shaft-300 flex flex-wrap xs-mx:text-base"><span>{props.company} &bull; </span><span> {timeAgo(props.postTime||"")} &bull; </span> <span>{props.applicants?props.applicants.length:0} Applicants </span></div>
+                <div className="flex sm:flex-col gap-3 items-center sm-mx:w-full sm-mx:[&>button]:w-1/2 mt-2">
+                    { (props.edit || !applied) && <Link to={props.edit?`/post-job/${props.id}`:`/apply-job/${props.id}`} >
+                        <Button color="brightSun.4" size="md" radius="md" className="shadow-[0_0_15px_rgba(255,189,32,0.2)] hover:shadow-[0_0_25px_rgba(255,189,32,0.4)] transition-shadow">{props.closed?"Reopen":props.edit?"Edit":"Apply Now"}</Button>
+                    </Link>}
+                    {applied && !props.edit && <Button color="green.6" size="md" radius="md" variant="light" className="border border-green-600/30">Applied</Button>}
+                    {props.edit && !props.closed ? <Button onClick={handleClose} color="red.5" size="md" radius="md" variant="light">Close Job</Button> : profile.savedJobs?.includes(props.id) ? <IconBookmarkFilled onClick={handleSaveJob} className="cursor-pointer text-bright-sun-400 drop-shadow-[0_0_8px_rgba(255,189,32,0.5)] transition-all hover:scale-110" stroke={1.5} size={32} /> : <IconBookmark onClick={handleSaveJob} className="cursor-pointer hover:text-bright-sun-400 text-mine-shaft-400 transition-all hover:scale-110" stroke={1.5} size={32} />}
                 </div>
-
-            </div>
-            <div className="flex sm:flex-col gap-2 items-center sm-mx:my-5 sm-mx:w-full sm-mx:[&>button]:w-1/2">
-                { (props.edit || !applied) &&<Link to={props.edit?`/post-job/${props.id}`:`/apply-job/${props.id}`} >
-                    <Button color="brightSun.4" size="sm" variant="light">{props.closed?"Reopen":props.edit?"Edit":"Apply"}</Button>
-                </Link>}
-                {applied && !props.edit && <Button  color="green.8" size="sm" variant="light">Applied</Button>}
-                {props.edit && !props.closed? <Button onClick={handleClose}  color="red.4" size="sm" variant="light">Close</Button>:profile.savedJobs?.includes(props.id) ?<IconBookmarkFilled onClick={handleSaveJob} className="cursor-pointer text-bright-sun-400 " stroke={1.5} />:<IconBookmark onClick={handleSaveJob} className="cursor-pointer hover:text-bright-sun-400  text-mine-shaft-300" stroke={1.5} />}
             </div>
         </div>
         <Divider size="xs" my="xl" />
@@ -72,7 +83,7 @@ const Job = (props:any) => {
                 card.map((item, index) => <div key={index} className="flex flex-col text-sm gap-1 items-center ">
                     <ActionIcon className="!h-12 !w-12 xs-mx:!h-8 xs-mx:!w-8" variant="light" color="brightSun.4" radius="xl" ><item.icon className="h-4/5 w-4/5" /></ActionIcon>
                     <div className="text-mine-shaft-300 xs-mx:text-sm">{item.name}</div>
-                    <div className="text-base font-semibold xs-mx:text-sm">{props ? props[item.id]:"NA"}{item.id=="packageOffered"&& <> LPA</>}</div>
+                    <div className="text-base font-semibold xs-mx:text-sm">{props ? props[item.id]:"NA"}{item.id==="packageOffered"&& <> LPA</>}</div>
                 </div>)}
         </div>
         <Divider size="xs" my="xl" />

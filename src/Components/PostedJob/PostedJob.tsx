@@ -13,15 +13,15 @@ const PostedJob = (props:any) => {
         <div>
             <Tabs variant="pills" autoContrast value={activeTab} onChange={setActiveTab}>
                 <Tabs.List className="[&_button[aria-selected='false']]:bg-mine-shaft-900 font-medium">
-                    <Tabs.Tab value="ACTIVE">Active [{props.jobList.filter((job:any)=>job?.jobStatus=="ACTIVE").length}]</Tabs.Tab>
-                    <Tabs.Tab value="DRAFT">Drafts [{props.jobList.filter((job:any)=>job?.jobStatus=="DRAFT").length}]</Tabs.Tab>
-                    <Tabs.Tab value="CLOSED">Closed [{props.jobList.filter((job:any)=>job?.jobStatus=="CLOSED").length}]</Tabs.Tab>
+                    <Tabs.Tab value="ACTIVE">Active [{props.jobList.filter((job:any)=>job?.jobStatus==="ACTIVE").length}]</Tabs.Tab>
+                    <Tabs.Tab value="DRAFT">Drafts [{props.jobList.filter((job:any)=>job?.jobStatus==="DRAFT").length}]</Tabs.Tab>
+                    <Tabs.Tab value="CLOSED">Closed [{props.jobList.filter((job:any)=>job?.jobStatus==="CLOSED").length}]</Tabs.Tab>
                 </Tabs.List>
             </Tabs>
         </div>
         <div className="flex flex-col flex-wrap mt-5 gap-5">
             {
-              props.jobList.filter((job:any)=>job?.jobStatus==activeTab) .sort((a: any, b: any) => new Date(b.postTime).getTime() - new Date(a.postTime).getTime()).map((item:any, index:any)=> <PostedJobCard key={index} {...item}/>) 
+              props.jobList.filter((job:any)=>job?.jobStatus===activeTab).sort((a: any, b: any) => new Date(b.postTime).getTime() - new Date(a.postTime).getTime()).map((item:any, index:any)=> <PostedJobCard key={index} {...item}/>) 
               
             }
         </div>

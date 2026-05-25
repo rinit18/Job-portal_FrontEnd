@@ -1,5 +1,5 @@
-import { Burger, Button, Drawer } from "@mantine/core";
-import { IconAnchor, IconX } from "@tabler/icons-react";
+import { Burger, Button, Drawer, ActionIcon, useMantineColorScheme } from "@mantine/core";
+import { IconAnchor, IconX, IconSun, IconMoon } from "@tabler/icons-react";
 import NavLinks from "./NavLinks";
 import ProfileMenu from "./ProfileMenu";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -12,18 +12,20 @@ import { jwtDecode } from "jwt-decode";
 import { setUser } from "../../Slices/UserSlice";
 import { setupResponseInterceptor } from "../../Interceptor/AxiosInterceptor";
 import { useDisclosure } from "@mantine/hooks";
-import { hideOverlay, showOverlay } from "../../Slices/OverlaySlice";
 import { WEBSITE_CONFIG } from "../../config";
 
 const allLinks = [
-    { name: "Find Jobs",   url: "find-jobs",     roles: ["APPLICANT", "ADMIN"] },
-    { name: "Job History", url: "job-history",   roles: ["APPLICANT", "ADMIN"] },
-    { name: "Find Talent", url: "find-talent",   roles: ["EMPLOYER", "ADMIN"] },
-    { name: "Post Job",    url: "post-job/0",    roles: ["EMPLOYER",  "ADMIN"] },
-    { name: "Posted Jobs", url: "posted-jobs/0", roles: ["EMPLOYER",  "ADMIN"] },
-]
+    { name: "Find Jobs",    url: "find-jobs",     roles: ["APPLICANT", "ADMIN"] },
+    { name: "Companies",    url: "companies",     roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
+    { name: "Messages",     url: "messages",      roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
+    { name: "Job History",  url: "job-history",   roles: ["APPLICANT", "ADMIN"] },
+    { name: "Find Talent",  url: "find-talent",   roles: ["EMPLOYER", "ADMIN"] },
+    { name: "Post Job",     url: "post-job/0",    roles: ["EMPLOYER",  "ADMIN"] },
+    { name: "Posted Jobs",  url: "posted-jobs/0", roles: ["EMPLOYER",  "ADMIN"] },
+];
 
 const Header = () => {
+    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const [opened, { open, close }] = useDisclosure(false);
     const dispatch = useDispatch();
     const user = useSelector((state: any) => state.user);
@@ -36,6 +38,7 @@ const Header = () => {
     useEffect(() => {
         setupResponseInterceptor(navigate, dispatch);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigate])
     const handleClick = (url: string) => {
         navigate(url)
@@ -55,8 +58,9 @@ const Header = () => {
             }).catch((err) => console.log(err))
             // .finally(()=>dispatch(hideOverlay()));
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, navigate]);
-    return (location.pathname != "/signup" && location.pathname != "/login") ? <div data-aos="zoom-out" className="w-full glass-header px-6 sm-mx:px-2 text-white h-20 flex justify-between items-center font-['poppins']">
+    return (location.pathname !== "/signup" && location.pathname !== "/login") ? <div data-aos="zoom-out" className="w-full glass-header px-6 sm-mx:px-2 text-mine-shaft-100 h-20 flex justify-between items-center font-['poppins']">
         <div onClick={() => navigate("/")} className="flex gap-1 cursor-pointer items-center text-bright-sun-400">
             <IconAnchor className="h-8 w-8 sm-mx:h-6 sm-mx:w-6" stroke={2.5} />
             <div className=" xs-mx:hidden text-3xl font-semibold">{WEBSITE_CONFIG.name}</div>
@@ -69,11 +73,16 @@ const Header = () => {
                 <IconSettings stroke={1.5} />
             </div> */}
             {user ? <NotiMenu /> : <></>}
-            {
-
-            }
-            <Burger className="bs:hidden" opened={opened} onClick={open} aria-label="Toggle navigation" />
-            <Drawer size="xs" overlayProps={{ backgroundOpacity: 0.5, blur: 4 }} position="right" opened={opened} onClose={close} closeButtonProps={{
+            <ActionIcon
+                variant="subtle"
+                color="brightSun.4"
+                onClick={() => toggleColorScheme()}
+                title="Toggle color scheme"
+            >
+                {colorScheme === 'dark' ? <IconSun size={20} /> : <IconMoon size={20} />}
+            </ActionIcon>
+            <Burger className="bs:hidden sm-mx:hidden" opened={opened} onClick={open} aria-label="Toggle navigation" />
+            <Drawer className="sm-mx:hidden" size="xs" overlayProps={{ backgroundOpacity: 0.5, blur: 4 }} position="right" opened={opened} onClose={close} closeButtonProps={{
                 icon: <IconX size={30} />,
             }} >
                 <div className="flex flex-col gap-6 items-center">

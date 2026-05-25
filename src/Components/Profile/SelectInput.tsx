@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Combobox, InputBase, ScrollArea, TextInput, useCombobox } from '@mantine/core';
+import { Combobox, InputBase, ScrollArea, useCombobox } from '@mantine/core';
 
 
 const SelectInput=(props:any)=> {
@@ -7,6 +7,7 @@ const SelectInput=(props:any)=> {
         setData(props.options);
         setValue(props.form.getInputProps(props.name).value);
         setSearch(props.form.getInputProps(props.name).value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),

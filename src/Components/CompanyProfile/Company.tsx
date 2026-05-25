@@ -1,18 +1,21 @@
 import { Avatar, Divider, Tabs } from "@mantine/core";
 import { IconMapPin} from "@tabler/icons-react";
+import { useParams } from "react-router-dom";
 import AboutComp from "./AboutComp";
 import CompanyJobs from "./CompanyJobs";
 import CompanyEmployees from "./CompanyEmployees";
 
 const Company = () => {
+    const { name } = useParams();
+    const companyName = name || "Google";
     const section=["About", "Jobs", "Employees"]
     return <div className="w-3/4">
         <div className="relative">
-            <img className="rounded-t-2xl " src="/Profile/banner.jpg" alt="" />
-            <img className="w-36 h-36 border-mine-shaft-950 p-2 bg-mine-shaft-950 border-8 absolute -bottom-1/4 left-5 rounded-3xl" src="/Icons/Google.png" alt="" />
+            <img className="rounded-t-2xl object-cover h-48 w-full" src="/Profile/banner.jpg" alt="" />
+            <img className="w-36 h-36 border-mine-shaft-950 p-2 bg-mine-shaft-950 border-8 absolute -bottom-1/4 left-5 rounded-3xl" src={`/Icons/${companyName}.png`} alt="" onError={(e) => e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(companyName)}&color=fab005&background=2a2a2a`} />
         </div>
         <div className="px-7 mt-12">
-            <div className="text-3xl font-semibold flex justify-between">Google <Avatar.Group >
+            <div className="text-3xl font-semibold flex justify-between">{companyName} <Avatar.Group >
                 <Avatar src="/avatar.png" />
                 <Avatar src="/avatar1.png" />
                 <Avatar src="/avatar2.png" />
@@ -34,7 +37,7 @@ const Company = () => {
 
                 </Tabs.List>
                 <Tabs.Panel value="about">
-                    <AboutComp/>
+                    <AboutComp companyName={companyName}/>
                 </Tabs.Panel>
 
                 <Tabs.Panel value="jobs">

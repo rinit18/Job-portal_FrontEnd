@@ -9,7 +9,6 @@ import { errorNotification, successNotification } from "../../Services/Notificat
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { useMediaQuery } from "@mantine/hooks";
 import { hideOverlay, showOverlay } from "../../Slices/OverlaySlice";
 import { generateJobDescription } from "../../Services/AiService";
 import { IconSparkles } from "@tabler/icons-react";
@@ -22,10 +21,12 @@ const PostJob = () => {
     const select = fields;
     const [editorData, setEditorData] = useState(content);
     const [aiLoading, setAiLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isDraftLoading, setIsDraftLoading] = useState(false);
     // const matches = useMediaQuery('(min-width: 350px)');
     useEffect(()=>{
         window.scrollTo(0,0);
-        if(Number(id)!=0){
+        if(Number(id)!==0){
             dispatch(showOverlay());
             getJob(id).then((res)=>{
                 form.setValues(res);
@@ -36,6 +37,7 @@ const PostJob = () => {
         else{
             form.reset();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id])
     const form = useForm({
         mode: 'controlled',
@@ -71,24 +73,24 @@ const PostJob = () => {
             window.scrollTo({ top: 0, behavior: 'smooth' })
             return;
         }
-        dispatch(showOverlay())
+        setIsLoading(true);
         postJob({ ...form.getValues(),id, postedBy: user.id, jobStatus: "ACTIVE" }).then((res) => {
             successNotification("Success", "Job Posted Successfully");
             navigate(`/posted-jobs/${res.id}`);
         }).catch((err) => {
             console.log(err);
             errorNotification("Error", err.response.data.errorMessage);
-        }).finally(()=>dispatch(hideOverlay()));
+        }).finally(()=>setIsLoading(false));
     }
     const handleDraft = () => {
-        dispatch(showOverlay());
+        setIsDraftLoading(true);
         postJob({ ...form.getValues(),id, postedBy: user.id, jobStatus: "DRAFT" }).then((res) => {
             successNotification("Success", "Job Saved as Draft");
             navigate(`/posted-jobs/${res.id}`);
         }).catch((err) => {
             console.log(err);
             errorNotification("Error", err.response.data.errorMessage);
-        }).finally(()=>dispatch(hideOverlay()));
+        }).finally(()=>setIsDraftLoading(false));
     }
     return <div data-aos="zoom-out" className="px-16 bs-mx:px-10 md-mx:px-5 py-5 ">
         <div className="text-2xl font-semibold mb-5">Post a Job</div>
@@ -141,8 +143,8 @@ const PostJob = () => {
                 <TextEditor data-aos="zoom-out" form={form} data={editorData} />
             </div>
             <div   className="flex gap-4">
-                <Button data-aos="zoom-out" color="brightSun.4" onClick={handlePost} variant="light">Publish Job</Button>
-                <Button data-aos="zoom-out" color="brightSun.4" onClick={handleDraft} variant="outline">Save as Draft</Button>
+                <Button data-aos="zoom-out" loading={isLoading} color="brightSun.4" onClick={handlePost} variant="light">Publish Job</Button>
+                <Button data-aos="zoom-out" loading={isDraftLoading} color="brightSun.4" onClick={handleDraft} variant="outline">Save as Draft</Button>
             </div>
         </div>
     </div>

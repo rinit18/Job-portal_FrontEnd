@@ -2,7 +2,7 @@ import { Button, Divider } from "@mantine/core";
 import Profile from "../Components/TalentProfile/Profile";
 import RecommendTalent from "../Components/TalentProfile/RecommendTalent";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAllProfiles } from "../Services/ProfileService";
 import { useDispatch } from "react-redux";
@@ -18,6 +18,7 @@ const TalentProfilePage = () => {
             setTalents(res);
         }).catch((err) => console.log(err))
         .finally(()=>dispatch(hideOverlay()));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     return (
         <div className="min-h-[90vh] bg-mine-shaft-950 font-['poppins'] p-4  ">

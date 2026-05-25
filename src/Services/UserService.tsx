@@ -18,13 +18,13 @@ const sendOtp=async (email:string)=>{
 }
 
 const verifyOtp=async (email:string, otp:string)=>{
-    return axiosInstance.get(`/users/verifyOtp/${email}/${otp}`)
+    return axiosInstance.post(`/users/verifyOtp`, {email, otp})
         .then((result:any) => result.data)
         .catch((error:any) =>{throw error;});
 }
 
-const resetPassword=async (email:string, password:string)=>{
-    return axiosInstance.post(`/users/changePass`, {email, password})
+const resetPassword=async (email:string, password:string, token:string)=>{
+    return axiosInstance.post(`/users/changePass`, {email, password, token})
         .then((result:any) => result.data)
         .catch((error:any) =>{throw error;});
 }

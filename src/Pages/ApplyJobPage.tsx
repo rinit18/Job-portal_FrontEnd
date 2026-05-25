@@ -1,6 +1,6 @@
 import { Button, Divider } from "@mantine/core";
 import ApplyJobComp from "../Components/ApplyJob/ApplyJobComp";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { getJob } from "../Services/JobService";
@@ -18,6 +18,7 @@ const ApplyJobPage = () => {
             setJob(res);
         }).catch((err)=>console.log(err))
         .finally(()=>dispatch(hideOverlay()));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[id])
     return <div className="min-h-[90vh] bg-mine-shaft-950 font-['poppins'] p-4">
         <Divider size="xs" mb="xs" />

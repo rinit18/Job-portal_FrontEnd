@@ -1,6 +1,6 @@
 import { ActionIcon, Avatar, Divider, ScrollArea, TextInput, Indicator, Loader, Skeleton } from "@mantine/core";
 import { WEBSITE_CONFIG } from "../config";
-import { IconSend, IconSearch, IconDotsVertical, IconPaperclip, IconPhone, IconVideo } from "@tabler/icons-react";
+import { IconSend, IconSearch, IconDotsVertical, IconPaperclip, IconPhone, IconVideo, IconChecks } from "@tabler/icons-react";
 import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
@@ -50,6 +50,7 @@ const MessagesPage = () => {
         loadConversations();
         const interval = setInterval(loadConversations, 4000);
         return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentProfileId, queryRoomId]);
 
     // Fetch messages for active chat and poll every 2.5 seconds for real-time feel
@@ -59,15 +60,20 @@ const MessagesPage = () => {
         const loadMessages = () => {
             getMessages(activeChat.id)
                 .then((res) => {
-                    // Update messages only if count changes to avoid unnecessary re-renders
-                    if (res.length !== messages.length) {
-                        setMessages(res);
-                        setTimeout(() => {
-                            if (scrollAreaRef.current) {
-                                scrollAreaRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                            }
-                        }, 100);
-                    }
+                    setMessages(prev => {
+                        // Only update if new messages arrived (compare last id to avoid stale comparison)
+                        const prevLastId = prev[prev.length - 1]?.id;
+                        const newLastId = res[res.length - 1]?.id;
+                        if (prevLastId !== newLastId || prev.length !== res.length) {
+                            setTimeout(() => {
+                                if (scrollAreaRef.current) {
+                                    scrollAreaRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                                }
+                            }, 100);
+                            return res;
+                        }
+                        return prev;
+                    });
                 })
                 .catch((err) => console.error("Failed to load messages", err));
         };
@@ -75,7 +81,8 @@ const MessagesPage = () => {
         loadMessages();
         const interval = setInterval(loadMessages, 2500);
         return () => clearInterval(interval);
-    }, [activeChat, messages.length]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeChat]);
 
     const handleSendMessage = () => {
         if (!messageInput.trim() || !activeChat || !currentProfileId) return;
@@ -232,8 +239,9 @@ const MessagesPage = () => {
                                                 <div className={`px-4 py-2 rounded-2xl text-sm ${msg.senderId === currentProfileId ? 'bg-bright-sun-500 text-mine-shaft-950 rounded-tr-sm' : 'bg-mine-shaft-800 text-mine-shaft-100 rounded-tl-sm'}`}>
                                                     {msg.text}
                                                 </div>
-                                                <div className="text-[9px] text-mine-shaft-500 mt-1 mx-1">
+                                                <div className="text-[9px] text-mine-shaft-500 mt-1 mx-1 flex items-center gap-1 justify-end">
                                                     {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ""}
+                                                    {msg.senderId === currentProfileId && <IconChecks size={14} className="text-teal-400" />}
                                                 </div>
                                             </div>
                                         </div>

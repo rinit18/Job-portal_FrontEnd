@@ -14,6 +14,7 @@ const ResetPassword = (props: any) => {
     const [time, setTime] = useState(60);
     const [verified, setVerified] = useState(false);
     const [password, setPassword] = useState("");
+    const [resetToken, setResetToken] = useState("");
     const [error, setError]=useState("");
     const interval = useInterval(() => {
         if (time === 0) {
@@ -55,23 +56,24 @@ const ResetPassword = (props: any) => {
         verifyOtp(email, otp).then((res) => {
             successNotification("OTP Verified Successfully.", "Enter new password.");
             setVerified(true);
+            setResetToken(res.message); // The backend returns the token in the message field of ResponseDTO
         }).catch((err) => {
             console.log(err);
-            errorNotification("OTP Verification Failed.", err.response.data.errorMessage);
+            errorNotification("OTP Verification Failed.", err.response?.data?.errorMessage || "Invalid OTP");
         })
     }
     const handleResetPassword=()=>{
-        resetPassword(email, password).then((res)=>{
+        resetPassword(email, password, resetToken).then((res)=>{
             successNotification("Password Reset Successfully.", "Redirecting to login page.");
             props.close();
         }).catch((err)=>{
             console.log(err);
-            errorNotification("Password Reset Failed.", err.response.data.errorMessage);
+            errorNotification("Password Reset Failed.", err.response?.data?.errorMessage || "Reset failed");
         })
     }
     return <Modal opened={props.opened} onClose={props.close} overlayProps={{ backgroundOpacity: 0.55, blur: 3, }} title="Reset Password" centered>
         <div className="flex flex-col gap-6">
-            <TextInput disabled={otpSent} readOnly={otpSent} value={email} size="md" name="email" onChange={(e) => setEmail(e.target.value)} leftSection={<IconAt size={16} />} label="Email" withAsterisk placeholder="Your email" rightSection={<Button loading={otpSending && !otpSent} onClick={handleSendOtp} disabled={email == "" || otpSent} className="mr-1" size="xs" autoContrast >Send OTP</Button>} rightSectionWidth="xl" />
+            <TextInput disabled={otpSent} readOnly={otpSent} value={email} size="md" name="email" onChange={(e) => setEmail(e.target.value)} leftSection={<IconAt size={16} />} label="Email" withAsterisk placeholder="Your email" rightSection={<Button loading={otpSending && !otpSent} onClick={handleSendOtp} disabled={email === "" || otpSent} className="mr-1" size="xs" autoContrast >Send OTP</Button>} rightSectionWidth="xl" />
             {otpSent && <PinInput onComplete={handleVerifyOTP} className="mx-auto" gap="lg" size="md" length={6} type="number" />}
             {otpSent && !verified && <div className="flex gap-2">
                 <Button loading={otpSending} onClick={resendOtp} fullWidth color="brightSun.4" variant="light">{resendLoader ? time : "Resend"}</Button>

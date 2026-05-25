@@ -1,12 +1,11 @@
-import { Button, Collapse, Divider, Input, RangeSlider } from "@mantine/core";
+import { Button, Collapse, Input, RangeSlider } from "@mantine/core";
 import React, { useState } from "react";
 import MultiInput from "../FindJobs/MultiInput";
 import { searchFields } from "../../Data/TalentData";
 import { IconUserCircle } from "@tabler/icons-react";
 import { updateFilter } from "../../Slices/FilterSlice";
 import { useDispatch } from "react-redux";
-import { useDebouncedState, useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { Link } from "react-router-dom";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 
 const SearchBar = () => {
     const dispatch = useDispatch();
@@ -15,7 +14,7 @@ const SearchBar = () => {
     const [value, setValue] = useState<[number, number]>([0, 50]);
     const [name, setName] =  useState('');;
     const handleChange = (name:any, event:any) => {
-        if(name=="exp"){
+        if(name==="exp"){
             dispatch(updateFilter({exp:event}));
         }
         else{

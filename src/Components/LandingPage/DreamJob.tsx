@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateFilter } from "../../Slices/FilterSlice";
 import { useNavigate } from "react-router-dom";
 import { WEBSITE_CONFIG } from "../../config";
+import { TypeAnimation } from 'react-type-animation';
+import CountUp from 'react-countup';
 
 const DreamJob = () => {
     const dispatch=useDispatch();
@@ -35,41 +37,58 @@ const DreamJob = () => {
 
             <div data-aos="zoom-out-right" className="flex flex-col w-[45%] sm-mx:w-full gap-5 z-10">
                 <div className="text-6xl bs-mx:text-5xl md-mx:text-4xl sm-mx:text-3xl font-extrabold leading-tight text-mine-shaft-100 [&>span]:text-bright-sun-400">
-                    {hero.titlePart1} <span>{hero.titleHighlight}</span> {hero.titlePart2}
+                    {hero.titlePart1}{" "}
+                    <TypeAnimation
+                        sequence={[
+                            'Developer', 2000,
+                            'Designer', 2000,
+                            'Manager', 2000,
+                            'Analyst', 2000,
+                        ]}
+                        wrapper="span"
+                        speed={50}
+                        className="text-bright-sun-400"
+                        repeat={Infinity}
+                    />{" "}
+                    {hero.titlePart2}
                 </div>
                 <div className="text-lg md-mx:text-base sm-mx:text-sm text-mine-shaft-300 leading-relaxed max-w-lg">
                     {hero.subtitle}
                 </div>
                 
 
-                {/* Modernized Search Form: Floating glass panel with subtle glow */}
-                <div className="flex sm-mx:flex-col gap-3 p-2 bg-mine-shaft-900/60 border border-mine-shaft-800 rounded-2xl backdrop-blur-xl shadow-2xl shadow-black/40 focus-within:border-bright-sun-400/50 transition-all duration-300">
-                    <div className="flex-1 flex gap-2">
+                {/* Hero Search Bar (Indeed-style): High contrast, large inputs, prominent button */}
+                <div className="flex sm-mx:flex-col gap-3 mt-4 p-3 bg-mine-shaft-900 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-mine-shaft-800 focus-within:border-bright-sun-400/50 transition-all duration-300">
+                    <div className="flex-1 flex sm-mx:flex-col gap-2">
                         <TextInput 
                             value={jobTitle} 
                             onChange={(e)=>setJobTitle(e.currentTarget.value)} 
-                            className="flex-1 rounded-xl p-1 text-mine-shaft-100 [&_input]:!text-mine-shaft-100" 
+                            className="flex-1 rounded-lg bg-mine-shaft-950 p-1 text-mine-shaft-100" 
                             variant="unstyled" 
-                            label={<span className="text-xs text-mine-shaft-400 font-semibold px-2">{searchType === "jobs" ? "Job Title" : "Talent Name / Role"}</span>}
-                            placeholder={searchType === "jobs" ? hero.jobTitlePlaceholder : "React Developer"} 
-                            classNames={{ input: 'px-2 font-medium' }}
+                            size="lg"
+                            label={<span className="text-xs text-mine-shaft-400 font-bold px-2 uppercase tracking-wider">{searchType === "jobs" ? "What" : "Who"}</span>}
+                            placeholder={searchType === "jobs" ? "Job title, keywords, or company" : "React Developer"} 
+                            classNames={{ input: 'px-2 font-bold text-lg placeholder:text-mine-shaft-500 placeholder:font-medium' }}
                         />
-                        <div className="w-[1px] bg-mine-shaft-800 my-2 sm-mx:hidden"></div>
+                        <div className="w-[1px] bg-mine-shaft-800 my-3 sm-mx:hidden"></div>
+                        <div className="h-[1px] bg-mine-shaft-800 mx-3 hidden sm-mx:block"></div>
                         <TextInput 
                             value={type} 
                             onChange={(e)=>setType(e.currentTarget.value)} 
-                            className="flex-1 rounded-xl p-1 text-mine-shaft-100 [&_input]:!text-mine-shaft-100" 
-                            variant="unstyled" 
-                            label={<span className="text-xs text-mine-shaft-400 font-semibold px-2">{searchType === "jobs" ? "Job Type" : "Location"}</span>}
-                            placeholder={searchType === "jobs" ? hero.jobTypePlaceholder : "Remote"} 
-                            classNames={{ input: 'px-2 font-medium' }}
+                            className="flex-1 rounded-lg bg-mine-shaft-950 p-1 text-mine-shaft-100" 
+                            variant="unstyled"
+                            size="lg" 
+                            label={<span className="text-xs text-mine-shaft-400 font-bold px-2 uppercase tracking-wider">Where</span>}
+                            placeholder={searchType === "jobs" ? "City, state, or remote" : "Location"} 
+                            classNames={{ input: 'px-2 font-bold text-lg placeholder:text-mine-shaft-500 placeholder:font-medium' }}
                         />
                     </div>
                     <button 
                         onClick={handleClick}
-                        className="flex items-center justify-center sm-mx:w-full h-12 w-14 bg-bright-sun-400 text-mine-shaft-950 font-bold rounded-xl hover:bg-bright-sun-500 shadow-lg shadow-bright-sun-400/20 active:scale-95 transition-all duration-200"
+                        className="flex items-center justify-center gap-2 sm-mx:w-full h-auto px-8 bg-bright-sun-400 text-mine-shaft-950 font-extrabold text-lg rounded-lg hover:bg-bright-sun-500 shadow-lg shadow-bright-sun-400/20 active:scale-95 transition-all duration-200"
                     >
                         <IconSearch className="h-6 w-6 stroke-[2.5]" />
+                        <span className="hidden lg:block">Search Jobs</span>
                     </button>
                 </div>
             </div>
@@ -85,7 +104,9 @@ const DreamJob = () => {
                             <Avatar src={assets.heroAvatars[0]} />
                             <Avatar src={assets.heroAvatars[1]} />
                             <Avatar src={assets.heroAvatars[2]} />
-                            <Avatar color="brightSun.4" className="text-xs font-semibold">{hero.statsCount}</Avatar>
+                            <Avatar color="brightSun.4" className="text-xs font-semibold">
+                                <CountUp start={0} end={9} duration={3} prefix="+" suffix="K" />
+                            </Avatar>
                         </Avatar.Group>
                     </div>
                     

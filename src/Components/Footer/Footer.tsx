@@ -6,7 +6,7 @@ import { WEBSITE_CONFIG } from "../../config";
 
 const Footer = () => {
     const location=useLocation();
-    return location.pathname!='/signup' && location.pathname!='/login'?<div className="flex flex-col gap-2"><div className="pt-20 pb-5 bg-mine-shaft-950 p-4  flex gap-8 justify-around flex-wrap">
+    return location.pathname!=='/signup' && location.pathname!=='/login'?<div className="flex flex-col gap-2"><div className="pt-20 pb-5 bg-mine-shaft-950 p-4  flex gap-8 justify-around flex-wrap">
         <div data-aos="fade-up"  data-aos-offset="0"  className="w-1/4 sm-mx:w-1/3   xs-mx:w-1/2 xsm-mx:w-full flex flex-col gap-4">
             <div className="flex gap-1 items-center text-bright-sun-400">
                 <IconAnchor className="h-6 w-6" stroke={2.5} />
@@ -29,7 +29,7 @@ const Footer = () => {
         }
     </div>
     <Divider/>
-    <div data-aos="flip-left"  data-aos-offset="0" className="font-medium text-center p-5">
+    <div data-aos="flip-left"  data-aos-offset="0" className="font-medium text-center p-5 sm-mx:pb-24">
         {WEBSITE_CONFIG.footerDeveloperText.split("By")[0]} By <a className="text-bright-sun-400 hover:underline font-semibold " href={WEBSITE_CONFIG.developerGithub} target="_blank" rel="noopener noreferrer">{WEBSITE_CONFIG.footerDeveloperText.split("By")[1].trim()}</a>
     </div>
     </div>:<></>

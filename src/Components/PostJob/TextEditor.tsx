@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 const TextEditor=(props:any)=>  {
   useEffect(()=>{
     editor?.commands.setContent(props.data);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data])
   const editor = useEditor({
     extensions: [

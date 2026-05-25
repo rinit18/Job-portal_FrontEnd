@@ -18,16 +18,25 @@ const JobPage = () => {
         window.scrollTo(0,0);
         dispatch(showOverlay());
         getJob(id).then((res)=>{
+            if(!res) {
+                navigate("/not-found");
+                return;
+            }
             setJob(res);
-            if(res.jobStatus=="CLOSED")navigate(-1);
-        }).catch((err)=>console.log(err))
+            if(res.jobStatus==="CLOSED")navigate(-1);
+        }).catch((err)=> {
+            console.log(err);
+            navigate("/not-found");
+        })
         .finally(()=>dispatch(hideOverlay()));
-    },[id])
-    return <div className="min-h-[90vh] bg-mine-shaft-950 font-['poppins'] p-4">
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id])
+    return (
+        <div className="min-h-[90vh] bg-mine-shaft-950 font-['poppins'] p-4">
         {job && (
             <Helmet>
-                <title>{job.jobTitle} at {job.company} | JobPortal</title>
-                <meta name="description" content={job.about || `Apply for the ${job.jobTitle} role at ${job.company} on JobPortal.`} />
+                <title>{job.jobTitle} at {job.company} | CareerConnect</title>
+                <meta name="description" content={job.about || `Apply for the ${job.jobTitle} role at ${job.company} on CareerConnect.`} />
             </Helmet>
         )}
         <Divider size="xs" />
@@ -38,6 +47,7 @@ const JobPage = () => {
             <Job {...job} />
             <RecommendedJob />
         </div>
-    </div>
+        </div>
+    );
 }
 export default JobPage;

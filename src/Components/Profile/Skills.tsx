@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeProfile } from "../../Slices/ProfileSlice";
-import { ActionIcon, Badge, Button, TagsInput } from "@mantine/core";
+import { ActionIcon, Badge, TagsInput } from "@mantine/core";
 import { IconCheck, IconPencil, IconPlus, IconX } from "@tabler/icons-react";
 import { successNotification } from "../../Services/NotificationService";
 import { useMediaQuery } from "@mantine/hooks";
