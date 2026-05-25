@@ -46,8 +46,9 @@ const Login = () => {
                 }, 4000)
             }).catch((err) => {
                 console.log(err);
-                    errorNotification("Login Failed", err.response.data.errorMessage);
-                    setLoading(false);
+                setLoading(false);
+                const errorMessage = err.response?.data?.errorMessage || "Could not connect to the server. Please try again later.";
+                errorNotification("Login Failed", errorMessage);
             });
 
         }
@@ -57,11 +58,11 @@ const Login = () => {
     zIndex={1000}
     overlayProps={{ radius: 'sm', blur: 2 }}
     loaderProps={{ color: 'brightSun.4', type: 'bars' }}
-  /><div data-aos="zoom-out" className="w-1/2 sm-mx:w-full px-20  bs-mx:px-10 md-mx:px-5  flex flex-col gap-3 justify-center">
-        <div className="text-2xl font-semibold">Login</div>
-        <TextInput value={data.email} error={formError.email} name="email" onChange={handleChange} leftSection={<IconAt size={16} />} label="Email" withAsterisk placeholder="Your email" />
-        <PasswordInput value={data.password} error={formError.password} name="password" onChange={handleChange} leftSection={<IconLock size={16} />} label="Password" withAsterisk placeholder="Password" />
-        <Button loading={loading} onClick={handleSubmit} autoContrast variant="filled">Login</Button>
+  /><div data-aos="zoom-out" className="w-1/2 sm-mx:w-full px-20 bs-mx:px-10 md-mx:px-5 flex flex-col gap-4 justify-center">
+        <div className="text-3xl font-bold tracking-tight mb-2">Welcome Back</div>
+        <TextInput value={data.email} error={formError.email} name="email" onChange={handleChange} leftSection={<IconAt size={16} />} label="Email" withAsterisk placeholder="Your email" size="md" />
+        <PasswordInput value={data.password} error={formError.password} name="password" onChange={handleChange} leftSection={<IconLock size={16} />} label="Password" withAsterisk placeholder="Password" size="md" />
+        <Button loading={loading} onClick={handleSubmit} autoContrast variant="filled" size="md" className="mt-2">Login</Button>
         <div className="text-center sm-mx:text-sm xs-mx:text-xs">Don't have an account? <span className="text-bright-sun-400 hover:underline cursor-pointer" onClick={()=>{navigate("/signup");setFormError(form) ;setData(form)}}>SignUp</span> </div>
         <div className="text-bright-sun-400 sm-mx:text-sm xs-mx:text-xs hover:underline cursor-pointer text-center" onClick={open}>Forget Password?</div>
 

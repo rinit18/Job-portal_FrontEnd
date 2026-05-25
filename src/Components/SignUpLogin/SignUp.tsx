@@ -59,7 +59,8 @@ const SignUp = () => {
             }).catch((err) => {
                 console.log(err);
                 setLoading(false);
-              errorNotification("Registration Failed", err.response.data.errorMessage);
+                const errorMessage = err.response?.data?.errorMessage || "Could not connect to the server. Please try again later.";
+                errorNotification("Registration Failed", errorMessage);
         });
 
         }
@@ -70,25 +71,25 @@ const SignUp = () => {
     className=" translate-x-1/2"
     overlayProps={{ radius: 'sm', blur: 2 }}
     loaderProps={{ color: 'brightSun.4', type: 'bars' }}
-  /> <div   className="w-1/2 sm-mx:py-20 sm-mx:w-full px-20 bs-mx:px-10 md-mx:px-5 flex flex-col gap-3 justify-center">
-        <div className="text-2xl font-semibold">Create Account</div>
-        <TextInput value={data.name} error={formError.name} name="name" onChange={handleChange} label="Full Name" withAsterisk placeholder="Your name" />
-        <TextInput error={formError.email} value={data.email} name="email" onChange={handleChange} leftSection={<IconAt size={16} />} label="Email" withAsterisk placeholder="Your email" />
-        <PasswordInput value={data.password} error={formError.password} name="password" onChange={handleChange} leftSection={<IconLock size={16} />} label="Password" withAsterisk placeholder="Password" />
+  /> <div className="w-1/2 sm-mx:py-20 sm-mx:w-full px-20 bs-mx:px-10 md-mx:px-5 flex flex-col gap-4 justify-center">
+        <div className="text-3xl font-bold tracking-tight mb-2">Create Account</div>
+        <TextInput value={data.name} error={formError.name} name="name" onChange={handleChange} label="Full Name" withAsterisk placeholder="Your name" size="md" />
+        <TextInput error={formError.email} value={data.email} name="email" onChange={handleChange} leftSection={<IconAt size={16} />} label="Email" withAsterisk placeholder="Your email" size="md" />
+        <PasswordInput value={data.password} error={formError.password} name="password" onChange={handleChange} leftSection={<IconLock size={16} />} label="Password" withAsterisk placeholder="Password" size="md" />
 
-        <PasswordInput value={data.confirmPassword} error={formError.confirmPassword} name="confirmPassword" onChange={handleChange} leftSection={<IconLock size={16} />} label="Confirm Password" withAsterisk placeholder="Confirm password" />
+        <PasswordInput value={data.confirmPassword} error={formError.confirmPassword} name="confirmPassword" onChange={handleChange} leftSection={<IconLock size={16} />} label="Confirm Password" withAsterisk placeholder="Confirm password" size="md" />
         <Radio.Group
             value={data.accountType}
             onChange={handleChange}
             label="You are?"
             withAsterisk
         >
-            <div className="flex gap-6 xs-mx:gap-3">
-                <Radio name="accountType" className="py-4 px-6 sm-mx:px-4 sm-mx:py-2 hover:bg-mine-shaft-900 border-mine-shaft-800 border rounded-lg has-[:checked]:!border-bright-sun-400"   value="APPLICANT" label="Applicant" />
-                <Radio name="accountType" className="py-4 px-6 sm-mx:px-4 sm-mx:py-2 hover:bg-mine-shaft-900 border-mine-shaft-800 border rounded-lg has-[:checked]:!border-bright-sun-400"  value="EMPLOYER" label="Employer" />
+            <div className="flex gap-4 xs-mx:gap-3 pt-2">
+                <Radio name="accountType" className="py-3 px-6 sm-mx:px-4 sm-mx:py-2 hover:bg-mine-shaft-900/50 border-mine-shaft-800 border rounded-xl has-[:checked]:!border-bright-sun-400 has-[:checked]:bg-bright-sun-400/5 transition-all" value="APPLICANT" label="Applicant" />
+                <Radio name="accountType" className="py-3 px-6 sm-mx:px-4 sm-mx:py-2 hover:bg-mine-shaft-900/50 border-mine-shaft-800 border rounded-xl has-[:checked]:!border-bright-sun-400 has-[:checked]:bg-bright-sun-400/5 transition-all" value="EMPLOYER" label="Employer" />
             </div>
         </Radio.Group>
-        <Button loading={loading} onClick={handleSubmit} autoContrast variant="filled">Sign up</Button>
+        <Button loading={loading} onClick={handleSubmit} autoContrast variant="filled" size="md" className="mt-2">Sign up</Button>
         <div className="text-center sm-mx:text-sm xs-mx:text-xs">Have an account?  <span className="text-bright-sun-400 hover:underline cursor-pointer sm-mx:text-sm xs-mx:text-xs" onClick={()=>{navigate("/login");setFormError(form) ;setData(form)}}>Login</span> </div>
 
     </div></>
