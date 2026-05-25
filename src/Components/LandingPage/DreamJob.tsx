@@ -12,17 +12,16 @@ const DreamJob = () => {
     const dispatch=useDispatch();
     const navigate=useNavigate();
     const user = useSelector((state: any) => state.user);
-    const [jobTitle, setJobTitle]=useState("");
-    const [type, setType]=useState("");
+    const [query, setQuery] = useState("");
     const searchType = user?.accountType === "EMPLOYER" ? "talents" : "jobs";
 
-    const handleClick=()=>{
+    const handleClick = () => {
         if (searchType === "jobs") {
-            dispatch(updateFilter({"Job Title":jobTitle?[jobTitle]:null, "Job Type":type?[type]:null, "page":1}));
+            dispatch(updateFilter({ "Job Title": query ? [query] : null, "page": 1 }));
             navigate("/find-jobs");
         } else {
-            dispatch(updateFilter({"name":jobTitle || null, "Location":type?[type]:null, "page":1}));
-            navigate("/find-talent");
+            dispatch(updateFilter({ "globalSearch": query, "page": 1 }));
+            navigate("/network");
         }
     }
     
@@ -61,26 +60,15 @@ const DreamJob = () => {
                 <div className="flex sm-mx:flex-col gap-3 mt-4 p-3 bg-mine-shaft-900 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-mine-shaft-800 focus-within:border-bright-sun-400/50 transition-all duration-300">
                     <div className="flex-1 flex sm-mx:flex-col gap-2">
                         <TextInput 
-                            value={jobTitle} 
-                            onChange={(e)=>setJobTitle(e.currentTarget.value)} 
+                            value={query} 
+                            onChange={(e) => setQuery(e.currentTarget.value)} 
                             className="flex-1 rounded-lg bg-mine-shaft-950 p-1 text-mine-shaft-100" 
                             variant="unstyled" 
                             size="lg"
-                            label={<span className="text-xs text-mine-shaft-400 font-bold px-2 uppercase tracking-wider">{searchType === "jobs" ? "What" : "Who"}</span>}
-                            placeholder={searchType === "jobs" ? "Job title, keywords, or company" : "React Developer"} 
+                            label={<span className="text-xs text-mine-shaft-400 font-bold px-2 uppercase tracking-wider">Search</span>}
+                            placeholder="Find professionals, companies, or jobs..." 
                             classNames={{ input: 'px-2 font-bold text-lg placeholder:text-mine-shaft-500 placeholder:font-medium' }}
-                        />
-                        <div className="w-[1px] bg-mine-shaft-800 my-3 sm-mx:hidden"></div>
-                        <div className="h-[1px] bg-mine-shaft-800 mx-3 hidden sm-mx:block"></div>
-                        <TextInput 
-                            value={type} 
-                            onChange={(e)=>setType(e.currentTarget.value)} 
-                            className="flex-1 rounded-lg bg-mine-shaft-950 p-1 text-mine-shaft-100" 
-                            variant="unstyled"
-                            size="lg" 
-                            label={<span className="text-xs text-mine-shaft-400 font-bold px-2 uppercase tracking-wider">Where</span>}
-                            placeholder={searchType === "jobs" ? "City, state, or remote" : "Location"} 
-                            classNames={{ input: 'px-2 font-bold text-lg placeholder:text-mine-shaft-500 placeholder:font-medium' }}
+                            onKeyDown={(e) => e.key === 'Enter' && handleClick()}
                         />
                     </div>
                     <button 
