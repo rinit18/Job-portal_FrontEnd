@@ -104,7 +104,7 @@ const TalentCard = (props: any) => {
         <div className="flex [&>*]:w-1/2 [&>*]:p-1">
             {
                 !props.invited && <>
-                    <Link to={`/talent-profile/${profile?.id}`}>
+                    <Link to={`/user/${profile?.id}`}>
                         <Button color="brightSun.4" variant="outline" fullWidth>Profile</Button>
                     </Link>
 

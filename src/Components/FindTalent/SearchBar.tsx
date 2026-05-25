@@ -1,93 +1,34 @@
-import { Button, Collapse, Input, RangeSlider } from "@mantine/core";
-import React, { useState } from "react";
-import MultiInput from "../FindJobs/MultiInput";
-import { searchFields } from "../../Data/TalentData";
-import { IconUserCircle } from "@tabler/icons-react";
+import { Input } from "@mantine/core";
+import { IconSearch } from "@tabler/icons-react";
 import { updateFilter } from "../../Slices/FilterSlice";
 import { useDispatch } from "react-redux";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { useState } from "react";
 
 const SearchBar = () => {
     const dispatch = useDispatch();
-    const matches = useMediaQuery('(max-width: 475px)');
-    const [opened, { toggle }] = useDisclosure(false);
-    const [value, setValue] = useState<[number, number]>([0, 50]);
-    const [name, setName] =  useState('');;
-    const handleChange = (name:any, event:any) => {
-        if(name==="exp"){
-            dispatch(updateFilter({exp:event}));
-        }
-        else{
-            dispatch(updateFilter({name:event.target.value}));
-            setName(event.target.value);
-        }
+    const [query, setQuery] = useState("");
+
+    const handleChange = (event: any) => {
+        const val = event.target.value;
+        setQuery(val);
+        dispatch(updateFilter({ globalSearch: val }));
     }
 
     return (
-        <div className="flex flex-col px-6 py-6 gap-6 bg-mine-shaft-950/40 rounded-3xl border border-mine-shaft-900/60 backdrop-blur-xl shadow-2xl relative overflow-hidden mb-6">
-            <div className="flex justify-between items-center z-10">
-                <span className="text-sm font-semibold text-mine-shaft-300">Filter Talents</span>
-                {matches && (
-                    <Button 
-                        onClick={toggle} 
-                        radius="md" 
-                        variant="light" 
-                        color="brightSun.4" 
-                        autoContrast
-                        className="font-semibold"
-                    >
-                        {opened ? "Hide Filters" : "Show Filters"}
-                    </Button>
-                )}
+        <div className="flex px-6 py-6 items-center justify-center mb-6">
+            <div className="w-full max-w-3xl">
+                <Input 
+                    size="xl"
+                    radius="xl"
+                    value={query} 
+                    onChange={handleChange} 
+                    leftSection={<IconSearch size={24} className="text-bright-sun-400" />}
+                    placeholder="Search for professionals by name, job title, company, or skills..." 
+                    classNames={{
+                        input: "bg-mine-shaft-900/50 border-mine-shaft-800 text-mine-shaft-100 placeholder-mine-shaft-400 backdrop-blur-md shadow-2xl focus:border-bright-sun-400/50 text-lg transition-all"
+                    }}
+                />
             </div>
-
-            <Collapse in={(opened || !matches)}>
-                <div className="w-full grid grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-6 p-6 bg-mine-shaft-900/30 border border-mine-shaft-900/60 rounded-2xl backdrop-blur-md">
-                    {/* Name Filter Field */}
-                    <div className="flex items-center gap-2 bg-mine-shaft-900/40 p-2.5 rounded-xl border border-mine-shaft-900/60 focus-within:border-bright-sun-400/40 transition-colors">
-                        <div className="text-bright-sun-400 shrink-0">
-                            <IconUserCircle size={22} />
-                        </div>
-                        <Input 
-                            defaultValue={name} 
-                            onChange={(e) => handleChange("name", e)} 
-                            className="w-full [&_input]:!placeholder-mine-shaft-500 [&_input]:!text-mine-shaft-100" 
-                            variant="unstyled" 
-                            placeholder="Talent Name" 
-                        />
-                    </div>
-
-                    {/* Dropdown Filters */}
-                    {searchFields.map((item, index) => {
-                        return (
-                            <div key={index} className="flex flex-col gap-1 border-r border-mine-shaft-900/40 last:border-0 pr-2 md-mx:border-0">
-                                <MultiInput title={item.title} icon={item.icon} options={item.options} />
-                            </div>
-                        );
-                    })}
-
-                    {/* Experience Range Filter */}
-                    <div className="flex flex-col gap-3 justify-center text-sm text-mine-shaft-300 col-span-1 xs:col-span-full bg-mine-shaft-900/20 p-3 rounded-xl border border-mine-shaft-900/40">
-                        <div className="flex justify-between font-semibold text-xs text-mine-shaft-200">
-                            <span>Experience</span>
-                            <span className="text-bright-sun-400">{value[0]} - {value[1]} Yrs</span>
-                        </div>
-                        <RangeSlider 
-                            color="brightSun.4" 
-                            size="sm" 
-                            value={value} 
-                            onChange={setValue} 
-                            onChangeEnd={(e) => handleChange("exp", e)} 
-                            classNames={{
-                                track: 'bg-mine-shaft-800',
-                                bar: 'bg-bright-sun-400',
-                                thumb: 'border-2 border-bright-sun-400 bg-mine-shaft-900 shadow-md',
-                                label: 'bg-mine-shaft-900 text-mine-shaft-100 !translate-y-10'
-                            }}
-                        />
-                    </div>
-                </div>
-            </Collapse>
         </div>
     )
 }

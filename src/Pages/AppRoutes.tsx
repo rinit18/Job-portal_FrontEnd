@@ -54,8 +54,8 @@ const AnimatedRoutes = () => {
         <Route path='/apply-job/:id' element={<ProtectedRoute allowedRoles={['APPLICANT', 'ADMIN']}><AnimatedPage><ApplyJobPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/companies' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><CompaniesPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/messages' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><MessagesPage /></AnimatedPage></ProtectedRoute>} />
-        <Route path='/find-talent' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><FindTalentPage /></AnimatedPage></ProtectedRoute>} />
-        <Route path='/talent-profile/:id' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><TalentProfilePage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/network' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><FindTalentPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/user/:id' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><TalentProfilePage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/company/:name' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><CompanyPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/job-history' element={<ProtectedRoute allowedRoles={['APPLICANT', 'ADMIN']}><AnimatedPage><JobHistoryPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/posted-jobs/:id' element={<ProtectedRoute allowedRoles={['EMPLOYER', 'ADMIN']}><AnimatedPage><PostedJobPage /></AnimatedPage></ProtectedRoute>} />
