@@ -1,13 +1,19 @@
 
-import { Button, LoadingOverlay, PasswordInput, Radio, TextInput } from "@mantine/core";
-import { IconAt,  IconLock} from "@tabler/icons-react";
+import { Button, LoadingOverlay, PasswordInput, Radio, TextInput, PinInput, Group } from "@mantine/core";
+import { IconAt, IconLock, IconArrowLeft } from "@tabler/icons-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../../Services/UserService";
+import { loginUser, registerUser, sendRegistrationOtp, verifyOtp } from "../../Services/UserService";
 import { signupValidation } from "../../Services/FormValidation";
 import { errorNotification, successNotification } from "../../Services/NotificationService";
+import { useDispatch } from "react-redux";
+import { setJwt } from "../../Slices/JwtSlice";
+import { setUser } from "../../Slices/UserSlice";
+import { jwtDecode } from "jwt-decode";
+import { useInterval } from "@mantine/hooks";
 
 const SignUp = () => {
+    const dispatch = useDispatch();
     const form = {
         name: "",
         email: "",
@@ -18,6 +24,22 @@ const SignUp = () => {
     const [data, setData] = useState<{[key:string]:string}>(form);
     const [formError, setFormError] = useState<{[key:string]:string}>(form);
     const [loading, setLoading] = useState(false);
+    
+    // OTP States
+    const [otpSent, setOtpSent] = useState(false);
+    const [time, setTime] = useState(60);
+    const [resendLoader, setResendLoader] = useState(false);
+    
+    const interval = useInterval(() => {
+        if (time === 0) {
+            setResendLoader(false);
+            setTime(60);
+            interval.stop();
+        } else {
+            setTime((s) => s - 1);
+        }
+    }, 1000);
+
     const navigate=useNavigate();
     const handleChange = (event: any) => {
         if (typeof (event) == "string") {
@@ -48,22 +70,86 @@ const SignUp = () => {
         }
         setFormError(newFormError);
         if(valid===true){
-            registerUser(data).then((res) => {
-                setData(form);
-                successNotification("Registered Successfully", "Redirecting to login page...");
-                
-                  setTimeout(()=>{
-                    navigate("/login");
-                    setLoading(false);
-                  }, 4000)
+            setLoading(true);
+            sendRegistrationOtp(data.email).then((res) => {
+                successNotification("OTP Sent", "Check your email for the verification code.");
+                setOtpSent(true);
+                setLoading(false);
+                setResendLoader(true);
+                interval.start();
             }).catch((err) => {
                 console.log(err);
                 setLoading(false);
-                const errorMessage = err.response?.data?.errorMessage || "Could not connect to the server. Please try again later.";
-                errorNotification("Registration Failed", errorMessage);
-        });
-
+                const errorMessage = err.response?.data?.errorMessage || "Could not connect to the server.";
+                errorNotification("Failed to send OTP", errorMessage);
+            });
+        } else {
+            setLoading(false);
         }
+    }
+
+    const resendOtp = () => {
+        if (resendLoader) return;
+        setLoading(true);
+        sendRegistrationOtp(data.email).then((res) => {
+            successNotification("OTP Sent", "Check your email for the verification code.");
+            setLoading(false);
+            setResendLoader(true);
+            interval.start();
+        }).catch((err) => {
+            setLoading(false);
+            errorNotification("Failed to resend OTP", err.response?.data?.errorMessage || "Server error.");
+        });
+    }
+
+    const handleVerifyAndRegister = (otp: string) => {
+        setLoading(true);
+        verifyOtp(data.email, otp).then((res) => {
+            // OTP verified, now register
+            registerUser(data).then((regRes) => {
+                // Registered successfully, auto-login
+                loginUser({email: data.email, password: data.password}).then((loginRes) => {
+                    successNotification("Account Created!", "You are now logged in.");
+                    dispatch(setJwt(loginRes.jwt));
+                    const decoded = jwtDecode(loginRes.jwt);
+                    dispatch(setUser({...decoded, email: decoded.sub}));
+                    setTimeout(() => {
+                        navigate("/");
+                        setLoading(false);
+                    }, 2000);
+                }).catch((loginErr) => {
+                    // Fallback to manual login if auto-login fails
+                    successNotification("Registered Successfully", "Please log in.");
+                    navigate("/login");
+                    setLoading(false);
+                });
+            }).catch((regErr) => {
+                setLoading(false);
+                errorNotification("Registration Failed", regErr.response?.data?.errorMessage || "Server error.");
+            });
+        }).catch((err) => {
+            setLoading(false);
+            errorNotification("OTP Verification Failed", err.response?.data?.errorMessage || "Invalid OTP");
+        });
+    }
+
+    if (otpSent) {
+        return (
+            <div className="w-1/2 sm-mx:py-20 sm-mx:w-full px-20 bs-mx:px-10 md-mx:px-5 flex flex-col gap-6 justify-center">
+                <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} loaderProps={{ color: 'brightSun.4', type: 'bars' }} />
+                
+                <Button size="sm" onClick={() => {setOtpSent(false); interval.stop(); setTime(60);}} my="sm" color="mineShaft.3" leftSection={<IconArrowLeft size={16} />} variant="transparent" className="self-start px-0 hover:bg-transparent hover:text-bright-sun-400">Back</Button>
+
+                <div className="text-3xl font-bold tracking-tight mb-2">Verify your email</div>
+                <div className="text-sm text-mine-shaft-200">We've sent a 6-digit code to <span className="font-semibold text-bright-sun-400">{data.email}</span>. Please enter it below to complete registration.</div>
+                
+                <PinInput onComplete={handleVerifyAndRegister} className="mx-auto" gap="lg" size="lg" length={6} type="number" />
+                
+                <div className="flex gap-2 mt-4">
+                    <Button loading={loading} onClick={resendOtp} fullWidth color="brightSun.4" variant="light">{resendLoader ? `Resend in ${time}s` : "Resend Code"}</Button>
+                </div>
+            </div>
+        );
     }
     return <><LoadingOverlay
     visible={loading}

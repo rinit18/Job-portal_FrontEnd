@@ -17,6 +17,12 @@ const sendOtp=async (email:string)=>{
         .catch((error:any) =>{throw error;});
 }
 
+const sendRegistrationOtp=async (email:string)=>{
+    return axiosInstance.post(`/users/sendOtp/Register/${email}`)
+        .then((result:any) => result.data)
+        .catch((error:any) =>{throw error;});
+}
+
 const verifyOtp=async (email:string, otp:string)=>{
     return axiosInstance.post(`/users/verifyOtp`, {email, otp})
         .then((result:any) => result.data)
@@ -29,4 +35,4 @@ const resetPassword=async (email:string, password:string, token:string)=>{
         .catch((error:any) =>{throw error;});
 }
 
-export {registerUser, loginUser, sendOtp, verifyOtp, resetPassword};
+export {registerUser, loginUser, sendOtp, sendRegistrationOtp, verifyOtp, resetPassword};
