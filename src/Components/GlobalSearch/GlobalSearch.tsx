@@ -30,7 +30,7 @@ const GlobalSearch = () => {
             setLoading(true);
             try {
                 // If it's a multi-word query, try to parse it with AI first
-                let parsedFilters = null;
+                let parsedFilters: any = null;
                 if (query.split(" ").length > 1) {
                     try {
                         const { parseSearchQuery } = await import("../../Services/AiService");
