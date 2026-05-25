@@ -1,28 +1,32 @@
-import { Divider } from "@mantine/core";
 import SearchBar from "../Components/FindJobs/SearchBar";
 import Jobs from "../Components/FindJobs/Jobs";
-
 import { Helmet } from "react-helmet-async";
 
 const FindJobsPage = () => {
     return (
-        <div className="min-h-[calc(100vh-80px)] flex flex-col bg-mine-shaft-950 font-['poppins'] relative overflow-x-hidden">
-            {/* Ambient Premium Background */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-                <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-bright-sun-400/5 blur-[120px]"></div>
-                <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-bright-sun-400/5 blur-[120px]"></div>
+        <div className="h-[calc(100vh-80px)] flex flex-col bg-mine-shaft-950 font-['poppins'] overflow-hidden relative">
+            <Helmet><title>Find Jobs | CareerConnect</title></Helmet>
+
+            {/* Ambient background glows */}
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+                <div className="absolute top-[-15%] left-[-5%] w-[40%] h-[40%] rounded-full bg-bright-sun-400/5 blur-[120px]" />
+                <div className="absolute bottom-[-15%] right-[-5%] w-[40%] h-[40%] rounded-full bg-bright-sun-400/5 blur-[120px]" />
             </div>
 
-            <div className="relative z-10 flex flex-col flex-1">
-                <Helmet><title>Find Jobs | CareerConnect</title></Helmet>
-                <Divider size="xs" mx="md" color="mineShaft.8"/>
-                <SearchBar/>
-                <Divider size="xs" mx="md" color="mineShaft.8"/>
-                <div className="flex-1">
-                    <Jobs/>
+            {/* Content */}
+            <div className="relative z-10 flex flex-col h-full overflow-hidden">
+                {/* Search bar — fixed height top strip */}
+                <div className="shrink-0 z-20 relative">
+                    <SearchBar />
+                </div>
+
+                {/* Jobs section — takes remaining height */}
+                <div className="flex-1 min-h-0">
+                    <Jobs />
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
+
 export default FindJobsPage;

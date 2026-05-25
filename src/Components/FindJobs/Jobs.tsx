@@ -1,4 +1,3 @@
-
 import Sort from "./Sort";
 import JobCard from "./JobCard";
 import Job from "../JobDesc/Job";
@@ -11,123 +10,163 @@ import { useNavigate } from "react-router-dom";
 import { resetFilter } from "../../Slices/FilterSlice";
 import { resetSort } from "../../Slices/SortSlice";
 import { Button, Skeleton } from "@mantine/core";
-import { IconX, IconSparkles } from "@tabler/icons-react";
+import { IconBriefcase, IconSparkles, IconX } from "@tabler/icons-react";
 import { WEBSITE_CONFIG } from "../../config";
 
 const Jobs = () => {
-    const dispatch=useDispatch();
-    const navigate=useNavigate();
-    const isMobile = useMediaQuery('(max-width: 768px)');
-    const [jobList, setJobList] = useState([]);
-    const filter=useSelector((state:any)=>state.filter);
-    const sort=useSelector((state:any)=>state.sort);
-    const [filteredJobs, setFilteredJobs] = useState<any>([]);
-    const [selectedJob, setSelectedJob] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    
-    useEffect(()=>{
-        // dispatch(resetFilter());
+    const dispatch   = useDispatch();
+    const navigate   = useNavigate();
+    const isMobile   = useMediaQuery("(max-width: 768px)");
+    const [jobList, setJobList]         = useState<any[]>([]);
+    const filter                        = useSelector((state: any) => state.filter);
+    const sort                          = useSelector((state: any) => state.sort);
+    const [filteredJobs, setFilteredJobs] = useState<any[]>([]);
+    const [selectedJob, setSelectedJob]   = useState<any>(null);
+    const [isLoading, setIsLoading]       = useState(true);
+
+    /* ── Fetch ─────────────────────────────────────────── */
+    useEffect(() => {
         dispatch(resetSort());
         setIsLoading(true);
-        getAllJobs().then((res)=>{
-            setJobList(res.filter((job:any)=>job.jobStatus==="ACTIVE"));
-        }).catch((err)=>console.log(err))
-        .finally(()=>setIsLoading(false));
-        return ()=>{
-            if(!filter.page)dispatch(resetFilter());
-          }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-    useEffect(()=>{
-        if(sort==="Most Recent"){
-            setJobList([...jobList].sort((a: any, b: any) => new Date(b.postTime).getTime() - new Date(a.postTime).getTime()));
-        }
-        else if(sort==="Salary: Low to High"){
-            setJobList([...jobList].sort((a: any, b: any) => a.packageOffered - b.packageOffered));
-        }
-        else if(sort==="Salary: High to Low"){
-            setJobList([...jobList].sort((a: any, b: any) => b.packageOffered - a.packageOffered));
-        }
+        getAllJobs()
+            .then((res) => setJobList(res.filter((j: any) => j.jobStatus === "ACTIVE")))
+            .catch(console.error)
+            .finally(() => setIsLoading(false));
+        return () => { if (!filter.page) dispatch(resetFilter()); };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sort])
-    useEffect(()=>{
-        let filtered = jobList;
-        if(filter["Job Title"] && filter["Job Title"].length>0)filtered=filtered.filter((job:any)=>filter["Job Title"]?.some((x:any)=>job.jobTitle?.toLowerCase().includes(x.toLowerCase())));
-        if(filter.Location && filter.Location.length>0)filtered=filtered.filter((job:any)=>filter.Location?.some((x:any)=>job.location?.toLowerCase().includes(x.toLowerCase())));
-          if(filter.Experience && filter.Experience.length>0)filtered=filtered.filter((job:any)=>filter.Experience?.some((x:any)=>job.experience?.toLowerCase().includes(x.toLowerCase())));
-          if(filter["Job Type"] && filter["Job Type"].length>0)filtered=filtered.filter((job:any)=>filter["Job Type"]?.some((x:any)=>job.jobType?.toLowerCase().includes(x.toLowerCase())));
-          if(filter.salary && filter.salary.length>0)filtered=filtered.filter((jobs:any)=>filter.salary[0]<=jobs.packageOffered && jobs.packageOffered<=filter.salary[1]);
-        setFilteredJobs(filtered);
-    },[filter,jobList]);
+    /* ── Sort ──────────────────────────────────────────── */
+    useEffect(() => {
+        if (sort === "Most Recent")
+            setJobList(p => [...p].sort((a, b) => new Date(b.postTime).getTime() - new Date(a.postTime).getTime()));
+        else if (sort === "Salary: Low to High")
+            setJobList(p => [...p].sort((a, b) => a.packageOffered - b.packageOffered));
+        else if (sort === "Salary: High to Low")
+            setJobList(p => [...p].sort((a, b) => b.packageOffered - a.packageOffered));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sort]);
 
+    /* ── Filter ────────────────────────────────────────── */
+    useEffect(() => {
+        let f = [...jobList];
+        if (filter["Job Title"]?.length > 0)
+            f = f.filter(j => filter["Job Title"].some((x: string) => j.jobTitle?.toLowerCase().includes(x.toLowerCase())));
+        if (filter.Location?.length > 0)
+            f = f.filter(j => filter.Location.some((x: string) => j.location?.toLowerCase().includes(x.toLowerCase())));
+        if (filter.Experience?.length > 0)
+            f = f.filter(j => filter.Experience.some((x: string) => j.experience?.toLowerCase().includes(x.toLowerCase())));
+        if (filter["Job Type"]?.length > 0)
+            f = f.filter(j => filter["Job Type"].some((x: string) => j.jobType?.toLowerCase().includes(x.toLowerCase())));
+        if (filter.salary?.length > 0)
+            f = f.filter(j => { const lpa = (j.packageOffered || 0) / 100000; return filter.salary[0] <= lpa && lpa <= filter.salary[1]; });
+        setFilteredJobs(f);
+    }, [filter, jobList]);
+
+    /* ── Auto-select first ─────────────────────────────── */
     useEffect(() => {
         if (filteredJobs.length > 0) {
-            // Auto-select the first job if none is selected, or if the selected job was filtered out
-            if (!selectedJob || !filteredJobs.find((j:any) => j.id === selectedJob.id)) {
+            if (!selectedJob || !filteredJobs.find(j => j.id === selectedJob.id))
                 setSelectedJob(filteredJobs[0]);
-            }
         } else {
             setSelectedJob(null);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filteredJobs]);
 
-    return <div className="p-5 sm-mx:p-2">
-        <div className="flex justify-between flex-wrap mt-2">
-            <div className="text-2xl xs-mx:text-xl flex gap-3 items-center font-semibold">Recommended jobs   {Object.keys(filter).length>0&&<Button onClick={()=>dispatch(resetFilter())} className="font-body transition duration-300 " size="compact-sm" leftSection={<IconX stroke={1.5} size={20}/>} variant="filled" color="brightSun.4" autoContrast >Clear Filters</Button>}</div>
-            <Sort sort="job" />
-        </div>
-        
-        {/* Three-Pane Layout: Window Scrolling */}
-        <div className="flex mt-6 gap-6 items-start pb-10">
-            {/* Left Pane: Filters Sidebar */}
-            <div className="w-[20%] lg-mx:w-1/4 md-mx:hidden sticky top-24 h-[calc(100vh-8rem)]">
-                <FilterSidebar />
+    const hasFilters = Object.keys(filter).some(
+        k => filter[k] !== null && filter[k] !== undefined && !(Array.isArray(filter[k]) && filter[k].length === 0)
+    );
+
+    return (
+        <div className="h-full flex flex-col overflow-hidden">
+
+            {/* ══ Top bar ══════════════════════════════════════════════════ */}
+            <div className="shrink-0 flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06] bg-mine-shaft-950/60 backdrop-blur-sm">
+                <div className="flex items-center gap-3">
+                    <IconBriefcase size={18} className="text-bright-sun-400" stroke={1.5} />
+                    <span className="text-sm font-bold text-mine-shaft-100 tracking-tight">Recommended Jobs</span>
+                    {!isLoading && (
+                        <span className="px-2.5 py-0.5 rounded-full bg-bright-sun-400/10 border border-bright-sun-400/25 text-xs font-bold text-bright-sun-400">
+                            {filteredJobs.length}
+                        </span>
+                    )}
+                    {hasFilters && (
+                        <Button
+                            onClick={() => dispatch(resetFilter())}
+                            size="xs"
+                            leftSection={<IconX size={11} stroke={2.5} />}
+                            variant="light"
+                            color="brightSun.4"
+                        >
+                            Clear Filters
+                        </Button>
+                    )}
+                </div>
+                <Sort sort="job" />
             </div>
 
-            {/* Middle Pane: Natural Window Scrolling Job List */}
-            <div className="w-[30%] lg-mx:w-[40%] md-mx:w-full pr-2 flex flex-col gap-4">
-                {isLoading ? (
-                    Array(5).fill(0).map((_, i) => <Skeleton key={i} height={180} className="w-full rounded-2xl" />)
-                ) : filteredJobs.length > 0 ? (
-                    filteredJobs.map((job: any, index: any) => (
-                        <JobCard 
-                            key={index} 
-                            {...job} 
-                            fullWidth 
-                            hideViewButton={!isMobile} 
-                            selected={selectedJob?.id === job.id && !isMobile}
-                            onSelect={(selected: any) => isMobile ? navigate(`/jobs/${selected.id}`) : setSelectedJob(selected)}
-                        />
-                    ))
-                ) : (
-                    <div className="flex flex-col items-center justify-center min-h-[40vh] opacity-70 p-4">
-                        <img src={WEBSITE_CONFIG.assets.workingGirl || "/Working/Girl.png"} className="w-48 h-48 mb-4 opacity-50 grayscale hover:grayscale-0 transition-all duration-300" alt="No jobs found" />
-                        <div className="text-center font-medium text-lg text-mine-shaft-300">No jobs found matching your filters.</div>
-                        <div className="text-center text-sm text-mine-shaft-400 mt-2">Try adjusting your search criteria or clear filters to see more jobs.</div>
-                        <Button mt="md" onClick={() => dispatch(resetFilter())} variant="light" color="brightSun.4">Clear Filters</Button>
-                    </div>
-                )}
-            </div>
+            {/* ══ Three-pane body ══════════════════════════════════ */}
+            <div className="flex flex-1 min-h-0 overflow-hidden">
 
-            {/* Right Pane: Sticky Job Details */}
-            <div className="w-[50%] lg-mx:w-[60%] md-mx:hidden sticky top-24 h-[calc(100vh-8rem)] overflow-y-auto pl-6 border-l border-mine-shaft-800/50 custom-scrollbar relative">
-                {selectedJob ? (
-                    <div className="w-full min-h-full">
-                        <Job {...selectedJob} />
-                    </div>
-                ) : (
-                    <div className="h-full flex flex-col items-center justify-center text-mine-shaft-400 bg-mine-shaft-900/20 backdrop-blur-md rounded-3xl border border-mine-shaft-800/60 border-dashed shadow-[inset_0_0_20px_rgba(0,0,0,0.2)]">
-                        <div className="p-4 bg-mine-shaft-900/50 rounded-full mb-4 shadow-[0_0_15px_rgba(0,0,0,0.3)]">
-                            <IconSparkles size={40} className="text-mine-shaft-600" />
+                {/* LEFT ─ Filter sidebar: 13% */}
+                <div className="w-[13%] min-w-[130px] shrink-0 md-mx:hidden border-r border-white/[0.05] overflow-y-auto custom-scrollbar">
+                    <FilterSidebar />
+                </div>
+
+                {/* MIDDLE ─ Job list: 37% */}
+                <div className="w-[37%] min-w-[260px] shrink-0 md-mx:flex-1 border-r border-white/[0.05] overflow-y-auto custom-scrollbar flex flex-col gap-0">
+                    {isLoading ? (
+                        <div className="flex flex-col gap-2 p-3">
+                            {Array(6).fill(0).map((_, i) => <Skeleton key={i} height={110} radius="lg" />)}
                         </div>
-                        <div className="text-2xl font-bold mb-2 text-mine-shaft-300">Select a Job</div>
-                        <div className="text-sm font-medium text-mine-shaft-500">Click on any job from the list to view its details.</div>
-                    </div>
-                )}
+                    ) : filteredJobs.length > 0 ? (
+                        filteredJobs.map((job: any, index: number) => (
+                            <JobCard
+                                key={job.id ?? index}
+                                {...job}
+                                fullWidth
+                                hideViewButton={!isMobile}
+                                selected={selectedJob?.id === job.id && !isMobile}
+                                onSelect={(sel: any) => isMobile ? navigate(`/jobs/${sel.id}`) : setSelectedJob(sel)}
+                            />
+                        ))
+                    ) : (
+                        <div className="flex flex-col items-center justify-center flex-1 py-16 gap-3 opacity-60">
+                            <img
+                                src={WEBSITE_CONFIG.assets.workingGirl || "/Working/Girl.png"}
+                                className="w-28 h-28 opacity-40 grayscale"
+                                alt="No jobs"
+                            />
+                            <div className="text-sm font-semibold text-mine-shaft-300">No jobs match your filters</div>
+                            <div className="text-xs text-mine-shaft-500">Try adjusting your criteria</div>
+                            <Button size="xs" onClick={() => dispatch(resetFilter())} variant="light" color="brightSun.4">
+                                Clear Filters
+                            </Button>
+                        </div>
+                    )}
+                </div>
+
+                {/* RIGHT ─ Job detail: flex-1 (remaining ~48%) */}
+                <div className="flex-1 min-w-0 md-mx:hidden overflow-y-auto custom-scrollbar p-4">
+                    {selectedJob ? (
+                        <Job {...selectedJob} />
+                    ) : (
+                        <div className="h-full flex flex-col items-center justify-center gap-4 text-mine-shaft-500 border border-white/[0.05] border-dashed rounded-2xl">
+                            <div className="w-14 h-14 rounded-full bg-mine-shaft-900/80 flex items-center justify-center">
+                                <IconSparkles size={28} className="text-mine-shaft-600" />
+                            </div>
+                            <div className="text-center">
+                                <div className="text-base font-bold text-mine-shaft-300 mb-1">Select a Job</div>
+                                <div className="text-xs text-mine-shaft-600">Click any card to preview details here</div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
             </div>
         </div>
-    </div>
-}
+    );
+};
+
 export default Jobs;

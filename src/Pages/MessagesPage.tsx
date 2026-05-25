@@ -125,13 +125,20 @@ const MessagesPage = () => {
     }
 
     return (
-        <div className="min-h-[88vh] bg-mine-shaft-950 font-['poppins'] flex flex-col">
-            <Divider size="xs" mx="md"/>
-            <div className="flex-1 flex w-full max-w-7xl mx-auto p-4 sm-mx:p-2 gap-4 h-[85vh]">
+        <div className="min-h-[calc(100vh-80px)] bg-mine-shaft-950 font-['poppins'] flex flex-col relative overflow-hidden">
+            {/* Ambient background glows */}
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+                <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] rounded-full bg-bright-sun-400/5 blur-[120px]" />
+                <div className="absolute bottom-[20%] right-[-10%] w-[35%] h-[35%] rounded-full bg-bright-sun-400/5 blur-[120px]" />
+            </div>
+
+            <Divider className="border-mine-shaft-800/60 z-10" />
+            
+            <div className="flex-1 flex w-full max-w-7xl mx-auto p-4 sm-mx:p-2 gap-5 h-[calc(100vh-80px)] z-10">
                 
                 {/* Left Sidebar - Conversations */}
-                <div className="w-1/3 sm-mx:w-[80px] flex flex-col bg-mine-shaft-900 rounded-xl border border-mine-shaft-800 overflow-hidden">
-                    <div className="p-4 sm-mx:p-2 border-b border-mine-shaft-800">
+                <div className="w-1/3 sm-mx:w-[80px] flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.2)] relative">
+                    <div className="p-5 sm-mx:p-2 border-b border-mine-shaft-800/60 bg-mine-shaft-900/20">
                         <div className="text-xl sm-mx:hidden font-semibold text-mine-shaft-100 mb-4">Messaging</div>
                         <TextInput 
                             placeholder="Search messages" 
@@ -176,8 +183,12 @@ const MessagesPage = () => {
                                             setActiveChat(conv);
                                             setMessages([]);
                                         }}
-                                        className={`p-4 sm-mx:p-2 flex gap-3 cursor-pointer transition-colors border-b border-mine-shaft-800/50 ${activeChat?.id === conv.id ? 'bg-mine-shaft-800 border-l-4 border-l-bright-sun-400' : 'hover:bg-mine-shaft-800/50 border-l-4 border-l-transparent'}`}
+                                        className={`p-4 sm-mx:p-2 flex gap-3 cursor-pointer transition-all duration-300 border-b border-mine-shaft-800/40 hover:bg-mine-shaft-800/40 relative ${activeChat?.id === conv.id ? 'bg-bright-sun-400/5' : ''}`}
                                     >
+                                        {/* Active indicator bar */}
+                                        {activeChat?.id === conv.id && (
+                                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-bright-sun-400 rounded-r-md" />
+                                        )}
                                         <Indicator inline size={12} offset={5} position="bottom-end" color="teal" withBorder>
                                             <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(partner.name)}&background=2a2a2a&color=fab005`} size="lg" radius="xl" />
                                         </Indicator>
@@ -201,14 +212,14 @@ const MessagesPage = () => {
                 </div>
 
                 {/* Right Side - Active Chat */}
-                <div className="flex-1 flex flex-col bg-mine-shaft-900 rounded-xl border border-mine-shaft-800 overflow-hidden">
+                <div className="flex-1 flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
                     {activeChat ? (
                         <>
                             {/* Chat Header */}
                             {(() => {
                                 const partner = getChatPartner(activeChat);
                                 return (
-                                    <div className="p-4 border-b border-mine-shaft-800 flex justify-between items-center bg-mine-shaft-900/80 backdrop-blur-sm z-10">
+                                    <div className="p-4 border-b border-mine-shaft-800/60 flex justify-between items-center bg-mine-shaft-900/20 z-10">
                                         <div className="flex gap-3 items-center">
                                             <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(partner.name)}&background=2a2a2a&color=fab005`} size="md" radius="xl" />
                                             <div>
@@ -226,8 +237,8 @@ const MessagesPage = () => {
                             })()}
 
                             {/* Chat Messages */}
-                            <ScrollArea className="flex-1 p-4 bg-mine-shaft-950/30">
-                                <div className="flex flex-col gap-4">
+                            <ScrollArea className="flex-1 p-5 bg-mine-shaft-950/20">
+                                <div className="flex flex-col gap-5">
                                     <div className="text-center text-xs text-mine-shaft-500 my-2">Security: Messages are stored securely.</div>
                                     
                                     {messages.map((msg) => (
@@ -236,7 +247,7 @@ const MessagesPage = () => {
                                                 <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getChatPartner(activeChat).name)}&background=2a2a2a&color=fab005`} size="sm" radius="xl" className="mr-2 mt-1 shrink-0" />
                                             )}
                                             <div className={`flex flex-col ${msg.senderId === currentProfileId ? 'items-end' : 'items-start'}`}>
-                                                <div className={`px-4 py-2 rounded-2xl text-sm ${msg.senderId === currentProfileId ? 'bg-bright-sun-500 text-mine-shaft-950 rounded-tr-sm' : 'bg-mine-shaft-800 text-mine-shaft-100 rounded-tl-sm'}`}>
+                                                <div className={`px-4 py-2.5 rounded-2xl text-[13px] shadow-sm max-w-prose leading-relaxed ${msg.senderId === currentProfileId ? 'bg-gradient-to-br from-bright-sun-400 to-bright-sun-500 text-mine-shaft-950 rounded-tr-sm font-medium' : 'bg-mine-shaft-800/80 backdrop-blur-sm text-mine-shaft-100 rounded-tl-sm border border-mine-shaft-700/50'}`}>
                                                     {msg.text}
                                                 </div>
                                                 <div className="text-[9px] text-mine-shaft-500 mt-1 mx-1 flex items-center gap-1 justify-end">
@@ -251,9 +262,9 @@ const MessagesPage = () => {
                             </ScrollArea>
 
                             {/* Chat Input */}
-                            <div className="p-4 border-t border-mine-shaft-800 bg-mine-shaft-900">
-                                <div className="flex gap-2 items-center bg-mine-shaft-950 p-2 rounded-xl border border-mine-shaft-800 focus-within:border-bright-sun-400 transition-colors">
-                                    <ActionIcon variant="subtle" color="gray" className="shrink-0"><IconPaperclip size={20} /></ActionIcon>
+                            <div className="p-4 border-t border-mine-shaft-800/60 bg-mine-shaft-900/20">
+                                <div className="flex gap-2 items-center bg-mine-shaft-950/50 p-2 rounded-xl border border-mine-shaft-800/80 focus-within:border-bright-sun-400/50 focus-within:shadow-[0_0_15px_rgba(255,189,32,0.1)] transition-all">
+                                    <ActionIcon variant="subtle" color="gray" className="shrink-0 hover:bg-mine-shaft-800"><IconPaperclip size={20} /></ActionIcon>
                                     <input 
                                         type="text"
                                         value={messageInput}
@@ -266,11 +277,12 @@ const MessagesPage = () => {
                                         variant="filled" 
                                         color="brightSun.4" 
                                         radius="xl" 
-                                        className="shrink-0"
+                                        size="lg"
+                                        className="shrink-0 transition-transform active:scale-95"
                                         onClick={handleSendMessage}
                                         disabled={!messageInput.trim()}
                                     >
-                                        <IconSend size={16} className="text-mine-shaft-950" />
+                                        <IconSend size={18} className="text-[#111]" />
                                     </ActionIcon>
                                 </div>
                             </div>
