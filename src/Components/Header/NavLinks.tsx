@@ -6,7 +6,7 @@ const allLinks = [
     { name: "Companies",    url: "companies",     roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
     { name: "Messages",     url: "messages",      roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
     { name: "Job History",  url: "job-history",   roles: ["APPLICANT", "ADMIN"] },
-    { name: "Find Talent",  url: "find-talent",   roles: ["EMPLOYER", "ADMIN"] },
+    { name: "Connect",      url: "network",       roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
     { name: "Post Job",     url: "post-job/0",    roles: ["EMPLOYER",  "ADMIN"] },
     { name: "Posted Jobs",  url: "posted-jobs/0", roles: ["EMPLOYER",  "ADMIN"] },
 ];
