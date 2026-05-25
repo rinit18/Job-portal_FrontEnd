@@ -138,3 +138,23 @@
 ::-webkit-scrollbar-thumb:hover {
     background-color: #ffbd20; /* bright-sun on hover */
 }
+
+/* Custom Scrollbar for sticky panes */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #4b5563; /* Tailwind gray-600 */
+    border-radius: 9999px;
+    border: 2px solid #0b0e14;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #ffbd20; /* Brand yellow */
+}
