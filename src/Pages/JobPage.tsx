@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { getJob } from "../Services/JobService";
 import { useDispatch } from "react-redux";
 import { hideOverlay, showOverlay } from "../Slices/OverlaySlice";
+import { errorNotification } from "../Services/NotificationService";
 
 const JobPage = () => {
     const {id}=useParams();
@@ -19,14 +20,20 @@ const JobPage = () => {
         dispatch(showOverlay());
         getJob(id).then((res)=>{
             if(!res) {
-                navigate("/not-found");
+                errorNotification("Not Found", "This job listing could not be found.");
+                navigate("/find-jobs");
                 return;
             }
             setJob(res);
-            if(res.jobStatus==="CLOSED")navigate(-1);
+            // BUG-14 FIX: Inform user before silently redirecting away from a closed job
+            if(res.jobStatus==="CLOSED") {
+                errorNotification("Job Closed", `The position "${res.jobTitle}" is no longer accepting applications.`);
+                navigate(-1);
+            }
         }).catch((err)=> {
             console.log(err);
-            navigate("/not-found");
+            errorNotification("Error", "Could not load this job.");
+            navigate("/find-jobs");
         })
         .finally(()=>dispatch(hideOverlay()));
     // eslint-disable-next-line react-hooks/exhaustive-deps

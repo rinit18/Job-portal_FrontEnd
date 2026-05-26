@@ -1,7 +1,7 @@
 import { Button, FileInput, NumberInput, Stepper, Textarea, TextInput, Group, Paper } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { IconCheck, IconUpload } from "@tabler/icons-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { getBase64 } from "../../Services/Utilities";
@@ -13,6 +13,7 @@ const ApplicationForm = () => {
     const navigate = useNavigate();
     const {id} = useParams();
     const user = useSelector((state: any) => state.user);
+    const profile = useSelector((state: any) => state.profile);
     const [submit, setSubmit] = useState(false);
     const [active, setActive] = useState(0);
     const [showConfetti, setShowConfetti] = useState(false);
@@ -21,11 +22,11 @@ const ApplicationForm = () => {
         mode: 'controlled',
         validateInputOnChange: true,
         initialValues: {
-            name: user.name,
-            email: user.email,
-            phone: '',
-            website: '',
-            resume: null,
+            name: user?.name || '',
+            email: user?.email || '',
+            phone: profile?.phone || '',
+            website: profile?.website || '',
+            resume: profile?.resumePdf ? new File([], "Default_Resume.pdf") : null,
             coverLetter: ''
         },
         validate: {
@@ -36,6 +37,20 @@ const ApplicationForm = () => {
             resume: (value) => active === 1 ? isNotEmpty('Resume cannot be empty')(value) : null,
         }
     });
+
+    // BUG-8 FIX: Re-hydrate form fields once profile finishes loading from Redux
+    useEffect(() => {
+        if (!profile?.id) return;
+        form.setValues(prev => ({
+            ...prev,
+            phone: profile.phone || prev.phone || '',
+            website: profile.website || prev.website || '',
+            resume: (prev.resume && (prev.resume as File).size > 0)
+                ? prev.resume
+                : profile.resumePdf ? new File([], "Default_Resume.pdf") : null,
+        }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [profile?.id]);
 
     const nextStep = () => {
         form.validate();
@@ -51,8 +66,14 @@ const ApplicationForm = () => {
 
     const handleSubmit = async() => {
         setSubmit(true);
-        let resume: any = await getBase64(form.getValues().resume);
-        let applicant = { ...form.getValues(), applicantId: user.id, resume: resume.split(',')[1] };
+        
+        let resumeBase64 = profile?.resumePdf || "";
+        if (form.getValues().resume && (form.getValues().resume as File).size > 0) {
+            let res: any = await getBase64(form.getValues().resume);
+            resumeBase64 = res.split(',')[1];
+        }
+
+        let applicant = { ...form.getValues(), applicantId: user.id, resume: resumeBase64 };
         
         applyJob(applicant, id).then((res) => {
             setSubmit(false);
@@ -93,13 +114,13 @@ const ApplicationForm = () => {
                         <div className="flex flex-col gap-6">
                             <FileInput 
                                 {...form.getInputProps("resume")} 
-                                withAsterisk 
+                                withAsterisk={!profile?.resumePdf} 
                                 size="lg"
                                 leftSection={<IconUpload size={20} stroke={1.5} />} 
                                 accept="application/pdf" 
                                 label="Resume / CV" 
-                                description="Upload a PDF file up to 5MB"
-                                placeholder="Click to attach Resume/CV" 
+                                description={profile?.resumePdf ? "Your default resume is attached. Upload a new one to override." : "Upload a PDF file up to 5MB"}
+                                placeholder={profile?.resumePdf ? "Default_Resume.pdf attached" : "Click to attach Resume/CV"} 
                                 className="[&_button]:!bg-mine-shaft-800"
                             />
                             <Textarea 

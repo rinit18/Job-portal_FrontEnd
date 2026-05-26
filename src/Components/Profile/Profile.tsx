@@ -62,6 +62,11 @@ const Profile = () => {
                 experiences: parsed.experiences?.length > 0 ? parsed.experiences : (profile.experiences || []),
                 certifications: parsed.certifications?.length > 0 ? parsed.certifications : (profile.certifications || []),
             };
+            
+            // We also save the PDF as their default resume
+            const base64Resume = await getBase64(file);
+            updatedProfile.resumePdf = (base64Resume as string).split(',')[1];
+            
             dispatch(changeProfile(updatedProfile));
             successNotification("✨ Resume Imported!", `Extracted ${parsed.skills?.length || 0} skills and ${parsed.experiences?.length || 0} experiences.`);
         } catch {
@@ -137,11 +142,28 @@ const Profile = () => {
                                     size="sm"
                                     loading={resumeLoading}
                                 >
-                                    {resumeLoading ? "Parsing Resume..." : "Upload PDF Resume"}
+                                    {resumeLoading ? "Parsing Resume..." : "Upload Resume (PDF)"}
                                 </Button>
                             )}
                         </FileButton>
                     </div>
+                    {profile.resumePdf && (
+                        <div className="mt-4 pt-3 border-t border-mine-shaft-800 flex items-center justify-between">
+                            <div className="flex items-center gap-2 text-sm text-teal-400 font-medium">
+                                <IconSparkles size={16} /> Default Resume Saved
+                            </div>
+                            <Button 
+                                component="a" 
+                                href={`data:application/pdf;base64,${profile.resumePdf}`} 
+                                download={`${profile.name}_Resume.pdf`} 
+                                size="xs" 
+                                variant="subtle" 
+                                color="teal"
+                            >
+                                View Resume
+                            </Button>
+                        </div>
+                    )}
                 </div>
 
                 <Info />

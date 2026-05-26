@@ -1,5 +1,5 @@
-import { Avatar, Button, Divider } from "@mantine/core";
-import { IconBriefcase, IconMapPin } from "@tabler/icons-react";
+import { Avatar, Button, Divider, Badge } from "@mantine/core";
+import { IconBriefcase, IconMapPin, IconUserCheck, IconUserPlus, IconMessageCircle } from "@tabler/icons-react";
 import ExpCard from "./ExpCard";
 import CertiCard from "./CertiCard";
 import { useParams, useNavigate } from "react-router-dom";
@@ -11,24 +11,29 @@ import { hideOverlay, showOverlay } from "../../Slices/OverlaySlice";
 import { getOrCreateRoom } from "../../Services/ChatService";
 import { errorNotification, successNotification } from "../../Services/NotificationService";
 import { WEBSITE_CONFIG } from "../../config";
-import { sendConnectionRequest, withdrawConnectionRequest, removeConnection } from "../../Services/ConnectionService";
+import { sendConnectionRequest, withdrawConnectionRequest, removeConnection, getConnectionStatus } from "../../Services/ConnectionService";
 
 const Profile = () => {
     const { id } = useParams();
     const [profile, setProfile] = useState<any>(null);
     const matches = useMediaQuery('(max-width: 475px)');
 
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const currentProfile = useSelector((state: any) => state.profile);
     const currentProfileId = currentProfile?.id;
-    const [requestSent, setRequestSent] = useState(false);
-    const [isConnected, setIsConnected] = useState(false);
+    // "CONNECTED" | "PENDING_SENT" | "PENDING_RECEIVED" | "NONE" | "SELF"
+    const [connStatus, setConnStatus] = useState<string>("NONE");
 
+    // Fetch connection status from backend whenever profile or viewer changes
     useEffect(() => {
-        if (profile && currentProfileId) {
-            setIsConnected(profile?.connections?.includes(currentProfileId));
+        if (!profile || !currentProfileId || profile.id === currentProfileId) {
+            setConnStatus("SELF");
+            return;
         }
+        getConnectionStatus(currentProfileId, profile.id)
+            .then((status) => setConnStatus(status))
+            .catch(() => setConnStatus("NONE"));
     }, [profile, currentProfileId]);
 
     const handleConnect = async () => {
@@ -38,11 +43,12 @@ const Profile = () => {
         }
         try {
             await sendConnectionRequest(currentProfileId, profile.id);
-            setRequestSent(true);
-            successNotification("Success", "Connection request sent");
+            setConnStatus("PENDING_SENT");
+            successNotification("Request Sent", `Connection request sent to ${profile.name}`);
         } catch (error: any) {
-            if (error?.response?.data?.errorMessage === "Connection request already sent") {
-                setRequestSent(true);
+            const msg = error?.response?.data?.errorMessage || "";
+            if (msg.includes("already sent") || msg.includes("already connected")) {
+                setConnStatus("PENDING_SENT");
             } else {
                 errorNotification("Error", "Could not send connection request.");
             }
@@ -52,18 +58,30 @@ const Profile = () => {
     const handleWithdraw = async () => {
         try {
             await withdrawConnectionRequest(currentProfileId, profile.id);
-            setRequestSent(false);
-            successNotification("Success", "Connection request withdrawn");
+            setConnStatus("NONE");
+            successNotification("Withdrawn", "Connection request withdrawn");
         } catch (error) {
             errorNotification("Error", "Could not withdraw request.");
+        }
+    };
+
+    const handleAcceptIncoming = async () => {
+        // Find the request id — we need it to call acceptConnectionRequest
+        // Simplest: just call send which will auto-accept the reverse request
+        try {
+            await sendConnectionRequest(currentProfileId, profile.id);
+            setConnStatus("CONNECTED");
+            successNotification("Connected!", `You are now connected with ${profile.name}`);
+        } catch (error) {
+            errorNotification("Error", "Could not accept connection.");
         }
     };
 
     const handleDisconnect = async () => {
         try {
             await removeConnection(currentProfileId, profile.id);
-            setIsConnected(false);
-            successNotification("Success", "Connection removed");
+            setConnStatus("NONE");
+            successNotification("Disconnected", "Connection removed");
         } catch (error) {
             errorNotification("Error", "Could not remove connection.");
         }
@@ -75,15 +93,11 @@ const Profile = () => {
             return;
         }
         if (!profile?.id) return;
-
         getOrCreateRoom(currentProfileId, profile.id)
             .then((room) => {
                 navigate(`/messages?roomId=${room.id}`);
             })
-            .catch((err) => {
-                console.error("Failed to start chat from profile", err);
-                errorNotification("Error", "Could not connect with user.");
-            });
+            .catch(() => errorNotification("Error", "Could not start chat."));
     };
 
     useEffect(() => {
@@ -92,7 +106,7 @@ const Profile = () => {
         getProfile(id).then((res) => {
             setProfile(res);
         }).catch((err) => console.log(err))
-        .finally(()=>dispatch(hideOverlay()));
+        .finally(() => dispatch(hideOverlay()));
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id])
     return <div data-aos="zoom-out" className="w-2/3 lg-mx:w-full">
@@ -107,19 +121,26 @@ const Profile = () => {
 
             </div>
             <div className="px-3 mt-16">
-                <div className="text-3xl xs-mx:text-2xl font-semibold flex justify-between">
-                    {profile?.name} 
+                <div className="text-3xl xs-mx:text-2xl font-semibold flex justify-between items-start">
+                    <div>
+                        {profile?.name}
+                        {connStatus === "CONNECTED" && (
+                            <Badge ml="sm" color="teal" variant="light" size="sm">Connected</Badge>
+                        )}
+                    </div>
                     <div className="flex gap-2">
-                        {currentProfileId !== profile?.id && (
-                            isConnected ? (
+                        {connStatus !== "SELF" && (
+                            connStatus === "CONNECTED" ? (
                                 <>
-                                    <Button size={matches ? "sm" : "md"} color="brightSun.4" variant="light" onClick={handleStartChat}>Message</Button>
-                                    <Button size={matches ? "sm" : "md"} color="red" variant="subtle" onClick={handleDisconnect}>Disconnect</Button>
+                                    <Button size={matches ? "xs" : "sm"} color="brightSun.4" variant="filled" leftSection={<IconMessageCircle size={16}/>} onClick={handleStartChat}>Message</Button>
+                                    <Button size={matches ? "xs" : "sm"} color="red" variant="subtle" onClick={handleDisconnect}>Remove</Button>
                                 </>
-                            ) : requestSent ? (
-                                <Button size={matches ? "sm" : "md"} color="gray" variant="light" onClick={handleWithdraw}>Withdraw Request</Button>
+                            ) : connStatus === "PENDING_SENT" ? (
+                                <Button size={matches ? "xs" : "sm"} color="gray" variant="light" leftSection={<IconUserCheck size={16}/>} onClick={handleWithdraw}>Pending · Withdraw</Button>
+                            ) : connStatus === "PENDING_RECEIVED" ? (
+                                <Button size={matches ? "xs" : "sm"} color="brightSun.4" variant="filled" leftSection={<IconUserPlus size={16}/>} onClick={handleAcceptIncoming}>Accept Request</Button>
                             ) : (
-                                <Button size={matches ? "sm" : "md"} color="brightSun.4" variant="outline" onClick={handleConnect}>Connect</Button>
+                                <Button size={matches ? "xs" : "sm"} color="brightSun.4" variant="outline" leftSection={<IconUserPlus size={16}/>} onClick={handleConnect}>Connect</Button>
                             )
                         )}
                     </div>

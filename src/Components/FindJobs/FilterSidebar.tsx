@@ -8,10 +8,10 @@ import { IconAdjustments } from "@tabler/icons-react";
 const FilterSidebar = () => {
     const filter = useSelector((state: any) => state.filter);
     const dispatch = useDispatch();
-    const [value, setValue] = useState<[number, number]>([0, 300]);
+    const [value, setValue] = useState<[number, number]>([0, 100]);
 
     useEffect(() => {
-        if (!filter.salary) setValue([0, 300]);
+        if (!filter.salary) setValue([0, 100]);
         else setValue(filter.salary);
     }, [filter]);
 
@@ -48,7 +48,7 @@ const FilterSidebar = () => {
                         value={value}
                         onChange={setValue}
                         onChangeEnd={handleSalaryChange}
-                        min={0} max={300} step={1}
+                        min={0} max={100} step={1}
                         label={null}
                         classNames={{
                             track: "bg-mine-shaft-800",

@@ -1,15 +1,17 @@
 import { Avatar, Button, Divider, Skeleton } from "@mantine/core";
-import { IconUserPlus, IconCheck, IconX } from "@tabler/icons-react";
+import { IconUserPlus, IconCheck } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getSuggestions, getPendingRequests, acceptConnectionRequest, rejectConnectionRequest, sendConnectionRequest } from "../../Services/ConnectionService";
 import axiosInstance from "../../Interceptor/AxiosInterceptor";
 import { useNavigate } from "react-router-dom";
+import { setProfile } from "../../Slices/ProfileSlice";
 
 const NetworkSidebar = () => {
     const user = useSelector((state: any) => state.user);
     const profile = useSelector((state: any) => state.profile);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     
     const [suggestions, setSuggestions] = useState<any[]>([]);
     const [requests, setRequests] = useState<any[]>([]);
@@ -36,10 +38,13 @@ const NetworkSidebar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [profile?.id]);
 
-    const handleAccept = async (id: number) => {
+    const handleAccept = async (req: any) => {
         try {
-            await acceptConnectionRequest(id);
-            setRequests(requests.filter(r => r.id !== id));
+            await acceptConnectionRequest(req.id);
+            setRequests(prev => prev.filter(r => r.id !== req.id));
+            // BUG-13 FIX: Sync connections count in Redux so ProfileSidebar updates immediately
+            const newConnections = [...(profile.connections || []), req.sender?.id].filter(Boolean);
+            dispatch(setProfile({ ...profile, connections: newConnections }));
         } catch (error) {
             console.error("Accept failed", error);
         }
@@ -80,7 +85,7 @@ const NetworkSidebar = () => {
                                     </div>
                                 </div>
                                 <div className="flex gap-2">
-                                    <Button size="xs" variant="light" color="brightSun.4" className="flex-1" onClick={() => handleAccept(req.id)}>Accept</Button>
+                                    <Button size="xs" variant="light" color="brightSun.4" className="flex-1" onClick={() => handleAccept(req)}>Accept</Button>
                                     <Button size="xs" variant="light" color="gray" className="flex-1" onClick={() => handleReject(req.id)}>Decline</Button>
                                 </div>
                             </div>

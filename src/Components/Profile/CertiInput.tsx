@@ -32,7 +32,7 @@ const CertiInput = (props: any) => {
     const handleSave = () => {
         form.validate();
         if(!form.isValid())return;
-        let certis = [...profile.certifications];
+        let certis = [...(profile.certifications || [])];
         if (props.add) {
             certis.push(form.getValues());
             certis[certis.length - 1].issueDate = form.getValues().issueDate.toISOString();
@@ -45,7 +45,7 @@ const CertiInput = (props: any) => {
         let updatedProfile = { ...profile, certifications: certis };
         props.setEdit(false);
         dispatch(changeProfile(updatedProfile));
-        successNotification("Success", `Certificate Added Successfully`);
+        successNotification("Success", `Certificate ${props.add ? "Added" : "Updated"} Successfully`);
     }
     return <div data-aos="zoom-out">
         <div className="text-lg font-semibold">Add Certificate</div>

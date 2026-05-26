@@ -47,3 +47,9 @@ export const getSuggestions = async (userId: number) => {
         .then(res => res.data)
         .catch(error => { throw error; });
 }
+
+export const getConnectionStatus = async (currentUserId: number, targetUserId: number): Promise<string> => {
+    return axiosInstance.get(`/connections/status/${currentUserId}/${targetUserId}`)
+        .then(res => res.data)
+        .catch(error => { throw error; });
+}
