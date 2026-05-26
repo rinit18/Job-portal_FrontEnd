@@ -9,15 +9,18 @@ import { Helmet } from "react-helmet-async";
 
 const HomePage=()=>{
     return (
-        <div className="min-h-[90vh] bg-mine-shaft-950 font-['poppins']">
-            <Helmet><title>Home | CareerConnect</title></Helmet>
+        <main className="min-h-[90vh] bg-mine-shaft-950 font-['poppins']">
+            <Helmet>
+                <title>Home | CareerConnect</title>
+                <meta name="description" content="Discover your dream job with CareerConnect. The best platform to find professionals, companies, and jobs tailored to your skills." />
+            </Helmet>
             <DreamJob/>
             <Companies/>
             <JobCategory/>
             <Working/>
             <Testimonials/>
             <Subscribe/>
-        </div>
+        </main>
     )
 }
 export default HomePage;

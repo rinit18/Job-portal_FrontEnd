@@ -28,13 +28,13 @@ const DreamJob = () => {
     const { assets } = WEBSITE_CONFIG;
 
     return (
-        <div className="flex sm-mx:flex-col-reverse items-center px-16 bs-mx:px-10 md-mx:px-5 py-12 relative overflow-hidden">
+        <section className="flex sm-mx:flex-col-reverse items-center px-16 bs-mx:px-10 md-mx:px-5 py-12 relative overflow-hidden">
             {/* Background glowing decorations */}
             <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-bright-sun-400/10 rounded-full blur-[100px] pointer-events-none"></div>
             <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-bright-sun-400/5 rounded-full blur-[120px] pointer-events-none"></div>
 
             <div data-aos="zoom-out-right" className="flex flex-col w-[45%] sm-mx:w-full gap-5 z-10">
-                <div className="text-6xl bs-mx:text-5xl md-mx:text-4xl sm-mx:text-3xl font-extrabold leading-tight text-mine-shaft-100 [&>span]:text-bright-sun-400">
+                <h1 className="text-6xl bs-mx:text-5xl md-mx:text-4xl sm-mx:text-3xl font-extrabold leading-tight text-mine-shaft-100 [&>span]:text-bright-sun-400">
                     {hero.titlePart1}{" "}
                     <TypeAnimation
                         sequence={[
@@ -49,7 +49,7 @@ const DreamJob = () => {
                         repeat={Infinity}
                     />{" "}
                     {hero.titlePart2}
-                </div>
+                </h1>
                 <div className="text-lg md-mx:text-base sm-mx:text-sm text-mine-shaft-300 leading-relaxed max-w-lg">
                     {hero.subtitle}
                 </div>
@@ -73,6 +73,7 @@ const DreamJob = () => {
                     </div>
                     <button 
                         onClick={handleClick}
+                        aria-label="Search"
                         className="flex items-center justify-center gap-2 sm-mx:w-full h-auto px-8 bg-bright-sun-400 text-mine-shaft-950 font-extrabold text-lg rounded-lg hover:bg-bright-sun-500 shadow-lg shadow-bright-sun-400/20 active:scale-95 transition-all duration-200"
                     >
                         <IconSearch className="h-6 w-6 stroke-[2.5]" />
@@ -83,7 +84,7 @@ const DreamJob = () => {
             
             <div data-aos="zoom-out-left" className="w-[55%] sm-mx:w-full flex items-center justify-center z-10">
                 <div className="w-[30rem] sm-mx:w-[24rem] relative">
-                    <img className="hover:scale-[1.02] transition-transform duration-500" src={assets.heroImage} alt="boy" />
+                    <img className="hover:scale-[1.02] transition-transform duration-500" src={assets.heroImage} alt="Professional presenting ideas" />
                     
                     {/* Glass card floating badges */}
                     <div className="absolute -right-6 bs-mx:right-0 w-fit xs-mx:top-[10%] top-[50%] border-mine-shaft-800 bg-mine-shaft-900/60 rounded-2xl p-3 border backdrop-blur-md shadow-xl hover:-translate-y-1 transition-all duration-300">
@@ -101,7 +102,7 @@ const DreamJob = () => {
                     <div className="absolute -left-6 w-fit bs-mx:top-[35%] xs-mx:top-[60%] top-[28%] border-mine-shaft-800 bg-mine-shaft-900/60 rounded-2xl p-4 border backdrop-blur-md gap-3 flex flex-col shadow-xl hover:-translate-y-1 transition-all duration-300">
                         <div className="flex gap-3 items-center ">
                             <div className="w-10 h-10 p-1 bg-mine-shaft-900 rounded-xl flex items-center justify-center">
-                                <img src={assets.heroCompanyLogo} alt="" className="w-6 h-6 object-contain" />
+                                <img src={assets.heroCompanyLogo} alt="Company Logo" className="w-6 h-6 object-contain" />
                             </div>
                             <div className="text-sm text-mine-shaft-100">
                                 <div className="font-bold">{hero.cardTitle}</div>
@@ -115,7 +116,7 @@ const DreamJob = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }
 export default DreamJob;
