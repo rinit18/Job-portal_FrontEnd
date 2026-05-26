@@ -81,8 +81,8 @@ const Header = () => {
             >
                 {colorScheme === 'dark' ? <IconSun size={20} /> : <IconMoon size={20} />}
             </ActionIcon>
-            <Burger className="bs:hidden sm-mx:hidden" opened={opened} onClick={open} aria-label="Toggle navigation" />
-            <Drawer className="sm-mx:hidden" size="xs" overlayProps={{ backgroundOpacity: 0.5, blur: 4 }} position="right" opened={opened} onClose={close} closeButtonProps={{
+            <Burger className="bs:hidden" opened={opened} onClick={open} aria-label="Toggle navigation" />
+            <Drawer size="xs" overlayProps={{ backgroundOpacity: 0.5, blur: 4 }} position="right" opened={opened} onClose={close} closeButtonProps={{
                 icon: <IconX size={30} />,
             }} >
                 <div className="flex flex-col gap-6 items-center">

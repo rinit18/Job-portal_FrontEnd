@@ -28,12 +28,12 @@ const DreamJob = () => {
     const { assets } = WEBSITE_CONFIG;
 
     return (
-        <section className="flex sm-mx:flex-col-reverse items-center px-16 bs-mx:px-10 md-mx:px-5 py-12 relative overflow-hidden">
+        <section className="flex md-mx:flex-col-reverse items-center px-16 bs-mx:px-10 md-mx:px-5 py-12 relative overflow-hidden">
             {/* Background glowing decorations */}
             <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-bright-sun-400/10 rounded-full blur-[100px] pointer-events-none"></div>
             <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-bright-sun-400/5 rounded-full blur-[120px] pointer-events-none"></div>
 
-            <div data-aos="zoom-out-right" className="flex flex-col w-[45%] sm-mx:w-full gap-5 z-10">
+            <div data-aos="zoom-out-right" className="flex flex-col w-[45%] md-mx:w-full gap-5 z-10">
                 <h1 className="text-6xl bs-mx:text-5xl md-mx:text-4xl sm-mx:text-3xl font-extrabold leading-tight text-mine-shaft-100 [&>span]:text-bright-sun-400">
                     {hero.titlePart1}{" "}
                     <TypeAnimation
@@ -56,8 +56,8 @@ const DreamJob = () => {
                 
 
                 {/* Hero Search Bar (Indeed-style): High contrast, large inputs, prominent button */}
-                <div className="flex sm-mx:flex-col gap-3 mt-4 p-3 bg-mine-shaft-900 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-mine-shaft-800 focus-within:border-bright-sun-400/50 transition-all duration-300">
-                    <div className="flex-1 flex sm-mx:flex-col gap-2">
+                <div className="flex md-mx:flex-col gap-3 mt-4 p-3 bg-mine-shaft-900 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-mine-shaft-800 focus-within:border-bright-sun-400/50 transition-all duration-300">
+                    <div className="flex-1 flex md-mx:flex-col gap-2">
                         <Autocomplete 
                             value={query} 
                             onChange={setQuery} 
@@ -74,7 +74,7 @@ const DreamJob = () => {
                     <button 
                         onClick={handleClick}
                         aria-label="Search"
-                        className="flex items-center justify-center gap-2 sm-mx:w-full h-auto px-8 bg-bright-sun-400 text-mine-shaft-950 font-extrabold text-lg rounded-lg hover:bg-bright-sun-500 shadow-lg shadow-bright-sun-400/20 active:scale-95 transition-all duration-200"
+                        className="flex items-center justify-center gap-2 md-mx:w-full h-auto px-8 bg-bright-sun-400 text-mine-shaft-950 font-extrabold text-lg rounded-lg hover:bg-bright-sun-500 shadow-lg shadow-bright-sun-400/20 active:scale-95 transition-all duration-200"
                     >
                         <IconSearch className="h-6 w-6 stroke-[2.5]" />
                         <span className="hidden lg:block">Search</span>
@@ -82,8 +82,8 @@ const DreamJob = () => {
                 </div>
             </div>
             
-            <div data-aos="zoom-out-left" className="w-[55%] sm-mx:w-full flex items-center justify-center z-10">
-                <div className="w-[30rem] sm-mx:w-[24rem] relative">
+            <div data-aos="zoom-out-left" className="w-[55%] md-mx:w-full flex items-center justify-center z-10 mt-5">
+                <div className="w-[30rem] md-mx:w-full md-mx:max-w-[24rem] relative">
                     <img className="hover:scale-[1.02] transition-transform duration-500" src={assets.heroImage} alt="Professional presenting ideas" />
                     
                     {/* Glass card floating badges */}
