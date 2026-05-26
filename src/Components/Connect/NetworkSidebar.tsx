@@ -3,6 +3,7 @@ import { IconUserPlus, IconCheck, IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getSuggestions, getPendingRequests, acceptConnectionRequest, rejectConnectionRequest, sendConnectionRequest } from "../../Services/ConnectionService";
+import axiosInstance from "../../Interceptor/AxiosInterceptor";
 import { useNavigate } from "react-router-dom";
 
 const NetworkSidebar = () => {
@@ -133,8 +134,25 @@ const NetworkSidebar = () => {
                             </div>
                         ))
                     ) : (
-                        <div className="text-sm text-mine-shaft-400 text-center py-2">
-                            No suggestions at the moment.
+                        <div className="flex flex-col items-center justify-center py-4">
+                            <div className="text-sm text-mine-shaft-400 text-center mb-3">
+                                No suggestions at the moment.
+                            </div>
+                            <Button 
+                                size="xs" 
+                                color="brightSun.4" 
+                                variant="light" 
+                                onClick={async () => {
+                                    try {
+                                        await axiosInstance.post('/connections/mock');
+                                        window.location.reload();
+                                    } catch(e) {
+                                        console.error(e);
+                                    }
+                                }}
+                            >
+                                Generate Mock Data
+                            </Button>
                         </div>
                     )}
                 </div>
