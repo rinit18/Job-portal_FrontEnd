@@ -9,8 +9,9 @@ import { useMediaQuery } from "@mantine/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { hideOverlay, showOverlay } from "../../Slices/OverlaySlice";
 import { getOrCreateRoom } from "../../Services/ChatService";
-import { errorNotification } from "../../Services/NotificationService";
+import { errorNotification, successNotification } from "../../Services/NotificationService";
 import { WEBSITE_CONFIG } from "../../config";
+import { sendConnectionRequest, getPendingRequests } from "../../Services/ConnectionService";
 
 const Profile = () => {
     const { id } = useParams();
@@ -21,6 +22,28 @@ const Profile = () => {
     const navigate = useNavigate();
     const currentProfile = useSelector((state: any) => state.profile);
     const currentProfileId = currentProfile?.id;
+    const [requestSent, setRequestSent] = useState(false);
+    const [isConnected, setIsConnected] = useState(false);
+
+    useEffect(() => {
+        if (profile && currentProfileId) {
+            setIsConnected(profile?.connections?.includes(currentProfileId));
+        }
+    }, [profile, currentProfileId]);
+
+    const handleConnect = async () => {
+        if (!currentProfileId) {
+            errorNotification("Authentication Required", "Please set up your profile to connect.");
+            return;
+        }
+        try {
+            await sendConnectionRequest(currentProfileId, profile.id);
+            setRequestSent(true);
+            successNotification("Success", "Connection request sent");
+        } catch (error) {
+            errorNotification("Error", "Could not send connection request.");
+        }
+    };
 
     const handleStartChat = () => {
         if (!currentProfileId) {
@@ -60,7 +83,20 @@ const Profile = () => {
 
             </div>
             <div className="px-3 mt-16">
-                <div className="text-3xl xs-mx:text-2xl font-semibold flex justify-between">{profile?.name} <Button size={matches?"sm":"md"} color="brightSun.4" variant="light" onClick={handleStartChat}>Message</Button></div>
+                <div className="text-3xl xs-mx:text-2xl font-semibold flex justify-between">
+                    {profile?.name} 
+                    <div className="flex gap-2">
+                        {currentProfileId !== profile?.id && (
+                            isConnected ? (
+                                <Button size={matches ? "sm" : "md"} color="brightSun.4" variant="light" onClick={handleStartChat}>Message</Button>
+                            ) : requestSent ? (
+                                <Button size={matches ? "sm" : "md"} color="gray" variant="light" disabled>Request Sent</Button>
+                            ) : (
+                                <Button size={matches ? "sm" : "md"} color="brightSun.4" variant="outline" onClick={handleConnect}>Connect</Button>
+                            )
+                        )}
+                    </div>
+                </div>
                 <div className="text-xl xs-mx:text-base flex gap-1 items-center"> <IconBriefcase className="h-5 w-5" stroke={1.5} />{profile?.jobTitle}  &bull; {profile?.company}</div>
                 <div className="text-lg flex xs-mx:text-base gap-1 items-center text-mine-shaft-300">
                     <IconMapPin className="h-5 w-5" stroke={1.5} /> {profile?.location}

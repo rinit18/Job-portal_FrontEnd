@@ -12,6 +12,7 @@ const NetworkSidebar = () => {
     
     const [suggestions, setSuggestions] = useState<any[]>([]);
     const [requests, setRequests] = useState<any[]>([]);
+    const [sentRequests, setSentRequests] = useState<number[]>([]);
     const [loading, setLoading] = useState(true);
 
     const fetchData = async () => {
@@ -55,7 +56,7 @@ const NetworkSidebar = () => {
     const handleConnect = async (receiverId: number) => {
         try {
             await sendConnectionRequest(user.profileId, receiverId);
-            setSuggestions(suggestions.filter(s => s.id !== receiverId));
+            setSentRequests([...sentRequests, receiverId]);
         } catch (error) {
             console.error("Connect failed", error);
         }
@@ -120,16 +121,29 @@ const NetworkSidebar = () => {
                                         {suggestion.name}
                                     </div>
                                     <div className="text-xs text-mine-shaft-400 truncate mb-1">{suggestion.jobTitle}</div>
-                                    <Button 
-                                        size="xs" 
-                                        variant="outline" 
-                                        color="mineShaft.3" 
-                                        radius="xl" 
-                                        leftSection={<IconUserPlus size={14} />}
-                                        onClick={() => handleConnect(suggestion.id)}
-                                    >
-                                        Connect
-                                    </Button>
+                                    {sentRequests.includes(suggestion.id) ? (
+                                        <Button 
+                                            size="xs" 
+                                            variant="light" 
+                                            color="gray" 
+                                            radius="xl" 
+                                            leftSection={<IconCheck size={14} />}
+                                            disabled
+                                        >
+                                            Sent
+                                        </Button>
+                                    ) : (
+                                        <Button 
+                                            size="xs" 
+                                            variant="outline" 
+                                            color="mineShaft.3" 
+                                            radius="xl" 
+                                            leftSection={<IconUserPlus size={14} />}
+                                            onClick={() => handleConnect(suggestion.id)}
+                                        >
+                                            Connect
+                                        </Button>
+                                    )}
                                 </div>
                             </div>
                         ))
