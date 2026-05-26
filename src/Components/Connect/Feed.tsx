@@ -12,15 +12,17 @@ const Feed = () => {
     
     const [posts, setPosts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [sort, setSort] = useState("Recent"); // "Recent" or "Top"
     
     const [content, setContent] = useState("");
     const [image, setImage] = useState<string | null>(null);
     const [isPosting, setIsPosting] = useState(false);
 
     const fetchPosts = async () => {
+        if (!user || !user.profileId) return;
         setLoading(true);
         try {
-            const res = await getAllPosts();
+            const res = await getAllPosts(user.profileId, sort);
             setPosts(res);
         } catch (error) {
             console.error("Error fetching posts", error);
@@ -30,7 +32,8 @@ const Feed = () => {
 
     useEffect(() => {
         fetchPosts();
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sort, user]);
 
     const handleImageUpload = async (e: any) => {
         const file = e.target.files[0];
@@ -115,7 +118,17 @@ const Feed = () => {
             {/* Divider */}
             <div className="flex items-center gap-2">
                 <div className="h-[1px] flex-1 bg-mine-shaft-800"></div>
-                <div className="text-xs text-mine-shaft-400">Sort by: <span className="font-semibold text-mine-shaft-200">Top</span></div>
+                <div className="text-xs text-mine-shaft-400 flex items-center gap-2">
+                    Sort by: 
+                    <select 
+                        value={sort} 
+                        onChange={(e) => setSort(e.target.value)} 
+                        className="bg-mine-shaft-900 border border-mine-shaft-800 rounded px-2 py-1 text-mine-shaft-200 outline-none focus:border-bright-sun-400 cursor-pointer"
+                    >
+                        <option value="Recent">Recent</option>
+                        <option value="Top">Top</option>
+                    </select>
+                </div>
             </div>
 
             {/* Feed Stream */}

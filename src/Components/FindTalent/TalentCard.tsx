@@ -11,7 +11,12 @@ import { errorNotification, successNotification } from "../../Services/Notificat
 import { useSelector } from "react-redux";
 import { getOrCreateRoom } from "../../Services/ChatService";
 
+
 const TalentCard = (props: any) => {
+    const user = useSelector((state: any) => state.user);
+    
+    // User is connected if the viewed profile's connections list includes the current user's profile ID
+    const isConnected = props.connections?.includes(user?.profileId) || props.id === user?.profileId;
     const navigate = useNavigate();
     const currentProfile = useSelector((state: any) => state.profile);
     const currentProfileId = currentProfile?.id;
@@ -109,7 +114,11 @@ const TalentCard = (props: any) => {
                     </Link>
 
                     <div>
-                        {props.posted ? <Button color="brightSun.4" variant="light" onClick={open} rightSection={<IconCalendarMonth className="w-5 h-5" />} fullWidth>Schedule</Button> : <Button color="brightSun.4" variant="light" onClick={handleStartChat} fullWidth>Message</Button>}
+                        {isConnected ? (
+                            props.posted ? <Button color="brightSun.4" variant="light" onClick={open} rightSection={<IconCalendarMonth className="w-5 h-5" />} fullWidth>Schedule</Button> : <Button color="brightSun.4" variant="light" onClick={handleStartChat} fullWidth>Message</Button>
+                        ) : (
+                            <div className="text-xs text-mine-shaft-400 py-2 border border-mine-shaft-800 rounded-lg bg-mine-shaft-900/50 text-center">Connect to Message</div>
+                        )}
                     </div>
                 </>
             }{

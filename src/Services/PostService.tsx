@@ -6,8 +6,8 @@ export const createPost = async (post: any) => {
         .catch(error => { throw error; });
 }
 
-export const getAllPosts = async () => {
-    return axiosInstance.get(`/posts/all`)
+export const getAllPosts = async (userId: number, sort: string) => {
+    return axiosInstance.get(`/posts/all?userId=${userId}&sort=${sort}`)
         .then(res => res.data)
         .catch(error => { throw error; });
 }
