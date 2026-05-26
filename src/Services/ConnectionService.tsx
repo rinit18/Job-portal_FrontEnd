@@ -18,6 +18,18 @@ export const rejectConnectionRequest = async (requestId: number) => {
         .catch(error => { throw error; });
 }
 
+export const withdrawConnectionRequest = async (senderId: number, receiverId: number) => {
+    return axiosInstance.delete(`/connections/withdraw/${senderId}/${receiverId}`)
+        .then(res => res.data)
+        .catch(error => { throw error; });
+}
+
+export const removeConnection = async (userId1: number, userId2: number) => {
+    return axiosInstance.delete(`/connections/remove/${userId1}/${userId2}`)
+        .then(res => res.data)
+        .catch(error => { throw error; });
+}
+
 export const getPendingRequests = async (userId: number) => {
     return axiosInstance.get(`/connections/requests/${userId}`)
         .then(res => res.data)

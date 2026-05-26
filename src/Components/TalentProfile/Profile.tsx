@@ -11,7 +11,7 @@ import { hideOverlay, showOverlay } from "../../Slices/OverlaySlice";
 import { getOrCreateRoom } from "../../Services/ChatService";
 import { errorNotification, successNotification } from "../../Services/NotificationService";
 import { WEBSITE_CONFIG } from "../../config";
-import { sendConnectionRequest, getPendingRequests } from "../../Services/ConnectionService";
+import { sendConnectionRequest, withdrawConnectionRequest, removeConnection } from "../../Services/ConnectionService";
 
 const Profile = () => {
     const { id } = useParams();
@@ -46,6 +46,26 @@ const Profile = () => {
             } else {
                 errorNotification("Error", "Could not send connection request.");
             }
+        }
+    };
+
+    const handleWithdraw = async () => {
+        try {
+            await withdrawConnectionRequest(currentProfileId, profile.id);
+            setRequestSent(false);
+            successNotification("Success", "Connection request withdrawn");
+        } catch (error) {
+            errorNotification("Error", "Could not withdraw request.");
+        }
+    };
+
+    const handleDisconnect = async () => {
+        try {
+            await removeConnection(currentProfileId, profile.id);
+            setIsConnected(false);
+            successNotification("Success", "Connection removed");
+        } catch (error) {
+            errorNotification("Error", "Could not remove connection.");
         }
     };
 
@@ -92,9 +112,12 @@ const Profile = () => {
                     <div className="flex gap-2">
                         {currentProfileId !== profile?.id && (
                             isConnected ? (
-                                <Button size={matches ? "sm" : "md"} color="brightSun.4" variant="light" onClick={handleStartChat}>Message</Button>
+                                <>
+                                    <Button size={matches ? "sm" : "md"} color="brightSun.4" variant="light" onClick={handleStartChat}>Message</Button>
+                                    <Button size={matches ? "sm" : "md"} color="red" variant="subtle" onClick={handleDisconnect}>Disconnect</Button>
+                                </>
                             ) : requestSent ? (
-                                <Button size={matches ? "sm" : "md"} color="gray" variant="light" disabled>Request Sent</Button>
+                                <Button size={matches ? "sm" : "md"} color="gray" variant="light" onClick={handleWithdraw}>Withdraw Request</Button>
                             ) : (
                                 <Button size={matches ? "sm" : "md"} color="brightSun.4" variant="outline" onClick={handleConnect}>Connect</Button>
                             )
