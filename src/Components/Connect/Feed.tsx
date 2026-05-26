@@ -19,10 +19,10 @@ const Feed = () => {
     const [isPosting, setIsPosting] = useState(false);
 
     const fetchPosts = async () => {
-        if (!user || !user.profileId) return;
+        if (!profile?.id) return;
         setLoading(true);
         try {
-            const res = await getAllPosts(user.profileId, sort);
+            const res = await getAllPosts(profile.id, sort);
             setPosts(res);
         } catch (error) {
             console.error("Error fetching posts", error);
@@ -33,7 +33,7 @@ const Feed = () => {
     useEffect(() => {
         fetchPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sort, user]);
+    }, [sort, profile?.id]);
 
     const handleImageUpload = async (e: any) => {
         const file = e.target.files[0];
@@ -48,7 +48,7 @@ const Feed = () => {
         setIsPosting(true);
         try {
             const newPost = await createPost({
-                profileId: user.profileId,
+                profileId: profile.id,
                 content: content,
                 image: image
             });

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const NetworkSidebar = () => {
     const user = useSelector((state: any) => state.user);
+    const profile = useSelector((state: any) => state.profile);
     const navigate = useNavigate();
     
     const [suggestions, setSuggestions] = useState<any[]>([]);
@@ -19,8 +20,8 @@ const NetworkSidebar = () => {
         setLoading(true);
         try {
             const [sugRes, reqRes] = await Promise.all([
-                getSuggestions(user.profileId),
-                getPendingRequests(user.profileId)
+                getSuggestions(profile?.id),
+                getPendingRequests(profile?.id)
             ]);
             setSuggestions(sugRes);
             setRequests(reqRes);
@@ -31,9 +32,9 @@ const NetworkSidebar = () => {
     };
 
     useEffect(() => {
-        if (user?.profileId) fetchData();
+        if (profile?.id) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user]);
+    }, [profile?.id]);
 
     const handleAccept = async (id: number) => {
         try {
@@ -55,7 +56,7 @@ const NetworkSidebar = () => {
 
     const handleConnect = async (receiverId: number) => {
         try {
-            await sendConnectionRequest(user.profileId, receiverId);
+            await sendConnectionRequest(profile?.id, receiverId);
             setSentRequests([...sentRequests, receiverId]);
         } catch (error) {
             console.error("Connect failed", error);
