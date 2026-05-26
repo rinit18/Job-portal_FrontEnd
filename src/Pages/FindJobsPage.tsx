@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 
 const FindJobsPage = () => {
     return (
-        <div className="h-[calc(100vh-80px)] flex flex-col bg-mine-shaft-950 font-['poppins'] overflow-hidden relative">
+        <div className="h-[calc(100vh-80px)] sm-mx:h-[calc(100dvh-140px)] flex flex-col bg-mine-shaft-950 font-['poppins'] overflow-hidden relative">
             <Helmet><title>Find Jobs | CareerConnect</title></Helmet>
 
             {/* Ambient background glows */}
