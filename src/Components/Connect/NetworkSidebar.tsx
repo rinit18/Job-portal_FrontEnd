@@ -6,6 +6,7 @@ import { getSuggestions, getPendingRequests, acceptConnectionRequest, rejectConn
 import axiosInstance from "../../Interceptor/AxiosInterceptor";
 import { useNavigate } from "react-router-dom";
 import { setProfile } from "../../Slices/ProfileSlice";
+import { errorNotification, successNotification } from "../../Services/NotificationService";
 
 const NetworkSidebar = () => {
     const user = useSelector((state: any) => state.user);
@@ -45,8 +46,10 @@ const NetworkSidebar = () => {
             // BUG-13 FIX: Sync connections count in Redux so ProfileSidebar updates immediately
             const newConnections = [...(profile.connections || []), req.sender?.id].filter(Boolean);
             dispatch(setProfile({ ...profile, connections: newConnections }));
+            successNotification("Request Accepted", "You are now connected.");
         } catch (error) {
             console.error("Accept failed", error);
+            errorNotification("Error", "Could not accept request.");
         }
     };
 
@@ -54,8 +57,10 @@ const NetworkSidebar = () => {
         try {
             await rejectConnectionRequest(id);
             setRequests(requests.filter(r => r.id !== id));
+            successNotification("Request Declined", "Connection request removed.");
         } catch (error) {
             console.error("Reject failed", error);
+            errorNotification("Error", "Could not decline request.");
         }
     };
 
@@ -63,8 +68,10 @@ const NetworkSidebar = () => {
         try {
             await sendConnectionRequest(profile?.id, receiverId);
             setSentRequests([...sentRequests, receiverId]);
+            successNotification("Request Sent", "Connection request has been sent.");
         } catch (error) {
             console.error("Connect failed", error);
+            errorNotification("Error", "Could not send connection request.");
         }
     };
 
@@ -163,11 +170,14 @@ const NetworkSidebar = () => {
                                 color="brightSun.4" 
                                 variant="light" 
                                 onClick={async () => {
+                                    if (!profile?.id) return;
                                     try {
-                                        await axiosInstance.post('/connections/mock');
+                                        await axiosInstance.post(`/connections/mock/${profile.id}`);
+                                        successNotification("Mock Data Generated", "Refresh to see new posts and requests.");
                                         window.location.reload();
                                     } catch(e) {
                                         console.error(e);
+                                        errorNotification("Error", "Could not generate mock data.");
                                     }
                                 }}
                             >

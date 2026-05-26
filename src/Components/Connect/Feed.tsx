@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { createPost, getAllPosts } from "../../Services/PostService";
 import PostCard from "./PostCard";
 import { getBase64 } from "../../Services/Utilities";
+import { errorNotification, successNotification } from "../../Services/NotificationService";
 
 const Feed = () => {
     const user = useSelector((state: any) => state.user);
@@ -55,8 +56,10 @@ const Feed = () => {
             setPosts([newPost, ...posts]);
             setContent("");
             setImage(null);
+            successNotification("Post Created", "Your post is now live!");
         } catch (error) {
             console.error("Error creating post", error);
+            errorNotification("Error", "Could not create post.");
         }
         setIsPosting(false);
     };
