@@ -23,13 +23,16 @@ const PostJob = () => {
     const [aiLoading, setAiLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isDraftLoading, setIsDraftLoading] = useState(false);
+    const [originalJobData, setOriginalJobData] = useState<any>(null);
     // const matches = useMediaQuery('(min-width: 350px)');
     useEffect(()=>{
         window.scrollTo(0,0);
         if(Number(id)!==0){
             dispatch(showOverlay());
             getJob(id).then((res)=>{
-                form.setValues(res);
+                setOriginalJobData(res);
+                const formValues = { ...res, packageOffered: res.packageOffered ? res.packageOffered / 100000 : '' };
+                form.setValues(formValues);
                 setEditorData(res.description);
             }).catch((err)=>console.log(err))
             .finally(()=>dispatch(hideOverlay()));
@@ -74,22 +77,40 @@ const PostJob = () => {
             return;
         }
         setIsLoading(true);
-        postJob({ ...form.getValues(),id, postedBy: user.id, jobStatus: "ACTIVE" }).then((res) => {
-            successNotification("Success", "Job Posted Successfully");
+        const formValues = form.getValues();
+        const payload = {
+            ...originalJobData,
+            ...formValues,
+            packageOffered: formValues.packageOffered ? Number(formValues.packageOffered) * 100000 : 0,
+            id,
+            postedBy: user.id,
+            jobStatus: "ACTIVE"
+        };
+        postJob(payload).then((res) => {
+            successNotification("Success", Number(id) === 0 ? "Job Posted Successfully" : "Job Updated Successfully");
             navigate(`/posted-jobs/${res.id}`);
         }).catch((err) => {
             console.log(err);
-            errorNotification("Error", err.response.data.errorMessage);
+            errorNotification("Error", err.response?.data?.errorMessage || "Error posting job");
         }).finally(()=>setIsLoading(false));
     }
     const handleDraft = () => {
         setIsDraftLoading(true);
-        postJob({ ...form.getValues(),id, postedBy: user.id, jobStatus: "DRAFT" }).then((res) => {
-            successNotification("Success", "Job Saved as Draft");
+        const formValues = form.getValues();
+        const payload = {
+            ...originalJobData,
+            ...formValues,
+            packageOffered: formValues.packageOffered ? Number(formValues.packageOffered) * 100000 : 0,
+            id,
+            postedBy: user.id,
+            jobStatus: "DRAFT"
+        };
+        postJob(payload).then((res) => {
+            successNotification("Success", Number(id) === 0 ? "Job Saved as Draft" : "Job Draft Updated");
             navigate(`/posted-jobs/${res.id}`);
         }).catch((err) => {
             console.log(err);
-            errorNotification("Error", err.response.data.errorMessage);
+            errorNotification("Error", err.response?.data?.errorMessage || "Error saving draft");
         }).finally(()=>setIsDraftLoading(false));
     }
     return <div data-aos="zoom-out" className="px-16 bs-mx:px-10 md-mx:px-5 py-5 ">
