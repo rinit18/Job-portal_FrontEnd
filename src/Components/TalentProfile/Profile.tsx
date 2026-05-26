@@ -40,8 +40,12 @@ const Profile = () => {
             await sendConnectionRequest(currentProfileId, profile.id);
             setRequestSent(true);
             successNotification("Success", "Connection request sent");
-        } catch (error) {
-            errorNotification("Error", "Could not send connection request.");
+        } catch (error: any) {
+            if (error?.response?.data?.errorMessage === "Connection request already sent") {
+                setRequestSent(true);
+            } else {
+                errorNotification("Error", "Could not send connection request.");
+            }
         }
     };
 

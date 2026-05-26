@@ -43,6 +43,7 @@ const SettingsPage = lazy(() => import('./SettingsPage'));
 const Unauthorized = lazy(() => import('./UnauthroizedPage'));
 const NotFoundPage = lazy(() => import('./NotFoundPage'));
 const ProfessionalsPage = lazy(() => import('./ProfessionalsPage'));
+const NotificationsPage = lazy(() => import('./NotificationsPage'));
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -59,6 +60,7 @@ const AnimatedRoutes = () => {
         <Route path='/search' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><GlobalSearchPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/network' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><FindTalentPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/professionals' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><ProfessionalsPage /></AnimatedPage></ProtectedRoute>} />
+        <Route path='/notifications' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><NotificationsPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/user/:id' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><TalentProfilePage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/company/:name' element={<ProtectedRoute allowedRoles={['APPLICANT', 'EMPLOYER', 'ADMIN']}><AnimatedPage><CompanyPage /></AnimatedPage></ProtectedRoute>} />
         <Route path='/job-history' element={<ProtectedRoute allowedRoles={['APPLICANT', 'ADMIN']}><AnimatedPage><JobHistoryPage /></AnimatedPage></ProtectedRoute>} />
