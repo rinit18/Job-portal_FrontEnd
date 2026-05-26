@@ -161,7 +161,7 @@ const NetworkSidebar = () => {
                 
                 <div 
                     className="text-xs text-bright-sun-400 font-semibold text-center hover:underline cursor-pointer"
-                    onClick={() => navigate("/search")}
+                    onClick={() => navigate("/professionals")}
                 >
                     View all recommendations →
                 </div>
