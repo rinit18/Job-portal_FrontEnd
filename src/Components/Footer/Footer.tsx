@@ -8,7 +8,7 @@ const Footer = () => {
     const location = useLocation();
     
     // Hide footer on full-height app-like pages or auth pages
-    const hiddenPaths = ['/signup', '/login', '/messages', '/find-jobs', '/network'];
+    const hiddenPaths = ['/signup', '/login', '/messages', '/find-jobs', '/network', '/posted-jobs'];
     const shouldHide = hiddenPaths.some(path => location.pathname.startsWith(path));
 
     if (shouldHide) return <></>;

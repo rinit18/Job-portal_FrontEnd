@@ -54,7 +54,7 @@ const PostedJobPage = () => {
                 <PostedJob job={job} jobList={jobList}/>   
             </Drawer>
             
-            <div className="flex-1 flex w-full max-w-7xl mx-auto p-4 sm-mx:p-2 gap-5 h-[calc(100vh-80px)] z-10">
+            <div className="flex-1 flex w-full max-w-7xl mx-auto p-4 sm-mx:p-2 gap-5 h-[calc(100vh-80px)] sm-mx:h-[calc(100dvh-140px)] z-10">
                 {!matches && (
                     <div className="w-1/3 sm-mx:w-[80px] flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
                         <PostedJob job={job} jobList={jobList}/>

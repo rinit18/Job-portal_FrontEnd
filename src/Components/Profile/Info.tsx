@@ -52,11 +52,11 @@ const Info = () => {
     </div>
     </div>
         {
-            edit ? <> <div  data-aos="zoom-out"className=" flex gap-10 md-mx:gap-5 [&>*]:w-1/2 xs-mx:[&>*]:w-full xs-mx:flex-wrap my-3" >
+            edit ? <> <div  data-aos="zoom-out"className=" flex gap-10 md-mx:gap-5 [&>*]:w-1/2 sm-mx:[&>*]:w-full sm-mx:flex-wrap my-3" >
                 <SelectInput form={form} name="jobTitle"  {...select[0]} />
                 <SelectInput form={form} name="company" {...select[1]} />
             </div>
-            <div data-aos="zoom-out" className=" flex gap-10 md-mx:gap-5 [&>*]:w-1/2 xs-mx:[&>*]:w-full xs-mx:flex-wrap my-3" >
+            <div data-aos="zoom-out" className=" flex gap-10 md-mx:gap-5 [&>*]:w-1/2 sm-mx:[&>*]:w-full sm-mx:flex-wrap my-3" >
                 <SelectInput name="location" form={form}  {...select[2]} />
                 <NumberInput data-aos="zoom-out" label="Experience" withAsterisk hideControls  clampBehavior="strict" min={1} max={50} {...form.getInputProps('totalExp')} />
             </div>

@@ -1,6 +1,6 @@
 import { ActionIcon, Avatar, Divider, ScrollArea, TextInput, Indicator, Loader, Skeleton } from "@mantine/core";
 import { WEBSITE_CONFIG } from "../config";
-import { IconSend, IconSearch, IconDotsVertical, IconPaperclip, IconPhone, IconVideo, IconChecks } from "@tabler/icons-react";
+import { IconSend, IconSearch, IconDotsVertical, IconPaperclip, IconPhone, IconVideo, IconChecks, IconArrowLeft } from "@tabler/icons-react";
 import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
@@ -18,6 +18,7 @@ const MessagesPage = () => {
     const [messageInput, setMessageInput] = useState("");
     const [messages, setMessages] = useState<MessagePayload[]>([]);
     const [loading, setLoading] = useState(true);
+    const [showChatList, setShowChatList] = useState(true);
     const scrollAreaRef = useRef<HTMLDivElement>(null);
 
     // Fetch conversations on load and poll every 4 seconds
@@ -137,19 +138,15 @@ const MessagesPage = () => {
             <div className="flex-1 flex w-full max-w-7xl mx-auto p-4 sm-mx:p-2 sm-mx:pb-2 gap-5 h-[calc(100vh-80px)] sm-mx:h-[calc(100dvh-140px)] z-10">
                 
                 {/* Left Sidebar - Conversations */}
-                <div className="w-1/3 sm-mx:w-[80px] flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.2)] relative">
-                    <div className="p-5 sm-mx:p-2 border-b border-mine-shaft-800/60 bg-mine-shaft-900/20">
-                        <div className="text-xl sm-mx:hidden font-semibold text-mine-shaft-100 mb-4">Messaging</div>
+                <div className={`w-1/3 flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.2)] relative ${!showChatList ? 'sm-mx:hidden' : 'sm-mx:w-full'}`}>
+                    <div className="p-5 border-b border-mine-shaft-800/60 bg-mine-shaft-900/20">
+                        <div className="text-xl font-semibold text-mine-shaft-100 mb-4">Messaging</div>
                         <TextInput 
                             placeholder="Search messages" 
                             leftSection={<IconSearch size={16} />} 
                             variant="filled" 
                             radius="xl"
-                            className="sm-mx:hidden"
                         />
-                        <div className="hidden sm-mx:flex justify-center">
-                            <IconSearch size={24} className="text-mine-shaft-300" />
-                        </div>
                     </div>
                     
                     <ScrollArea className="flex-1">
@@ -182,8 +179,9 @@ const MessagesPage = () => {
                                         onClick={() => {
                                             setActiveChat(conv);
                                             setMessages([]);
+                                            setShowChatList(false);
                                         }}
-                                        className={`p-4 sm-mx:p-2 flex gap-3 cursor-pointer transition-all duration-300 border-b border-mine-shaft-800/40 hover:bg-mine-shaft-800/40 relative ${activeChat?.id === conv.id ? 'bg-bright-sun-400/5' : ''}`}
+                                        className={`p-4 flex gap-3 cursor-pointer transition-all duration-300 border-b border-mine-shaft-800/40 hover:bg-mine-shaft-800/40 relative ${activeChat?.id === conv.id ? 'bg-bright-sun-400/5' : ''}`}
                                     >
                                         {/* Active indicator bar */}
                                         {activeChat?.id === conv.id && (
@@ -192,7 +190,7 @@ const MessagesPage = () => {
                                         <Indicator inline size={12} offset={5} position="bottom-end" color="teal" withBorder>
                                             <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(partner.name)}&background=2a2a2a&color=fab005`} size="lg" radius="xl" />
                                         </Indicator>
-                                        <div className="flex-1 min-w-0 sm-mx:hidden">
+                                        <div className="flex-1 min-w-0">
                                             <div className="flex justify-between items-start">
                                                 <div className="font-semibold text-mine-shaft-100 truncate">{partner.name}</div>
                                                 <div className="text-[10px] text-mine-shaft-400 whitespace-nowrap">
@@ -212,7 +210,7 @@ const MessagesPage = () => {
                 </div>
 
                 {/* Right Side - Active Chat */}
-                <div className="flex-1 flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
+                <div className={`flex-1 flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.2)] ${showChatList ? 'sm-mx:hidden' : 'sm-mx:flex'}`}>
                     {activeChat ? (
                         <>
                             {/* Chat Header */}
@@ -221,6 +219,9 @@ const MessagesPage = () => {
                                 return (
                                     <div className="p-4 border-b border-mine-shaft-800/60 flex justify-between items-center bg-mine-shaft-900/20 z-10">
                                         <div className="flex gap-3 items-center">
+                                            <ActionIcon variant="subtle" color="gray" className="hidden sm-mx:block" onClick={() => setShowChatList(true)}>
+                                                <IconArrowLeft size={20} />
+                                            </ActionIcon>
                                             <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(partner.name)}&background=2a2a2a&color=fab005`} size="md" radius="xl" />
                                             <div>
                                                 <div className="font-semibold text-mine-shaft-100">{partner.name}</div>

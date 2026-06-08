@@ -107,7 +107,7 @@ const Job = (props: any) => {
             </div>
 
             {/* ── Stats row ─────────────────────────────────── */}
-            <div className="grid grid-cols-4 gap-2 mb-8">
+            <div className="grid grid-cols-4 md-mx:grid-cols-2 gap-2 mb-8">
                 {card.map((item, index) => (
                     <div key={index} className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-mine-shaft-900/40 border border-mine-shaft-800/40">
                         <ActionIcon size="md" variant="light" color="brightSun.4" radius="lg">
@@ -131,7 +131,7 @@ const Job = (props: any) => {
                 <div className="text-[11px] font-bold text-mine-shaft-300 uppercase tracking-widest mb-2.5">Required Skills</div>
                 <div className="flex flex-wrap gap-1.5">
                     {props.skillsRequired?.map((skill: any, i: number) => (
-                        <span key={i} className="px-2.5 py-1 text-xs font-medium rounded-full bg-bright-sun-400/[0.08] text-bright-sun-400 border border-bright-sun-400/20">
+                        <span key={i} className="whitespace-nowrap px-2.5 py-1 text-xs font-medium rounded-full bg-bright-sun-400/[0.08] text-bright-sun-400 border border-bright-sun-400/20">
                             {skill}
                         </span>
                     ))}

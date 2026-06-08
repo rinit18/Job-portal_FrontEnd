@@ -60,13 +60,13 @@ const ExpInput = (props: any) => {
 
     return <div data-aos="zoom-out">
         <div className="text-lg font-semibold">{props.add ? "Add" : "Edit"} Experience</div>
-        <div className=" flex gap-10  md-mx:gap-5 [&>*]:w-1/2 xs-mx:[&>*]:w-full xs-mx:flex-wrap my-3" >
+        <div className=" flex gap-10  md-mx:gap-5 [&>*]:w-1/2 sm-mx:[&>*]:w-full sm-mx:flex-wrap my-3" >
             <SelectInput form={form} name="title"  {...select[0]} />
             <SelectInput form={form} name="company" {...select[1]} />
         </div>
         <SelectInput form={form} name="location"   {...select[2]} />
         <Textarea {...form.getInputProps("description")} withAsterisk className="my-3" label="Summary" autosize minRows={2} placeholder="Enter Summary" />
-        <div className=" flex gap-10  md-mx:gap-5 [&>*]:w-1/2 xs-mx:[&>*]:w-full xs-mx:flex-wrap my-3">
+        <div className=" flex gap-10  md-mx:gap-5 [&>*]:w-1/2 sm-mx:[&>*]:w-full sm-mx:flex-wrap my-3">
             <MonthPickerInput {...form.getInputProps("startDate")} maxDate={form.getValues().endDate || undefined} withAsterisk label="Start Date" />
             <MonthPickerInput disabled={form.getValues().working} minDate={form.getValues().startDate || undefined} maxDate={new Date()} withAsterisk label="End Date" placeholder="Pick date" {...form.getInputProps("endDate")} />
         </div>
