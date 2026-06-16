@@ -3,6 +3,8 @@ import { IconMessageCircle, IconSend, IconX, IconRobot } from "@tabler/icons-rea
 import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { chatBot } from "../../Services/AiService";
+// @ts-ignore
+import DOMPurify from 'dompurify';
 
 const Chatbot = () => {
     const [opened, setOpened] = useState(false);
@@ -65,7 +67,7 @@ const Chatbot = () => {
 
             {/* Chat Window */}
             {opened && (
-                <div className="w-[350px] sm-mx:w-[300px] h-[500px] sm-mx:h-[400px] bg-mine-shaft-900 border border-mine-shaft-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-fade-in-up">
+                <div className="w-[350px] sm-mx:w-[300px] h-[500px] sm-mx:h-[400px] bg-mine-shaft-900/90 backdrop-blur-xl border border-white/[0.05] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden animate-fade-in-up">
                     
                     {/* Header */}
                     <div className="bg-gradient-to-r from-bright-sun-400 to-bright-sun-600 p-4 flex justify-between items-center shadow-md z-10">
@@ -84,7 +86,7 @@ const Chatbot = () => {
                     </div>
 
                     {/* Chat Area */}
-                    <ScrollArea className="flex-1 p-4 bg-mine-shaft-950/50">
+                    <ScrollArea className="flex-1 p-4 bg-mine-shaft-950/40">
                         <div className="flex flex-col gap-4">
                             {history.map((msg, index) => (
                                 <div key={index} className={`flex max-w-[85%] ${msg.role === 'user' ? 'self-end' : 'self-start'}`}>
@@ -96,9 +98,13 @@ const Chatbot = () => {
                                     <div className={`px-4 py-2.5 rounded-2xl text-[13px] shadow-sm leading-relaxed ${
                                         msg.role === 'user' 
                                             ? 'bg-bright-sun-400 text-mine-shaft-950 rounded-tr-sm font-medium' 
-                                            : 'bg-mine-shaft-800/80 backdrop-blur-sm text-mine-shaft-100 rounded-tl-sm border border-mine-shaft-700/50'
+                                            : 'bg-mine-shaft-800/80 backdrop-blur-sm text-mine-shaft-100 rounded-tl-sm border border-white/[0.05] [&_ul]:list-disc [&_ul]:pl-4 [&_ul]:my-1 [&_b]:text-bright-sun-400 [&_p]:mb-1'
                                     }`}>
-                                        {msg.text}
+                                        {msg.role === 'bot' ? (
+                                            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(msg.text) }} />
+                                        ) : (
+                                            msg.text
+                                        )}
                                     </div>
                                 </div>
                             ))}
