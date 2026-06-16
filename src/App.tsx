@@ -13,7 +13,9 @@ import AppRoutes from './Pages/AppRoutes';
 // @ts-ignore
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import Chatbot from './Components/Chatbot/Chatbot';
 import { useEffect } from 'react';
+
 function App() {
   useEffect(()=>{
     AOS.init({
@@ -41,6 +43,7 @@ function App() {
     <MantineProvider defaultColorScheme="dark" theme={theme} >
        <Notifications  position="top-center" zIndex={2001} />
       <AppRoutes/>
+      <Chatbot />
     </MantineProvider>
     </Provider>
   );

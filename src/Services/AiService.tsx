@@ -95,4 +95,14 @@ const parseSearchQuery = async (query: string): Promise<any> => {
         .catch((err: any) => { throw err; });
 };
 
-export { parseResume, generateJobDescription, getMatchScore, parseSearchQuery };
+/**
+ * Chat with the CareerConnect support bot.
+ */
+const chatBot = async (message: string): Promise<string> => {
+    return axiosInstance
+        .post(`/ai/chat`, { message })
+        .then((res: any) => res.data.message)
+        .catch((err: any) => { throw err; });
+};
+
+export { parseResume, generateJobDescription, getMatchScore, parseSearchQuery, chatBot };
