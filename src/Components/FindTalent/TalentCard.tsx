@@ -71,19 +71,21 @@ const TalentCard = (props: any) => {
         }).catch((err)=>console.log(err))
         else setProfile(props);
     }, [props])
-    return <div data-aos="fade-up" className="p-4 rounded-xl glass-card hover:shadow-[0_0_5px_1px_yellow] !shadow-bright-sun-400  transition duration-300 ease-in-out w-96 bs-mx:w-[48%] md-mx:w-full flex flex-col gap-3">
+    return <div data-aos="fade-up" className="p-4 rounded-xl glass-card hover:shadow-[0_0_5px_1px_yellow] !shadow-bright-sun-400  transition duration-300 ease-in-out w-full bs-mx:w-[48%] md-mx:w-full flex flex-col gap-3">
         <div className="flex justify-between">
             <div className="flex gap-2 items-center">
                 <div className="p-2 bg-mine-shaft-800 rounded-full">
                     <Avatar className="rounded-full" size="lg" src={profile?.picture?`data:image/jpeg;base64,${profile?.picture}`:'/Avatar.png'} />
                 </div>
-                <div className="flex flex-col gap-1">
-                    <div className="font-semibold text-lg">{props?.name}</div>
+                <div className="flex flex-col gap-1 min-w-0">
+                    <div className="font-semibold text-base truncate">{props?.name}</div>
                     <div className="text-sm text-mine-shaft-300">{profile?.jobTitle} &bull; {profile?.company}</div>
 
                 </div>
             </div>
-            <IconHeart className="cursor-pointer text-mine-shaft-300" stroke={1.5} />
+            <button className="p-2 -mr-2 -mt-1 text-mine-shaft-300 hover:text-bright-sun-400 transition-colors">
+                <IconHeart stroke={1.5} size={20} />
+            </button>
         </div>
         <div className="flex gap-2 flex-wrap ">
             {
@@ -91,7 +93,7 @@ const TalentCard = (props: any) => {
             }
         </div>
         <div>
-            <Text className="!text-xs text-justify !text-mine-shaft-300" lineClamp={3}>{profile?.about}
+            <Text className="!text-xs text-left !text-mine-shaft-300" lineClamp={3}>{profile?.about}
             </Text>
         </div>
         <Divider color="mineShaft.7" size="xs" />
@@ -136,7 +138,7 @@ const TalentCard = (props: any) => {
             }
         </div>
             {(props.invited || props.posted) && <Button color="brightSun.4" variant="filled" onClick={openApp} autoContrast fullWidth>View Application</Button>}
-        <Modal opened={opened} onClose={close} radius="lg" title="Schedule Interview" centered>
+        <Modal opened={opened} onClose={close} radius="lg" title="Schedule Interview" centered size="sm">
             <div className="flex flex-col gap-4">
                 <DateInput value={date} onChange={setDate} minDate={new Date()} label="Date" placeholder="Enter Date" />
                 <TimeInput label="Time" ref={ref} value={time}

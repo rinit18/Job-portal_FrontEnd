@@ -135,15 +135,15 @@ const SignUp = () => {
 
     if (otpSent) {
         return (
-            <div className="w-1/2 sm-mx:py-20 sm-mx:w-full px-20 bs-mx:px-10 md-mx:px-5 flex flex-col gap-6 justify-center">
+            <div className="w-1/2 sm-mx:py-10 sm-mx:w-full px-20 bs-mx:px-10 md-mx:px-5 flex flex-col gap-6 justify-center">
                 <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} loaderProps={{ color: 'brightSun.4', type: 'bars' }} />
                 
                 <Button size="sm" onClick={() => {setOtpSent(false); interval.stop(); setTime(60);}} my="sm" color="mineShaft.3" leftSection={<IconArrowLeft size={16} />} variant="transparent" className="self-start px-0 hover:bg-transparent hover:text-bright-sun-400">Back</Button>
 
-                <div className="text-3xl font-bold tracking-tight mb-2">Verify your email</div>
+                <div className="text-3xl sm-mx:text-2xl xs-mx:text-xl font-bold tracking-tight mb-2">Verify your email</div>
                 <div className="text-sm text-mine-shaft-200">We've sent a 6-digit code to <span className="font-semibold text-bright-sun-400">{data.email}</span>. Please enter it below to complete registration.</div>
                 
-                <PinInput onComplete={handleVerifyAndRegister} className="mx-auto" gap="lg" size="lg" length={6} type="number" />
+                <PinInput onComplete={handleVerifyAndRegister} className="mx-auto" gap="sm" size="md" length={6} type="number" />
                 
                 <div className="flex gap-2 mt-4">
                     <Button loading={loading} onClick={resendOtp} fullWidth color="brightSun.4" variant="light">{resendLoader ? `Resend in ${time}s` : "Resend Code"}</Button>
@@ -154,11 +154,9 @@ const SignUp = () => {
     return <><LoadingOverlay
     visible={loading}
     zIndex={1000}
-    className=" translate-x-1/2"
-    overlayProps={{ radius: 'sm', blur: 2 }}
-    loaderProps={{ color: 'brightSun.4', type: 'bars' }}
-  /> <div className="w-1/2 sm-mx:py-20 sm-mx:w-full px-20 bs-mx:px-10 md-mx:px-5 flex flex-col gap-4 justify-center">
-        <div className="text-3xl font-bold tracking-tight mb-2">Create Account</div>
+    />
+  <div className="w-1/2 sm-mx:py-10 sm-mx:w-full px-20 bs-mx:px-10 md-mx:px-5 flex flex-col gap-4 justify-center">
+        <div className="text-3xl sm-mx:text-2xl xs-mx:text-xl font-bold tracking-tight mb-2">Create Account</div>
         <TextInput value={data.name} error={formError.name} name="name" onChange={handleChange} label="Full Name" withAsterisk placeholder="Your name" size="md" />
         <TextInput error={formError.email} value={data.email} name="email" onChange={handleChange} leftSection={<IconAt size={16} />} label="Email" withAsterisk placeholder="Your email" size="md" />
         <PasswordInput value={data.password} error={formError.password} name="password" onChange={handleChange} leftSection={<IconLock size={16} />} label="Password" withAsterisk placeholder="Password" size="md" />
@@ -171,12 +169,12 @@ const SignUp = () => {
             withAsterisk
         >
             <div className="flex gap-4 xs-mx:gap-3 pt-2">
-                <Radio name="accountType" className="py-3 px-6 sm-mx:px-4 sm-mx:py-2 hover:bg-mine-shaft-900/50 border-mine-shaft-800 border rounded-xl has-[:checked]:!border-bright-sun-400 has-[:checked]:bg-bright-sun-400/5 transition-all" value="APPLICANT" label="Applicant" />
-                <Radio name="accountType" className="py-3 px-6 sm-mx:px-4 sm-mx:py-2 hover:bg-mine-shaft-900/50 border-mine-shaft-800 border rounded-xl has-[:checked]:!border-bright-sun-400 has-[:checked]:bg-bright-sun-400/5 transition-all" value="EMPLOYER" label="Employer" />
+                <Radio name="accountType" className="py-3 px-6 sm-mx:px-4 sm-mx:py-3 hover:bg-mine-shaft-900/50 border-mine-shaft-800 border rounded-xl has-[:checked]:!border-bright-sun-400 has-[:checked]:bg-bright-sun-400/5 transition-all" value="APPLICANT" label="Applicant" />
+                <Radio name="accountType" className="py-3 px-6 sm-mx:px-4 sm-mx:py-3 hover:bg-mine-shaft-900/50 border-mine-shaft-800 border rounded-xl has-[:checked]:!border-bright-sun-400 has-[:checked]:bg-bright-sun-400/5 transition-all" value="EMPLOYER" label="Employer" />
             </div>
         </Radio.Group>
         <Button loading={loading} onClick={handleSubmit} autoContrast variant="filled" size="md" className="mt-2">Sign up</Button>
-        <div className="text-center sm-mx:text-sm xs-mx:text-xs">Have an account?  <span className="text-bright-sun-400 hover:underline cursor-pointer sm-mx:text-sm xs-mx:text-xs" onClick={()=>{navigate("/login");setFormError(form) ;setData(form)}}>Login</span> </div>
+        <div className="text-center sm-mx:text-sm xs-mx:text-sm">Have an account?  <span className="text-bright-sun-400 hover:underline cursor-pointer sm-mx:text-sm xs-mx:text-sm" onClick={()=>{navigate("/login");setFormError(form) ;setData(form)}}>Login</span> </div>
 
     </div></>
 }

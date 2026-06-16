@@ -53,7 +53,7 @@ const FilterSidebar = () => {
                         classNames={{
                             track: "bg-mine-shaft-800",
                             bar:   "bg-bright-sun-400",
-                            thumb: "border-2 border-bright-sun-400 bg-mine-shaft-950 w-3.5 h-3.5",
+                            thumb: "border-2 border-bright-sun-400 bg-mine-shaft-950 w-5 h-5 sm-mx:w-6 sm-mx:h-6",
                         }}
                     />
                 </div>
@@ -76,7 +76,7 @@ const FilterSidebar = () => {
                                     <div
                                         key={j}
                                         onClick={() => handleCheckbox(cat.title, opt, !isChecked)}
-                                        className={`group flex items-center gap-2.5 px-2 py-1.5 rounded-lg cursor-pointer transition-all duration-200 ${
+                                        className={`group flex items-center gap-2.5 px-2 py-2.5 sm-mx:min-h-[44px] rounded-lg cursor-pointer transition-all duration-200 ${
                                             isChecked 
                                             ? "bg-bright-sun-400/[0.08]" 
                                             : "hover:bg-mine-shaft-900/60"

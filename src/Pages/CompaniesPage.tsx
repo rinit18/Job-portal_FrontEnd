@@ -35,7 +35,7 @@ const CompaniesPage = () => {
     }, [dispatch]);
 
     return (
-        <div className="min-h-[calc(100vh-80px)] bg-mine-shaft-950 font-['poppins'] relative overflow-hidden flex flex-col">
+        <div className="min-h-[calc(100dvh-80px)] sm-mx:min-h-[calc(100dvh-140px)] bg-mine-shaft-950 font-['poppins'] relative overflow-hidden flex flex-col">
             
             {/* Ambient background glows */}
             <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
@@ -52,13 +52,13 @@ const CompaniesPage = () => {
                         <div className="p-2.5 bg-bright-sun-400/10 border border-bright-sun-400/20 rounded-xl">
                             <IconBuildingSkyscraper size={24} className="text-bright-sun-400" stroke={1.5} />
                         </div>
-                        <h1 className="text-3xl font-bold tracking-tight text-white">Top Companies</h1>
+                        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">Top Companies</h1>
                     </div>
                     <p className="text-mine-shaft-300 text-sm">Discover and connect with industry-leading organizations actively hiring.</p>
                 </div>
 
                 {/* Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {companies.length > 0 ? companies.map((company, index) => (
                         <Link 
                             to={`/company/${company.name}`} 
@@ -94,7 +94,7 @@ const CompaniesPage = () => {
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="text-[13px] font-bold text-mine-shaft-100 leading-none">{company.jobsCount}</span>
-                                        <span className="text-[9px] font-bold text-mine-shaft-500 uppercase tracking-widest mt-1">Open Jobs</span>
+                                        <span className="text-[11px] font-bold text-mine-shaft-500 uppercase tracking-widest mt-1">Open Jobs</span>
                                     </div>
                                 </div>
                                 
@@ -106,7 +106,7 @@ const CompaniesPage = () => {
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="text-[13px] font-bold text-mine-shaft-100 leading-none">{company.employees}+</span>
-                                        <span className="text-[9px] font-bold text-mine-shaft-500 uppercase tracking-widest mt-1">Employees</span>
+                                        <span className="text-[11px] font-bold text-mine-shaft-500 uppercase tracking-widest mt-1">Employees</span>
                                     </div>
                                 </div>
                             </div>

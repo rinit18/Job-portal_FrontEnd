@@ -41,7 +41,7 @@ const Skills = () => {
 
     return (
         <div data-aos="fade-up">
-            <div className="text-2xl font-semibold mb-4 flex justify-between items-center">
+            <div className="text-2xl sm-mx:text-xl font-semibold mb-4 flex justify-between items-center">
                 Skills
                 <div className="flex gap-1">
                     {edit && (
@@ -90,7 +90,7 @@ const Skills = () => {
                         currentSkills.map((skill: string, index: number) => (
                             <div
                                 key={index}
-                                className="bg-bright-sun-400/10 border border-bright-sun-400/30 hover:border-bright-sun-400/70 hover:bg-bright-sun-400/20 transition-all duration-200 rounded-full px-4 py-1.5 text-sm font-medium text-bright-sun-400 cursor-default"
+                                className="bg-bright-sun-400/10 border border-bright-sun-400/30 hover:border-bright-sun-400/70 hover:bg-bright-sun-400/20 transition-all duration-200 rounded-full px-4 sm-mx:px-3 py-1.5 sm-mx:py-1 text-sm sm-mx:text-xs font-medium text-bright-sun-400 cursor-default"
                             >
                                 {skill}
                             </div>

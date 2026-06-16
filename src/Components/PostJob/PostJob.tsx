@@ -113,8 +113,8 @@ const PostJob = () => {
             errorNotification("Error", err.response?.data?.errorMessage || "Error saving draft");
         }).finally(()=>setIsDraftLoading(false));
     }
-    return <div data-aos="zoom-out" className="px-16 bs-mx:px-10 md-mx:px-5 py-5 ">
-        <div className="text-2xl font-semibold mb-5">Post a Job</div>
+    return <div data-aos="zoom-out" className="px-16 bs-mx:px-10 md-mx:px-5 sm-mx:px-3 py-5 ">
+        <div className="text-2xl sm-mx:text-xl font-semibold mb-5">Post a Job</div>
         <div className="flex flex-col gap-5">
             <div className="flex gap-10 md-mx:gap-5 [&>*]:w-1/2 sm-mx:[&>*]:!w-full sm-mx:flex-wrap">
                 <SelectInput  form={form} name="jobTitle" {...select[0]} />
@@ -131,7 +131,7 @@ const PostJob = () => {
             <TagsInput data-aos="zoom-out"  {...form.getInputProps("skillsRequired")} withAsterisk label="Skills" placeholder="Enter skill" splitChars={[',', ' ', '|']} clearable />
             <Textarea data-aos="zoom-out"  {...form.getInputProps("about")} withAsterisk className="my-3" label="About Job" autosize minRows={2} placeholder="Enter about job.." />
             <div className="[&_button[data-active='true']]:!text-bright-sun-400 [&_button[data-active='true']]:!bg-bright-sun-400/20">
-                <div className="flex justify-between items-center mb-1">
+                <div className="flex justify-between items-center mb-1 flex-wrap gap-2">
                     <div className="text-sm font-medium">Job Description<span className="text-red-600"> *</span></div>
                     <Tooltip label="AI will generate a description based on Job Title and About fields" withArrow position="left">
                         <Button
@@ -163,7 +163,7 @@ const PostJob = () => {
                 </div>
                 <TextEditor data-aos="zoom-out" form={form} data={editorData} />
             </div>
-            <div   className="flex gap-4">
+            <div   className="flex gap-4 sm-mx:flex-col">
                 <Button data-aos="zoom-out" loading={isLoading} color="brightSun.4" onClick={handlePost} variant="light">Publish Job</Button>
                 <Button data-aos="zoom-out" loading={isDraftLoading} color="brightSun.4" onClick={handleDraft} variant="outline">Save as Draft</Button>
             </div>

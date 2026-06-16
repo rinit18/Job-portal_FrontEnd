@@ -95,7 +95,7 @@ const Profile = () => {
             </div>
 
             {/* Profile Content */}
-            <div className="px-4 pt-20 sm-mx:pt-16 flex flex-col gap-0">
+            <div className="px-4 pt-20 sm-mx:pt-20 xs-mx:pt-16 flex flex-col gap-0">
 
                 {/* Profile Completion Ring */}
                 <div data-aos="fade-up" className="glass-card rounded-xl p-6 mb-4 flex items-center gap-6 sm-mx:flex-col sm-mx:text-center">

@@ -71,7 +71,7 @@ const Job = (props: any) => {
                             />
                         </div>
                         <div className="flex flex-col gap-0.5">
-                            <div className="font-bold text-xl tracking-tight text-white leading-tight">{props.jobTitle}</div>
+                            <div className="font-bold text-xl sm-mx:text-base tracking-tight text-white leading-tight">{props.jobTitle}</div>
                             <div className="text-sm font-medium text-mine-shaft-400 flex flex-wrap gap-1.5 items-center">
                                 <Link to={`/company/${props.company}`} className="text-bright-sun-400 hover:text-bright-sun-300 transition-colors">
                                     {props.company}
@@ -85,10 +85,10 @@ const Job = (props: any) => {
                     </div>
 
                     {/* Right: actions */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap sm-mx:w-full sm-mx:[&>*]:w-full">
                         {(props.edit || !applied) && (
                             <Link to={props.edit ? `/post-job/${props.id}` : `/apply-job/${props.id}`}>
-                                <Button color="brightSun.4" size="sm" radius="md">
+                                <Button color="brightSun.4" size="md" radius="md" className="!min-h-[44px]">
                                     {props.closed ? "Reopen" : props.edit ? "Edit" : "Apply Now"}
                                 </Button>
                             </Link>
@@ -143,7 +143,7 @@ const Job = (props: any) => {
                 <>
                     <Divider size="xs" my="md" />
                     <div className="p-4 rounded-xl bg-mine-shaft-900/40 border border-mine-shaft-800/40 mb-8">
-                        <div className="flex justify-between items-center mb-3">
+                        <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
                             <div className="text-sm font-semibold flex items-center gap-1.5">
                                 <IconSparkles size={16} className="text-bright-sun-400" />
                                 AI Match Score
@@ -176,11 +176,13 @@ const Job = (props: any) => {
                         </div>
                         {matchScore ? (
                             <div className="flex gap-4 items-start flex-wrap">
-                                <RingProgress
-                                    size={90} thickness={8}
-                                    label={<Text fw={700} ta="center" size="sm" c="brightSun.4">{matchScore.score ?? "?"}%</Text>}
-                                    sections={[{ value: matchScore.score ?? 0, color: matchScore.score >= 70 ? "teal" : matchScore.score >= 40 ? "yellow" : "red" }]}
-                                />
+                                <div className="shrink-0">
+                                    <RingProgress
+                                        size={90} thickness={8}
+                                        label={<Text fw={700} ta="center" size="sm" c="brightSun.4">{matchScore.score ?? "?"}%</Text>}
+                                        sections={[{ value: matchScore.score ?? 0, color: matchScore.score >= 70 ? "teal" : matchScore.score >= 40 ? "yellow" : "red" }]}
+                                    />
+                                </div>
                                 <div className="flex-1 min-w-0">
                                     <p className="text-mine-shaft-400 text-xs mb-2">{matchScore.summary}</p>
                                     {matchScore.strengths?.length > 0 && (

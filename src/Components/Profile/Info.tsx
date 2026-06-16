@@ -62,12 +62,12 @@ const Info = () => {
             </div>
             </> :
                 <>
-                    <div  className="text-xl xs-mx:text-base flex gap-1 items-center"> <IconBriefcase className="h-5 w-5" stroke={1.5} />{profile.jobTitle}  &bull; {profile.company}</div>
-                    <div className="text-lg xs-mx:text-base flex gap-1 items-center text-mine-shaft-300">
-                        <IconMapPin className="h-5 w-5" stroke={1.5} /> {profile.location}
+                    <div  className="text-xl sm-mx:text-lg xs-mx:text-base flex gap-1 items-center flex-wrap"> <IconBriefcase className="h-5 w-5 shrink-0" stroke={1.5} />{profile.jobTitle}  &bull; {profile.company}</div>
+                    <div className="text-lg sm-mx:text-base flex gap-1 items-center text-mine-shaft-300">
+                        <IconMapPin className="h-5 w-5 shrink-0" stroke={1.5} /> {profile.location}
                     </div>
-                    <div className="text-lg xs-mx:text-base flex gap-1 items-center text-mine-shaft-300">
-                        <IconBriefcase className="h-5 w-5" stroke={1.5} />Experience: {profile.totalExp} Years
+                    <div className="text-lg sm-mx:text-base flex gap-1 items-center text-mine-shaft-300">
+                        <IconBriefcase className="h-5 w-5 shrink-0" stroke={1.5} />Experience: {profile.totalExp} Years
                     </div>
                     </>
 

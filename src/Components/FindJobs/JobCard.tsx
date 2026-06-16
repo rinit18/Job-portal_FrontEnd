@@ -74,7 +74,7 @@ const JobCard = (props: any) => {
                 border-b border-b-white/[0.06]
             `}
         >
-            <div className="px-5 py-4 flex flex-col gap-3">
+            <div className="px-3 sm:px-5 py-4 flex flex-col gap-3">
 
                 {/* ── Row 1: Logo + Title + Bookmark ── */}
                 <div className="flex items-start gap-3">
@@ -101,7 +101,7 @@ const JobCard = (props: any) => {
                                     </span>
                                 )}
                             </p>
-                            <button onClick={handleSave} className="shrink-0 text-mine-shaft-600 hover:text-bright-sun-400 transition-colors mt-0.5">
+                            <button onClick={handleSave} className="shrink-0 p-2 -mr-1 text-mine-shaft-600 hover:text-bright-sun-400 transition-colors mt-0.5">
                                 {isSaved
                                     ? <IconBookmarkFilled size={15} className="text-bright-sun-400" />
                                     : <IconBookmark size={15} />
@@ -155,12 +155,12 @@ const JobCard = (props: any) => {
                 {!props.hideViewButton && (
                     <div className="flex gap-2">
                         <Link className="flex-1" to={`/jobs/${props.id}`} onClick={e => e.stopPropagation()}>
-                            <button className="w-full py-2 text-xs font-bold rounded-lg bg-bright-sun-400 text-[#111] hover:bg-bright-sun-300 transition-colors">
+                            <button className="w-full py-3 text-xs font-bold rounded-lg bg-bright-sun-400 text-[#111] hover:bg-bright-sun-300 transition-colors">
                                 View Details
                             </button>
                         </Link>
                         <button
-                            className="flex-1 py-2 text-xs font-semibold rounded-lg border border-white/[0.1] text-mine-shaft-400 hover:text-white hover:border-white/[0.2] transition-colors"
+                            className="flex-1 py-3 text-xs font-semibold rounded-lg border border-white/[0.1] text-mine-shaft-400 hover:text-white hover:border-white/[0.2] transition-colors"
                             onClick={handleMessage}
                         >
                             Message

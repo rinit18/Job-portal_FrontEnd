@@ -60,13 +60,13 @@ const Header = () => {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, navigate]);
-    return (location.pathname !== "/signup" && location.pathname !== "/login") ? <div data-aos="zoom-out" className="w-full glass-header px-6 sm-mx:px-2 text-mine-shaft-100 h-20 flex justify-between items-center font-['poppins']">
+    return (location.pathname !== "/signup" && location.pathname !== "/login") ? <div data-aos="zoom-out" className="w-full glass-header px-6 sm-mx:px-3 text-mine-shaft-100 h-20 flex justify-between items-center font-['poppins']">
         <div onClick={() => navigate("/")} className="flex gap-1 cursor-pointer items-center text-bright-sun-400">
             <IconAnchor className="h-8 w-8 sm-mx:h-6 sm-mx:w-6" stroke={2.5} />
-            <div className=" xs-mx:hidden text-3xl font-semibold">{WEBSITE_CONFIG.name}</div>
+            <div className=" xs-mx:hidden sm-mx:text-xl text-3xl font-semibold">{WEBSITE_CONFIG.name}</div>
         </div>
         <NavLinks />
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-2 sm-mx:gap-1 items-center">
 
             {user ? <ProfileMenu /> : <Link to="/login" className="text-mine-shaft-200 hover:text-bright-sun-400 "><Button color="brightSun.4" variant="subtle">Login</Button></Link>}
             {/* <div className=" bg-mine-shaft-900 p-1.5 rounded-full">
@@ -82,12 +82,12 @@ const Header = () => {
                 {colorScheme === 'dark' ? <IconSun size={20} /> : <IconMoon size={20} />}
             </ActionIcon>
             <Burger className="bs:hidden" opened={opened} onClick={open} aria-label="Toggle navigation" />
-            <Drawer size="xs" overlayProps={{ backgroundOpacity: 0.5, blur: 4 }} position="right" opened={opened} onClose={close} closeButtonProps={{
+            <Drawer size="sm" overlayProps={{ backgroundOpacity: 0.5, blur: 4 }} position="right" opened={opened} onClose={close} closeButtonProps={{
                 icon: <IconX size={30} />,
             }} >
                 <div className="flex flex-col gap-6 items-center">
                     {
-                        drawerLinks.map((link, index) => <div key={index} className=" h-full flex items-center">
+                        drawerLinks.map((link, index) => <div key={index} className="min-h-[48px] w-full flex items-center justify-center">
                             <div className="hover:text-bright-sun-400 text-xl " key={index} onClick={() => handleClick(link.url)} >{link.name}</div>
                         </div>)
                     }

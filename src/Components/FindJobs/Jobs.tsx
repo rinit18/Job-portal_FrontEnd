@@ -9,8 +9,8 @@ import { useMediaQuery } from "@mantine/hooks";
 import { useNavigate } from "react-router-dom";
 import { resetFilter } from "../../Slices/FilterSlice";
 import { resetSort } from "../../Slices/SortSlice";
-import { Button, Skeleton } from "@mantine/core";
-import { IconBriefcase, IconSparkles, IconX } from "@tabler/icons-react";
+import { Button, Skeleton, Drawer, ActionIcon } from "@mantine/core";
+import { IconBriefcase, IconSparkles, IconX, IconAdjustments } from "@tabler/icons-react";
 import { WEBSITE_CONFIG } from "../../config";
 
 const Jobs = () => {
@@ -23,6 +23,7 @@ const Jobs = () => {
     const [filteredJobs, setFilteredJobs] = useState<any[]>([]);
     const [selectedJob, setSelectedJob]   = useState<any>(null);
     const [isLoading, setIsLoading]       = useState(true);
+    const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
 
     /* ── Fetch ─────────────────────────────────────────── */
     useEffect(() => {
@@ -81,9 +82,36 @@ const Jobs = () => {
     return (
         <div className="h-full flex flex-col overflow-hidden">
 
+            {/* Mobile Filter Drawer */}
+            <Drawer
+                opened={filterDrawerOpen}
+                onClose={() => setFilterDrawerOpen(false)}
+                title="Filter Jobs"
+                size="80%"
+                overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+                position="left"
+            >
+                <FilterSidebar />
+            </Drawer>
+
             {/* ══ Top bar ══════════════════════════════════════════════════ */}
-            <div className="shrink-0 flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06] bg-mine-shaft-950/60 backdrop-blur-sm">
-                <div className="flex items-center gap-3">
+            <div className="shrink-0 flex items-center justify-between px-5 sm-mx:px-3 py-3.5 border-b border-white/[0.06] bg-mine-shaft-950/60 backdrop-blur-sm flex-wrap gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                    {/* Mobile filter button */}
+                    {isMobile && (
+                        <ActionIcon
+                            onClick={() => setFilterDrawerOpen(true)}
+                            variant="light"
+                            color="brightSun.4"
+                            size="md"
+                            className="relative"
+                        >
+                            <IconAdjustments size={16} />
+                            {hasFilters && (
+                                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-bright-sun-400 rounded-full" />
+                            )}
+                        </ActionIcon>
+                    )}
                     <IconBriefcase size={18} className="text-bright-sun-400" stroke={1.5} />
                     <span className="text-sm font-bold text-mine-shaft-100 tracking-tight">Recommended Jobs</span>
                     {!isLoading && (
@@ -115,7 +143,7 @@ const Jobs = () => {
                 </div>
 
                 {/* MIDDLE ─ Job list: 37% */}
-                <div className="w-[37%] min-w-[260px] shrink-0 md-mx:flex-1 border-r border-white/[0.05] overflow-y-auto custom-scrollbar flex flex-col gap-0">
+                <div className="w-[37%] min-w-[260px] md-mx:min-w-0 shrink-0 md-mx:flex-1 border-r border-white/[0.05] overflow-y-auto custom-scrollbar flex flex-col gap-0">
                     {isLoading ? (
                         <div className="flex flex-col gap-2 p-3">
                             {Array(6).fill(0).map((_, i) => <Skeleton key={i} height={110} radius="lg" />)}
