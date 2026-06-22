@@ -98,9 +98,9 @@ const parseSearchQuery = async (query: string): Promise<any> => {
 /**
  * Chat with the CareerConnect support bot.
  */
-const chatBot = async (message: string): Promise<string> => {
+const chatBot = async (history: { role: string, text: string }[]): Promise<string> => {
     return axiosInstance
-        .post(`/ai/chat`, { message })
+        .post(`/ai/chat`, history)
         .then((res: any) => res.data.message)
         .catch((err: any) => { throw err; });
 };

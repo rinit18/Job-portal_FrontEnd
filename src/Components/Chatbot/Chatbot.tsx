@@ -31,10 +31,11 @@ const Chatbot = () => {
 
         const userText = message;
         setMessage("");
-        setHistory(prev => [...prev, { role: 'user', text: userText }]);
+        const updatedHistory = [...history, { role: 'user' as const, text: userText }];
+        setHistory(updatedHistory);
         setLoading(true);
 
-        chatBot(userText)
+        chatBot(updatedHistory)
             .then(responseText => {
                 setHistory(prev => [...prev, { role: 'bot', text: responseText || "I'm sorry, I encountered an error." }]);
             })
