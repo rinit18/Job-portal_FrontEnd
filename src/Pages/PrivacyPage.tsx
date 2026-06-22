@@ -5,9 +5,9 @@ const PrivacyPage = () => {
     return (
         <div className="min-h-[85vh] bg-mine-shaft-950 font-['poppins']">
             <Divider size="xs" mx="md"/>
-            <div className="max-w-4xl mx-auto px-5 py-10">
+            <div className="max-w-4xl mx-auto px-5 py-10 sm-mx:py-5">
                 <div data-aos="fade-up" className="text-3xl font-bold text-mine-shaft-100 mb-6 text-center">Privacy Policy</div>
-                <div data-aos="fade-up" data-aos-delay="100" className="glass-card p-8 rounded-xl text-mine-shaft-300 leading-relaxed text-justify space-y-6">
+                <div data-aos="fade-up" data-aos-delay="100" className="glass-card p-8 sm-mx:p-4 rounded-xl text-mine-shaft-300 leading-relaxed text-justify space-y-6">
                     <p>Last updated: August 2024</p>
                     <p>
                         At {WEBSITE_CONFIG.name}, we are committed to protecting your personal information and your right to privacy. This policy outlines how we collect, use, and safeguard your data when you use our platform.

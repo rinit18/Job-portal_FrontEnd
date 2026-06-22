@@ -70,7 +70,7 @@ const AdminLoginPage = () => {
                 loaderProps={{ color: 'brightSun.4', type: 'bars' }}
             />
             
-            <div data-aos="fade-up" className="max-w-md w-full glass-card p-10 rounded-2xl flex flex-col gap-6 shadow-[0_0_20px_2px_rgba(255,212,59,0.1)] border border-mine-shaft-800">
+            <div data-aos="fade-up" className="max-w-md w-full glass-card p-10 sm-mx:p-5 rounded-2xl flex flex-col gap-6 shadow-[0_0_20px_2px_rgba(255,212,59,0.1)] border border-mine-shaft-800">
                 <div className="flex flex-col items-center mb-4 text-bright-sun-400">
                     <IconShieldLock size={56} stroke={1.5} className="mb-2" />
                     <div className="text-3xl font-bold text-mine-shaft-100">Admin Portal</div>

@@ -20,7 +20,7 @@ const FaqPage = () => {
     return (
         <div className="min-h-[85vh] bg-mine-shaft-950 font-['poppins']">
             <Divider size="xs" mx="md"/>
-            <div className="max-w-4xl mx-auto px-5 py-10">
+            <div className="max-w-4xl mx-auto px-5 py-10 sm-mx:py-5">
                 <div data-aos="fade-up" className="text-3xl font-bold text-mine-shaft-100 mb-2 text-center">Frequently Asked Questions</div>
                 <div data-aos="fade-up" className="text-mine-shaft-400 mb-10 text-center">Everything you need to know about {WEBSITE_CONFIG.name}.</div>
                 

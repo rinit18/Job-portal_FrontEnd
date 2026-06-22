@@ -63,10 +63,10 @@ const Settings = () => {
 
     return (
         <div className="w-full min-h-screen p-10 sm-mx:p-5 flex flex-col gap-8 text-mine-shaft-100">
-            <h1 className="text-4xl font-bold mb-4">Account Settings</h1>
+            <h1 className="text-4xl sm-mx:text-2xl font-bold mb-4">Account Settings</h1>
 
             {/* Appearance Section */}
-            <section className="bg-mine-shaft-900/50 p-8 rounded-xl border border-mine-shaft-800">
+            <section className="bg-mine-shaft-900/50 p-8 sm-mx:p-4 rounded-xl border border-mine-shaft-800">
                 <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
                     <IconSun size={24} className="text-bright-sun-400" />
                     Appearance & Preferences
@@ -88,7 +88,7 @@ const Settings = () => {
             </section>
 
             {/* Security Section */}
-            <section className="bg-mine-shaft-900/50 p-8 rounded-xl border border-mine-shaft-800">
+            <section className="bg-mine-shaft-900/50 p-8 sm-mx:p-4 rounded-xl border border-mine-shaft-800">
                 <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
                     <IconLock size={24} className="text-bright-sun-400" />
                     Security
@@ -130,7 +130,7 @@ const Settings = () => {
             </section>
 
             {/* Danger Zone */}
-            <section className="bg-red-900/10 p-8 rounded-xl border border-red-900/30 mt-8">
+            <section className="bg-red-900/10 p-8 sm-mx:p-4 rounded-xl border border-red-900/30 mt-8">
                 <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2 text-red-500">
                     <IconTrash size={24} />
                     Danger Zone

@@ -5,9 +5,9 @@ const TermsPage = () => {
     return (
         <div className="min-h-[85vh] bg-mine-shaft-950 font-['poppins']">
             <Divider size="xs" mx="md"/>
-            <div className="max-w-4xl mx-auto px-5 py-10">
+            <div className="max-w-4xl mx-auto px-5 py-10 sm-mx:py-5">
                 <div data-aos="fade-up" className="text-3xl font-bold text-mine-shaft-100 mb-6 text-center">Terms & Conditions</div>
-                <div data-aos="fade-up" data-aos-delay="100" className="glass-card p-8 rounded-xl text-mine-shaft-300 leading-relaxed text-justify space-y-6">
+                <div data-aos="fade-up" data-aos-delay="100" className="glass-card p-8 sm-mx:p-4 rounded-xl text-mine-shaft-300 leading-relaxed text-justify space-y-6">
                     <p>
                         Welcome to {WEBSITE_CONFIG.name}. By accessing or using our platform, you agree to be bound by these Terms and Conditions and our Privacy Policy.
                     </p>

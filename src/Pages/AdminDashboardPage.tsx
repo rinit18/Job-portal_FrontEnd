@@ -90,7 +90,7 @@ const AdminDashboardPage = () => {
     }
 
     return (
-        <div className="min-h-[85vh] bg-mine-shaft-950 font-['poppins'] p-5 md:p-10">
+        <div className="min-h-[85vh] bg-mine-shaft-950 font-['poppins'] p-5 md:p-10 sm-mx:p-4">
             <div className="max-w-7xl mx-auto">
                 <div data-aos="fade-down" className="text-3xl font-bold text-mine-shaft-100 mb-8">Admin Dashboard</div>
                 

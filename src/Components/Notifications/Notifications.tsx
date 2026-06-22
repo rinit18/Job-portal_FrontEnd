@@ -82,7 +82,7 @@ const Notifications = () => {
                         </div>
                     ))
                 ) : (
-                    <div className="p-10 flex flex-col items-center justify-center text-mine-shaft-300">
+                    <div className="p-10 sm-mx:p-5 flex flex-col items-center justify-center text-mine-shaft-300">
                         <IconCheck size={48} className="text-mine-shaft-500 mb-4 opacity-50" />
                         <div className="text-lg font-medium mb-1">You're all caught up!</div>
                         <div className="text-sm text-mine-shaft-400">There are no new notifications right now.</div>

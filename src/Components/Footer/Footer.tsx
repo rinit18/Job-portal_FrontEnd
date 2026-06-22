@@ -15,7 +15,7 @@ const Footer = () => {
 
     return (
         <div className="flex flex-col gap-2">
-            <div className="pt-10 pb-5 bg-mine-shaft-950 p-4 flex gap-8 justify-between px-10 flex-wrap">
+            <div className="pt-10 sm-mx:pt-6 pb-5 bg-mine-shaft-950 p-4 flex gap-8 sm-mx:gap-6 justify-between px-10 sm-mx:px-4 flex-wrap">
         <div data-aos="fade-up" data-aos-offset="0" className="w-1/4 sm-mx:w-1/3 xs-mx:w-1/2 xsm-mx:w-full flex flex-col gap-4">
             <div className="flex gap-2 items-center text-bright-sun-400">
                 <IconAnchor className="h-5 w-5" stroke={2.5} />

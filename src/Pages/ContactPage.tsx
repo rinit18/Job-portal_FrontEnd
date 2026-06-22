@@ -40,11 +40,11 @@ const ContactPage = () => {
     return (
         <div className="min-h-[85vh] bg-mine-shaft-950 font-['poppins']">
             <Divider size="xs" mx="md"/>
-            <div className="max-w-2xl mx-auto px-5 py-10">
+            <div className="max-w-2xl mx-auto px-5 py-10 sm-mx:py-5">
                 <div data-aos="fade-up" className="text-3xl font-bold text-mine-shaft-100 mb-2 text-center">{contact.title}</div>
                 <div data-aos="fade-up" className="text-mine-shaft-400 mb-10 text-center">{contact.subtitle}</div>
                 
-                <form data-aos="fade-up" data-aos-delay="100" onSubmit={handleSubmit} className="glass-card p-8 rounded-xl flex flex-col gap-5">
+                <form data-aos="fade-up" data-aos-delay="100" onSubmit={handleSubmit} className="glass-card p-8 sm-mx:p-4 rounded-xl flex flex-col gap-5">
                     <div className="flex gap-4 sm-mx:flex-col">
                         <TextInput 
                             className="flex-1"

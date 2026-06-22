@@ -16,7 +16,7 @@ const SupportPage = () => {
     return (
         <div className="min-h-[85vh] bg-mine-shaft-950 font-['poppins']">
             <Divider size="xs" mx="md"/>
-            <div className="max-w-5xl mx-auto px-5 py-10">
+            <div className="max-w-5xl mx-auto px-5 py-10 sm-mx:py-5">
                 <div data-aos="fade-up" className="text-3xl font-bold text-mine-shaft-100 mb-2 text-center">{support.title}</div>
                 <div data-aos="fade-up" className="text-mine-shaft-400 mb-10 text-center">{support.subtitle}</div>
                 
@@ -26,7 +26,7 @@ const SupportPage = () => {
                             key={index}
                             data-aos="fade-up" 
                             data-aos-delay={(index + 1) * 100} 
-                            className="glass-card p-8 rounded-xl flex flex-col items-center text-center gap-4 hover:shadow-[0_0_5px_1px_yellow] !shadow-bright-sun-400 transition duration-300"
+                            className="glass-card p-8 sm-mx:p-4 rounded-xl flex flex-col items-center text-center gap-4 hover:shadow-[0_0_5px_1px_yellow] !shadow-bright-sun-400 transition duration-300"
                         >
                             <div className="p-4 bg-mine-shaft-800 rounded-full text-bright-sun-400">
                                 {getIcon(card.title)}
