@@ -185,7 +185,7 @@ const GlobalSearch = () => {
                                 <div className="flex justify-between items-center mb-4">
                                     <h2 className="text-xl font-bold flex items-center gap-2"><IconBriefcase className="text-bright-sun-400"/> Jobs</h2>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
                                     {jobs.slice(0, 3).map((job, idx) => <JobCard key={idx} {...job} />)}
                                     {jobs.length === 0 && <div className="text-mine-shaft-500">No jobs found matching "{query}"</div>}
                                 </div>
@@ -198,7 +198,7 @@ const GlobalSearch = () => {
                                 <div className="flex justify-between items-center mb-4">
                                     <h2 className="text-xl font-bold flex items-center gap-2"><IconUsers className="text-bright-sun-400"/> Professionals</h2>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
                                     {profiles.slice(0, 3).map((profile, idx) => <TalentCard key={idx} {...profile} />)}
                                     {profiles.length === 0 && <div className="text-mine-shaft-500">No professionals found matching "{query}"</div>}
                                 </div>
@@ -211,7 +211,7 @@ const GlobalSearch = () => {
                                 <div className="flex justify-between items-center mb-4">
                                     <h2 className="text-xl font-bold flex items-center gap-2"><IconBuildingSkyscraper className="text-bright-sun-400"/> Companies</h2>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5">
                                     {companies.slice(0, 4).map((company, idx) => (
                                         <div key={idx} onClick={() => navigate(`/company/${company.name}`)} className="cursor-pointer flex items-center gap-3 p-4 bg-mine-shaft-900 border border-mine-shaft-800 rounded-xl hover:border-bright-sun-400/50 transition-colors">
                                             <div className="w-12 h-12 bg-mine-shaft-950 rounded-lg p-2 border border-mine-shaft-800">
@@ -226,19 +226,19 @@ const GlobalSearch = () => {
                         </Tabs.Panel>
 
                         <Tabs.Panel value="jobs" className="pb-10">
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
                                 {jobs.map((job, idx) => <JobCard key={idx} {...job} />)}
                             </div>
                         </Tabs.Panel>
 
                         <Tabs.Panel value="professionals" className="pb-10">
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
                                 {profiles.map((profile, idx) => <TalentCard key={idx} {...profile} />)}
                             </div>
                         </Tabs.Panel>
 
                         <Tabs.Panel value="companies" className="pb-10">
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5">
                                 {companies.map((company, idx) => (
                                     <div key={idx} onClick={() => navigate(`/company/${company.name}`)} className="cursor-pointer flex items-center gap-3 p-4 bg-mine-shaft-900 border border-mine-shaft-800 rounded-xl hover:border-bright-sun-400/50 transition-colors">
                                         <div className="w-12 h-12 bg-mine-shaft-950 rounded-lg p-2 border border-mine-shaft-800">

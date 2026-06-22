@@ -14,7 +14,7 @@ const FindJobsPage = () => {
             </div>
 
             {/* Content */}
-            <div className="relative z-10 flex flex-col h-full overflow-hidden">
+            <div className="relative z-10 flex flex-col h-full overflow-hidden w-full max-w-[1600px] mx-auto">
                 {/* Search bar — fixed height top strip */}
                 <div className="shrink-0 z-20 relative">
                     <SearchBar />

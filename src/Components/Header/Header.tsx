@@ -60,7 +60,8 @@ const Header = () => {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, navigate]);
-    return (location.pathname !== "/signup" && location.pathname !== "/login") ? <div data-aos="zoom-out" className="w-full glass-header px-6 sm-mx:px-3 text-mine-shaft-100 h-20 flex justify-between items-center font-['poppins']">
+    return (location.pathname !== "/signup" && location.pathname !== "/login") ? <div data-aos="zoom-out" className="w-full glass-header text-mine-shaft-100 h-20 flex justify-center font-['poppins']">
+        <div className="w-full max-w-[1600px] px-6 sm-mx:px-3 h-full flex justify-between items-center">
         <div onClick={() => navigate("/")} className="flex gap-1 cursor-pointer items-center text-bright-sun-400">
             <IconAnchor className="h-8 w-8 sm-mx:h-6 sm-mx:w-6" stroke={2.5} />
             <div className=" xs-mx:hidden sm-mx:text-xl text-3xl font-semibold">{WEBSITE_CONFIG.name}</div>
@@ -93,6 +94,7 @@ const Header = () => {
                     }
                 </div>
             </Drawer>
+        </div>
         </div>
     </div> : <></>
 }
