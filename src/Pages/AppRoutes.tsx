@@ -12,8 +12,11 @@ import ErrorBoundary from '../Components/ErrorBoundary';
 import Footer from '../Components/Footer/Footer';
 import ProtectedRoute from '../Services/ProtectedRoute';
 import PublicRoute from '../Services/PublicRoute';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { LoadingOverlay, Loader } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import { setupResponseInterceptor } from '../Interceptor/AxiosInterceptor';
+import { useEffect } from 'react';
 
 const FindJobsPage = lazy(() => import('./FindJobsPage'));
 const JobPage = lazy(() => import('./JobPage'));
@@ -88,9 +91,21 @@ const AnimatedRoutes = () => {
   );
 };
 
+const InterceptorSetup = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setupResponseInterceptor(navigate, dispatch);
+  }, [navigate, dispatch]);
+
+  return null;
+};
+
 const AppRoutes = () => {
   const overlay = useSelector((state: any) => state.overlay);
   return <HelmetProvider><BrowserRouter>
+    <InterceptorSetup />
     <div className='relative overflow-hidden'>
       {overlay && <div className='fixed !z-[2000] w-full h-full flex  items-center justify-center'>
         <LoadingOverlay

@@ -5,6 +5,9 @@ import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { getConversations, getMessages, sendMessage, ChatRoomPayload, MessagePayload } from "../Services/ChatService";
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
+import { API_BASE_URL } from "../config";
 
 const MessagesPage = () => {
     const profile = useSelector((state: any) => state.profile);
@@ -20,6 +23,41 @@ const MessagesPage = () => {
     const [loading, setLoading] = useState(true);
     const [showChatList, setShowChatList] = useState(true);
     const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+    // Setup STOMP WebSocket Connection
+    useEffect(() => {
+        if (!currentProfileId) return;
+
+        const socket = new SockJS(`${API_BASE_URL}/ws`);
+        const client = new Client({
+            webSocketFactory: () => socket,
+            onConnect: () => {
+                console.log('Connected to WebSocket');
+                client.subscribe(`/topic/messages/${currentProfileId}`, (message) => {
+                    const receivedMessage = JSON.parse(message.body);
+                    setMessages(prev => [...prev, receivedMessage]);
+                    
+                    // Also refresh conversations to update the snippet/timestamp
+                    getConversations(currentProfileId).then(setConversations);
+                    
+                    setTimeout(() => {
+                        if (scrollAreaRef.current) {
+                            scrollAreaRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                        }
+                    }, 100);
+                });
+            },
+            onStompError: (frame) => {
+                console.error('Broker error: ', frame.headers['message']);
+            }
+        });
+
+        client.activate();
+
+        return () => {
+            client.deactivate();
+        };
+    }, [currentProfileId]);
 
     // Fetch conversations on load and poll every 4 seconds
     useEffect(() => {
@@ -49,12 +87,10 @@ const MessagesPage = () => {
         };
 
         loadConversations();
-        const interval = setInterval(loadConversations, 4000);
-        return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentProfileId, queryRoomId]);
 
-    // Fetch messages for active chat and poll every 2.5 seconds for real-time feel
+    // Fetch messages for active chat (Initial Load Only - WebSockets handle real-time)
     useEffect(() => {
         if (!activeChat) return;
 
@@ -80,8 +116,6 @@ const MessagesPage = () => {
         };
 
         loadMessages();
-        const interval = setInterval(loadMessages, 2500);
-        return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeChat]);
 

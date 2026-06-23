@@ -1,8 +1,7 @@
 import { Avatar, Autocomplete } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { updateFilter } from "../../Slices/FilterSlice";
+
 import { useNavigate } from "react-router-dom";
 import { WEBSITE_CONFIG } from "../../config";
 import { TypeAnimation } from 'react-type-animation';
@@ -15,9 +14,7 @@ const popularSearchTerms = [
 ];
 
 const DreamJob = () => {
-    const dispatch=useDispatch();
     const navigate=useNavigate();
-    const user = useSelector((state: any) => state.user);
     const [query, setQuery] = useState("");
 
     const handleClick = () => {

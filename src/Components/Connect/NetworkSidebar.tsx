@@ -9,7 +9,6 @@ import { setProfile } from "../../Slices/ProfileSlice";
 import { errorNotification, successNotification } from "../../Services/NotificationService";
 
 const NetworkSidebar = () => {
-    const user = useSelector((state: any) => state.user);
     const profile = useSelector((state: any) => state.profile);
     const navigate = useNavigate();
     const dispatch = useDispatch();

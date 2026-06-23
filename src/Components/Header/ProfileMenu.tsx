@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { removeUser } from '../../Slices/UserSlice';
 import { removeJwt } from '../../Slices/JwtSlice';
+import axiosInstance from '../../Interceptor/AxiosInterceptor';
 
 const ProfileMenu = () => {
     const user=useSelector((state:any)=>state.user);
@@ -23,7 +24,12 @@ const ProfileMenu = () => {
     const { colorScheme, setColorScheme } = useMantineColorScheme();
     const checked = colorScheme === 'dark';
     const dispatch = useDispatch();
-    const handleLogout=()=>{
+    const handleLogout = async () => {
+        try {
+            await axiosInstance.post('/auth/logout');
+        } catch (err) {
+            console.error("Logout failed on backend", err);
+        }
         dispatch(removeUser());
         dispatch(removeJwt());
     }

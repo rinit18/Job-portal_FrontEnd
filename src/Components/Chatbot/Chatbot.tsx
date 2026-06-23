@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Button, ScrollArea, TextInput } from "@mantine/core";
+import { ActionIcon, Avatar, ScrollArea } from "@mantine/core";
 import { IconMessageCircle, IconSend, IconX, IconRobot } from "@tabler/icons-react";
 import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";

@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { IconBriefcase, IconHistory, IconMessage, IconSearch, IconUser, IconFileText, IconHome } from "@tabler/icons-react";
+import { IconBriefcase, IconMessage, IconSearch, IconUser, IconFileText, IconHome } from "@tabler/icons-react";
 
 const BottomNav = () => {
     const location = useLocation();

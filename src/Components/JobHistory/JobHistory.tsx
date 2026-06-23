@@ -1,4 +1,4 @@
-import { Tabs, Badge } from "@mantine/core";
+import { Tabs } from "@mantine/core";
 import Card from "./Card";
 import { useEffect, useState } from "react";
 import { getJobHistory, getSavedJobs } from "../../Services/JobService";

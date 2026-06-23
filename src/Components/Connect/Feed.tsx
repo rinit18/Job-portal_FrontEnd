@@ -8,7 +8,6 @@ import { getBase64 } from "../../Services/Utilities";
 import { errorNotification, successNotification } from "../../Services/NotificationService";
 
 const Feed = () => {
-    const user = useSelector((state: any) => state.user);
     const profile = useSelector((state: any) => state.profile);
     
     const [posts, setPosts] = useState<any[]>([]);

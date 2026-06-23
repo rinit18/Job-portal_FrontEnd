@@ -1,5 +1,5 @@
-import { Button, PasswordInput, Switch, Modal, Divider, useMantineColorScheme } from "@mantine/core";
-import { IconCheck, IconLock, IconMoon, IconSun, IconTrash } from "@tabler/icons-react";
+import { Button, PasswordInput, Switch, Modal, useMantineColorScheme } from "@mantine/core";
+import { IconLock, IconMoon, IconSun, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";

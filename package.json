@@ -15,6 +15,7 @@
     "@mantine/notifications": "^7.13.0",
     "@mantine/tiptap": "^7.13.0",
     "@reduxjs/toolkit": "^2.2.7",
+    "@stomp/stompjs": "^7.3.0",
     "@tabler/icons-react": "^3.11.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -32,6 +33,7 @@
     "@types/node": "^16.18.104",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/sockjs-client": "^1.5.4",
     "aos": "^2.3.4",
     "axios": "^1.7.5",
     "clsx": "^2.1.1",
@@ -53,6 +55,7 @@
     "react-router-dom": "^6.25.1",
     "react-scripts": "5.0.1",
     "react-type-animation": "^3.2.0",
+    "sockjs-client": "^1.6.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },

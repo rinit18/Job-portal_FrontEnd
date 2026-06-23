@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getNotifications, readNotification } from "../../Services/NotiService";
-import { Avatar, Divider, Skeleton } from "@mantine/core";
+import { Skeleton } from "@mantine/core";
 import { IconCheck, IconBriefcase, IconMessageCircle, IconUserPlus } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
