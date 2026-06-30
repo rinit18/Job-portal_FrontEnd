@@ -15,7 +15,7 @@ const ScrollToTop = () => {
           variant="filled"
           radius="xl"
           onClick={() => scrollTo({ y: 0 })}
-          className="fixed bottom-[110px] right-5 z-[100] shadow-lg shadow-bright-sun-400/20 sm-mx:!bottom-[150px]"
+          className="fixed bottom-6 right-6 z-[100] shadow-lg shadow-bright-sun-400/20"
         >
           <IconArrowUp size={20} className="text-mine-shaft-950" />
         </ActionIcon>
