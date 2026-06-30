@@ -7,7 +7,7 @@ const registerUser = async (user:any)=> {
         .catch((error:any) =>{throw error;});
 }
 const loginUser = async (login:any)=> {
-    return axiosInstance.post(`/users/login`, login)
+    return axiosInstance.post(`/auth/login`, login)
         .then((result:any) => result.data)
         .catch((error:any) =>{throw error;});
 }

@@ -106,7 +106,9 @@ const SignUp = () => {
         setLoading(true);
         verifyOtp(data.email, otp).then((res) => {
             // OTP verified, now register
-            registerUser(data).then((regRes) => {
+            const signupData = { ...data };
+            delete signupData.confirmPassword;
+            registerUser(signupData).then((regRes) => {
                 // Registered successfully, auto-login
                 loginUser({email: data.email, password: data.password}).then((loginRes) => {
                     successNotification("Account Created!", "You are now logged in.");
