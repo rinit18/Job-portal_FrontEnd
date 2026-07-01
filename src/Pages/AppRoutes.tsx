@@ -106,7 +106,7 @@ const AppRoutes = () => {
   const overlay = useSelector((state: any) => state.overlay);
   return <HelmetProvider><BrowserRouter>
     <InterceptorSetup />
-    <div className='relative overflow-hidden flex flex-col min-h-screen'>
+    <div className='relative flex flex-col min-h-screen'>
       {overlay && <div className='fixed !z-[2000] w-full h-full flex  items-center justify-center'>
         <LoadingOverlay
           visible={overlay}

@@ -58,7 +58,7 @@ const Login = () => {
     zIndex={1000}
     overlayProps={{ radius: 'sm', blur: 2 }}
     loaderProps={{ color: 'brightSun.4', type: 'bars' }}
-  /><div data-aos="zoom-out" className="w-1/2 sm-mx:w-full px-20 bs-mx:px-10 md-mx:px-5 flex flex-col gap-4 justify-center">
+  /><div data-aos="zoom-out" className="w-1/2 sm-mx:w-full sm-mx:py-16 px-20 bs-mx:px-10 md-mx:px-5 flex flex-col gap-4 justify-center">
         <div className="text-3xl font-bold tracking-tight mb-2">Welcome Back</div>
         <TextInput value={data.email} error={formError.email} name="email" onChange={handleChange} leftSection={<IconAt size={16} />} label="Email" withAsterisk placeholder="Your email" size="md" />
         <PasswordInput value={data.password} error={formError.password} name="password" onChange={handleChange} leftSection={<IconLock size={16} />} label="Password" withAsterisk placeholder="Password" size="md" />
