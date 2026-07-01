@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const allLinks = [
+export const allLinks = [
     { name: "Find Jobs",    url: "find-jobs",     roles: ["APPLICANT", "ADMIN"] },
     { name: "Companies",    url: "companies",     roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
     { name: "Messages",     url: "messages",      roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
@@ -19,11 +19,21 @@ const NavLinks = () => {
         ? allLinks.filter(link => link.roles.includes(user.accountType))
         : [];
 
-    return <div className="flex bs-mx:!hidden gap-5 text-mine-shaft-300 h-full items-center">
+    return <div className="flex bs-mx:!hidden gap-2 text-mine-shaft-300 h-full items-center">
         {
-            links.map((link, index) => <div key={index} className={`${location.pathname === "/" + link.url ? "border-bright-sun-400 text-bright-sun-400" : "border-transparent"} border-t-[3px] h-full flex items-center`}>
-                <Link className="hover:text-mine-shaft-200 " key={index} to={link.url}>{link.name}</Link>
-            </div>)
+            links.map((link, index) => {
+                const isActive = location.pathname === "/" + link.url;
+                return (
+                    <div key={index} className="h-full flex items-center">
+                        <Link 
+                            className={`px-4 py-2 rounded-full font-medium transition-all duration-300 ${isActive ? "bg-bright-sun-400/10 text-bright-sun-400 shadow-[0_0_10px_rgba(250,204,21,0.15)]" : "hover:text-mine-shaft-100 hover:bg-mine-shaft-800/50"}`} 
+                            to={link.url}
+                        >
+                            {link.name}
+                        </Link>
+                    </div>
+                )
+            })
         }
     </div>
 }

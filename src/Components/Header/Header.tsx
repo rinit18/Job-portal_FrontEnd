@@ -1,6 +1,6 @@
 import { Burger, Button, Drawer, ActionIcon, useMantineColorScheme } from "@mantine/core";
 import { IconAnchor, IconX, IconSun, IconMoon } from "@tabler/icons-react";
-import NavLinks from "./NavLinks";
+import NavLinks, { allLinks } from "./NavLinks";
 import ProfileMenu from "./ProfileMenu";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,15 +14,7 @@ import { setupResponseInterceptor } from "../../Interceptor/AxiosInterceptor";
 import { useDisclosure } from "@mantine/hooks";
 import { WEBSITE_CONFIG } from "../../config";
 
-const allLinks = [
-    { name: "Find Jobs",    url: "find-jobs",     roles: ["APPLICANT", "ADMIN"] },
-    { name: "Companies",    url: "companies",     roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
-    { name: "Messages",     url: "messages",      roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
-    { name: "Job History",  url: "job-history",   roles: ["APPLICANT", "ADMIN"] },
-    { name: "Connect",      url: "network",       roles: ["APPLICANT", "EMPLOYER", "ADMIN"] },
-    { name: "Post Job",     url: "post-job/0",    roles: ["EMPLOYER",  "ADMIN"] },
-    { name: "Posted Jobs",  url: "posted-jobs/0", roles: ["EMPLOYER",  "ADMIN"] },
-];
+
 
 const Header = () => {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -60,11 +52,11 @@ const Header = () => {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, navigate]);
-    return (location.pathname !== "/signup" && location.pathname !== "/login") ? <div data-aos="zoom-out" className="w-full glass-header text-mine-shaft-100 h-20 flex justify-center font-['poppins']">
+    return (location.pathname !== "/signup" && location.pathname !== "/login") ? <div data-aos="zoom-out" className="w-full bg-mine-shaft-950/80 backdrop-blur-xl border-b border-white/5 shadow-md text-mine-shaft-100 h-20 flex justify-center font-['poppins'] z-50 sticky top-0 transition-all duration-300">
         <div className="w-full max-w-[1600px] px-6 sm-mx:px-3 h-full flex justify-between items-center">
-        <div onClick={() => navigate("/")} className="flex gap-1 cursor-pointer items-center text-bright-sun-400">
-            <IconAnchor className="h-8 w-8 sm-mx:h-6 sm-mx:w-6" stroke={2.5} />
-            <div className=" xs-mx:hidden sm-mx:text-xl text-3xl font-semibold">{WEBSITE_CONFIG.name}</div>
+        <div onClick={() => navigate("/")} className="flex gap-2 cursor-pointer items-center text-bright-sun-400 group">
+            <IconAnchor className="h-9 w-9 sm-mx:h-7 sm-mx:w-7 transition-transform duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]" stroke={2.5} />
+            <div className="xs-mx:hidden sm-mx:text-xl text-3xl font-bold tracking-tight group-hover:text-yellow-300 transition-colors">{WEBSITE_CONFIG.name}</div>
         </div>
         <NavLinks />
         <div className="flex gap-2 sm-mx:gap-1 items-center">
@@ -82,15 +74,31 @@ const Header = () => {
             >
                 {colorScheme === 'dark' ? <IconSun size={20} /> : <IconMoon size={20} />}
             </ActionIcon>
-            <Burger className="bs:hidden" opened={opened} onClick={open} aria-label="Toggle navigation" />
-            <Drawer size="sm" overlayProps={{ backgroundOpacity: 0.5, blur: 4 }} position="right" opened={opened} onClose={close} closeButtonProps={{
-                icon: <IconX size={30} />,
-            }} >
-                <div className="flex flex-col gap-6 items-center">
+            <Burger className="bs:hidden hover:text-bright-sun-400 transition-colors" opened={opened} onClick={open} aria-label="Toggle navigation" />
+            <Drawer 
+                size="sm" 
+                overlayProps={{ backgroundOpacity: 0.5, blur: 4 }} 
+                position="right" 
+                opened={opened} 
+                onClose={close} 
+                closeButtonProps={{ icon: <IconX size={30} className="hover:text-bright-sun-400 transition-colors" /> }} 
+                classNames={{ content: 'bg-mine-shaft-950/90 backdrop-blur-2xl border-l border-white/5', header: 'bg-transparent' }}
+            >
+                <div className="flex flex-col gap-3 items-center mt-8">
                     {
-                        drawerLinks.map((link, index) => <div key={index} className="min-h-[48px] w-full flex items-center justify-center">
-                            <div className="hover:text-bright-sun-400 text-xl " key={index} onClick={() => handleClick(link.url)} >{link.name}</div>
-                        </div>)
+                        drawerLinks.map((link, index) => {
+                            const isActive = location.pathname === "/" + link.url;
+                            return (
+                                <div key={index} className="w-full px-6 flex items-center justify-center">
+                                    <div 
+                                        className={`w-full text-center py-3 rounded-xl text-lg font-medium cursor-pointer transition-all duration-300 ${isActive ? "bg-bright-sun-400/10 text-bright-sun-400 shadow-[0_0_15px_rgba(250,204,21,0.15)] scale-105" : "text-mine-shaft-200 hover:text-bright-sun-400 hover:bg-mine-shaft-800/50"}`} 
+                                        onClick={() => handleClick(link.url)} 
+                                    >
+                                        {link.name}
+                                    </div>
+                                </div>
+                            )
+                        })
                     }
                 </div>
             </Drawer>
