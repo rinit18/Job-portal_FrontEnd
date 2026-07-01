@@ -106,7 +106,7 @@ const AppRoutes = () => {
   const overlay = useSelector((state: any) => state.overlay);
   return <HelmetProvider><BrowserRouter>
     <InterceptorSetup />
-    <div className='relative overflow-hidden'>
+    <div className='relative overflow-hidden flex flex-col min-h-screen'>
       {overlay && <div className='fixed !z-[2000] w-full h-full flex  items-center justify-center'>
         <LoadingOverlay
           visible={overlay}
@@ -117,11 +117,13 @@ const AppRoutes = () => {
 
       </div>}
       <Header />
-      <Suspense fallback={<div className="h-[90vh] w-full flex justify-center items-center bg-mine-shaft-950"><Loader color="brightSun.4" size="lg" /></div>}>
-        <ErrorBoundary>
-          <AnimatedRoutes />
-        </ErrorBoundary>
-      </Suspense>
+      <div className="flex-1 flex flex-col">
+        <Suspense fallback={<div className="flex-1 flex justify-center items-center bg-mine-shaft-950"><Loader color="brightSun.4" size="lg" /></div>}>
+          <ErrorBoundary>
+            <AnimatedRoutes />
+          </ErrorBoundary>
+        </Suspense>
+      </div>
       <Footer />
       <BottomNav />
       <ScrollToTop />
