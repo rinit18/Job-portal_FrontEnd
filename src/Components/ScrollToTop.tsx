@@ -6,18 +6,19 @@ const ScrollToTop = () => {
   const [scroll, scrollTo] = useWindowScroll();
 
   return (
-    <Transition transition="slide-up" duration={200} mounted={scroll.y > 300}>
+    <Transition transition="slide-up" duration={300} mounted={scroll.y > 300}>
       {(transitionStyles) => (
         <ActionIcon
-          style={transitionStyles}
-          size="lg"
+          style={{ ...transitionStyles, zIndex: 2000 }}
+          size={50}
           color="brightSun.4"
           variant="filled"
-          radius="xl"
+          radius="100%"
           onClick={() => scrollTo({ y: 0 })}
-          className="fixed bottom-6 right-6 z-[100] shadow-lg shadow-bright-sun-400/20"
+          className="fixed bottom-8 right-8 shadow-[0_8px_30px_rgba(250,204,21,0.3)] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(250,204,21,0.5)] transition-all duration-300"
+          aria-label="Scroll to top"
         >
-          <IconArrowUp size={20} className="text-mine-shaft-950" />
+          <IconArrowUp size={24} className="text-mine-shaft-950" stroke={2.5} />
         </ActionIcon>
       )}
     </Transition>

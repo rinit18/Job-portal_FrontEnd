@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { removeUser } from '../../Slices/UserSlice';
 import { removeJwt } from '../../Slices/JwtSlice';
 import axiosInstance from '../../Interceptor/AxiosInterceptor';
+import { WEBSITE_CONFIG } from '../../config';
 
 const ProfileMenu = () => {
     const user=useSelector((state:any)=>state.user);
