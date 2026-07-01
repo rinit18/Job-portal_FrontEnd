@@ -32,6 +32,7 @@ const Notifications = () => {
     useEffect(() => {
         if (!user?.id) return;
         fetchNotifications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
     const fetchNotifications = () => {

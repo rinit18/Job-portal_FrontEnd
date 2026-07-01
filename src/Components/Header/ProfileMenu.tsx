@@ -1,4 +1,4 @@
-import { Menu, rem, Avatar, Switch, useMantineColorScheme } from '@mantine/core';
+import { Menu, Avatar, Switch, useMantineColorScheme } from '@mantine/core';
 import {
     IconMessageCircle,
     IconLogout2,

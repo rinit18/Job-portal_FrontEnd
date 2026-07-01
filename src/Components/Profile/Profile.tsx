@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, FileButton, FileInput, Overlay, RingProgress, Text, Tooltip } from "@mantine/core";
+import { Avatar, Button, Divider, FileButton, FileInput, Overlay, RingProgress, Text } from "@mantine/core";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Info from "./Info";
@@ -9,7 +9,7 @@ import Experience from "./Experience";
 import Certification from "./Certifications";
 import { useHover } from "@mantine/hooks";
 import { successNotification, errorNotification } from "../../Services/NotificationService";
-import { IconEdit, IconFileUpload, IconSparkles, IconCamera } from "@tabler/icons-react";
+import { IconFileUpload, IconSparkles, IconCamera } from "@tabler/icons-react";
 import { getBase64 } from "../../Services/Utilities";
 import { parseResume } from "../../Services/AiService";
 import { WEBSITE_CONFIG } from "../../config";

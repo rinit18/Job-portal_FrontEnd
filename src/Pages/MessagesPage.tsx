@@ -179,6 +179,7 @@ const MessagesPage = () => {
             const partner = getChatPartner(c);
             return partner.name.toLowerCase().includes(searchQuery.toLowerCase());
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [conversations, searchQuery]);
 
     if (!currentProfileId) {
