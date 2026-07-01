@@ -1,5 +1,5 @@
 import { Avatar, Autocomplete, SegmentedControl } from "@mantine/core";
-import { IconSearch, IconMapPin, IconBriefcase, IconUser } from "@tabler/icons-react";
+import { IconSearch, IconMapPin, IconBriefcase, IconUsers } from "@tabler/icons-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { WEBSITE_CONFIG } from "../../config";
@@ -73,7 +73,7 @@ const DreamJob = () => {
                         onChange={setSearchType}
                         data={[
                             { label: <div className="flex items-center gap-2"><IconBriefcase size={16}/><span>Find Jobs</span></div>, value: 'Jobs' },
-                            { label: <div className="flex items-center gap-2"><IconUser size={16}/><span>Find Talent</span></div>, value: 'Talent' },
+                            { label: <div className="flex items-center gap-2"><IconUsers size={16}/><span>Find Connections</span></div>, value: 'Talent' },
                         ]}
                         color="brightSun.4"
                         radius="xl"
