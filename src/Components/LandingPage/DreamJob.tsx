@@ -81,19 +81,20 @@ const DreamJob = () => {
                         classNames={{ label: 'font-semibold' }}
                     />
 
-                    <div className="flex md-mx:flex-col gap-2">
+                    <div className="flex md-mx:flex-col gap-3 w-full items-stretch">
                         <div className={`flex-1 flex items-center px-2 min-w-0 ${searchType === "Jobs" ? "border-r border-mine-shaft-800 md-mx:border-r-0 md-mx:border-b" : ""}`}>
                             <IconSearch className="text-mine-shaft-400 ml-2 h-5 w-5 shrink-0" />
                             <Autocomplete 
                                 value={query} 
                                 onChange={setQuery} 
                                 data={popularSearchTerms}
-                                className="flex-1 w-full" 
+                                className="w-full flex-1" 
                                 variant="unstyled" 
                                 size="md"
-                                placeholder={searchType === "Jobs" ? "Job title, keyword, or company" : "Name, job title, or skills"}
+                                placeholder={searchType === "Jobs" ? "Job title, keyword, or company" : "Name"}
                                 classNames={{ input: 'px-3 font-medium text-mine-shaft-100 placeholder:text-mine-shaft-500 w-full', dropdown: 'bg-mine-shaft-900 border-mine-shaft-800 rounded-xl' }}
                                 onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+                                style={{ width: '100%' }}
                             />
                         </div>
                         
@@ -104,12 +105,13 @@ const DreamJob = () => {
                                     value={location} 
                                     onChange={setLocation} 
                                     data={popularLocations}
-                                    className="flex-1 w-full" 
+                                    className="w-full flex-1" 
                                     variant="unstyled" 
                                     size="md"
                                     placeholder="City, state, or 'Remote'" 
                                     classNames={{ input: 'px-3 font-medium text-mine-shaft-100 placeholder:text-mine-shaft-500 w-full', dropdown: 'bg-mine-shaft-900 border-mine-shaft-800 rounded-xl' }}
                                     onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+                                    style={{ width: '100%' }}
                                 />
                             </div>
                         )}
@@ -117,7 +119,7 @@ const DreamJob = () => {
                         <button 
                             onClick={handleClick}
                             aria-label="Search"
-                            className="shrink-0 flex items-center justify-center gap-2 py-3 px-8 md-mx:py-3 md-mx:px-6 bg-gradient-to-r from-bright-sun-400 to-yellow-400 text-mine-shaft-950 font-bold text-lg rounded-xl hover:from-bright-sun-500 hover:to-yellow-500 shadow-[0_0_15px_rgba(250,204,21,0.3)] active:scale-95 transition-all duration-300"
+                            className="shrink-0 w-auto md-mx:w-full flex items-center justify-center gap-2 py-3 px-8 bg-gradient-to-r from-bright-sun-400 to-yellow-400 text-mine-shaft-950 font-bold text-lg rounded-xl hover:from-bright-sun-500 hover:to-yellow-500 shadow-[0_0_15px_rgba(250,204,21,0.3)] active:scale-95 transition-all duration-300"
                         >
                             Search
                         </button>
