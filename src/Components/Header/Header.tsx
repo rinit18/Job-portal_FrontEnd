@@ -50,8 +50,7 @@ const Header = () => {
             }).catch((err) => console.log(err))
             // .finally(()=>dispatch(hideOverlay()));
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [token, navigate]);
+    }, [token, navigate, user?.profileId, dispatch]);
     return (location.pathname !== "/signup" && location.pathname !== "/login") ? <div data-aos="zoom-out" className="w-full bg-mine-shaft-950/80 backdrop-blur-xl border-b border-white/5 shadow-md text-mine-shaft-100 h-20 flex justify-center font-['poppins'] z-50 sticky top-0 transition-all duration-300">
         <div className="w-full max-w-[1600px] px-6 sm-mx:px-3 h-full flex justify-between items-center">
         <div onClick={() => navigate("/")} className="flex gap-2 cursor-pointer items-center text-bright-sun-400 group">

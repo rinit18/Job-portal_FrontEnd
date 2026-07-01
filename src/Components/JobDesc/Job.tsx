@@ -280,7 +280,7 @@ const Job = (props: any) => {
                     </div>
                     <div>
                         <div className="text-sm font-semibold text-mine-shaft-200">{props.company}</div>
-                        <div className="text-xs text-mine-shaft-500">10k+ Employees</div>
+                        <div className="text-xs text-mine-shaft-500">{props.employees ? props.employees + " Employees" : "Employee count unknown"}</div>
                     </div>
                 </div>
                 <Link to={`/company/${props.company}`}>

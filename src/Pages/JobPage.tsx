@@ -16,9 +16,11 @@ const JobPage = () => {
     const navigate=useNavigate();
     const [job, setJob] = useState<any>(null);
     useEffect(()=>{
+        let isMounted = true;
         window.scrollTo(0,0);
         dispatch(showOverlay());
         getJob(id).then((res)=>{
+            if(!isMounted) return;
             if(!res) {
                 errorNotification("Not Found", "This job listing could not be found.");
                 navigate("/find-jobs");
@@ -31,13 +33,17 @@ const JobPage = () => {
                 navigate(-1);
             }
         }).catch((err)=> {
+            if(!isMounted) return;
             console.log(err);
             errorNotification("Error", "Could not load this job.");
             navigate("/find-jobs");
         })
-        .finally(()=>dispatch(hideOverlay()));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id])
+        .finally(()=> {
+            if(isMounted) dispatch(hideOverlay());
+        });
+        
+        return () => { isMounted = false; };
+    }, [id, dispatch, navigate])
     return (
         <div className="min-h-[90vh] bg-mine-shaft-950 font-['poppins'] p-4">
         {job && (

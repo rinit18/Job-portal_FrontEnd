@@ -127,7 +127,7 @@ const AdminDashboardPage = () => {
                                         </Table.Thead>
                                         <Table.Tbody>
                                             {users.map((u, i) => (
-                                                <Table.Tr key={i}>
+                                                <Table.Tr key={u.id || i}>
                                                     <Table.Td>{u.id}</Table.Td>
                                                     <Table.Td>{u.name}</Table.Td>
                                                     <Table.Td>{u.email}</Table.Td>
@@ -160,7 +160,7 @@ const AdminDashboardPage = () => {
                                         </Table.Thead>
                                         <Table.Tbody>
                                             {jobs.map((j, i) => (
-                                                <Table.Tr key={i}>
+                                                <Table.Tr key={j.id || i}>
                                                     <Table.Td>{j.id}</Table.Td>
                                                     <Table.Td>{j.jobTitle}</Table.Td>
                                                     <Table.Td>{j.company}</Table.Td>
@@ -194,7 +194,7 @@ const AdminDashboardPage = () => {
                                         </Table.Thead>
                                         <Table.Tbody>
                                             {feedbacks.map((f, i) => (
-                                                <Table.Tr key={i}>
+                                                <Table.Tr key={f.id || i}>
                                                     <Table.Td>{new Date(f.timestamp).toLocaleDateString()}</Table.Td>
                                                     <Table.Td>{f.name || <Badge color="gray" variant="light">Anonymous</Badge>}</Table.Td>
                                                     <Table.Td>{f.email || <Badge color="gray" variant="light">Anonymous</Badge>}</Table.Td>
@@ -229,7 +229,7 @@ const AdminDashboardPage = () => {
                                         </Table.Thead>
                                         <Table.Tbody>
                                             {contacts.map((c, i) => (
-                                                <Table.Tr key={i}>
+                                                <Table.Tr key={c.id || i}>
                                                     <Table.Td>{new Date(c.timestamp).toLocaleDateString()}</Table.Td>
                                                     <Table.Td>{c.name}</Table.Td>
                                                     <Table.Td>{c.email}</Table.Td>

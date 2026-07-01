@@ -11,8 +11,10 @@ const CompaniesPage = () => {
     const [companies, setCompanies] = useState<any[]>([]);
 
     useEffect(() => {
+        let isMounted = true;
         dispatch(showOverlay());
         getAllJobs().then((res) => {
+            if (!isMounted) return;
             // Group jobs by company
             const companyMap = new Map();
             res.filter((job: any) => job.jobStatus === "ACTIVE").forEach((job: any) => {
@@ -31,7 +33,10 @@ const CompaniesPage = () => {
             });
             setCompanies(Array.from(companyMap.values()));
         }).catch((err) => console.log(err))
-        .finally(() => dispatch(hideOverlay()));
+        .finally(() => {
+            if (isMounted) dispatch(hideOverlay());
+        });
+        return () => { isMounted = false; };
     }, [dispatch]);
 
     return (

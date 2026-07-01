@@ -300,7 +300,7 @@ const Profile = () => {
                                 <h2 className="text-lg font-bold uppercase tracking-wider mb-2 border-b border-gray-300">Work Experience</h2>
                                 <div className="flex flex-col gap-4">
                                     {(profile.experiences || profile.experience).map((exp: any, i: number) => (
-                                        <div key={i}>
+                                        <div key={exp.id || i}>
                                             <div className="flex justify-between items-baseline font-bold text-gray-900">
                                                 <span>{exp.title}</span>
                                                 <span className="text-sm">{exp.startDate || ""} - {exp.working ? "Present" : exp.endDate || ""}</span>
@@ -327,7 +327,7 @@ const Profile = () => {
                                 <h2 className="text-lg font-bold uppercase tracking-wider mb-2 border-b border-gray-300">Certifications</h2>
                                 <ul className="list-disc list-inside text-sm text-gray-800 flex flex-col gap-1">
                                     {profile.certifications.map((cert: any, i: number) => (
-                                        <li key={i}><span className="font-bold">{cert.name}</span> - {cert.issuer}</li>
+                                        <li key={cert.name || i}><span className="font-bold">{cert.name}</span> - {cert.issuer}</li>
                                     ))}
                                 </ul>
                             </div>

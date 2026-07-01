@@ -18,21 +18,21 @@ const Feed = () => {
     const [image, setImage] = useState<string | null>(null);
     const [isPosting, setIsPosting] = useState(false);
 
-    const fetchPosts = async () => {
-        if (!profile?.id) return;
-        setLoading(true);
-        try {
-            const res = await getAllPosts(profile.id, sort);
-            setPosts(res);
-        } catch (error) {
-            console.error("Error fetching posts", error);
-        }
-        setLoading(false);
-    }
-
     useEffect(() => {
+        let isMounted = true;
+        const fetchPosts = async () => {
+            if (!profile?.id) return;
+            if (isMounted) setLoading(true);
+            try {
+                const res = await getAllPosts(profile.id, sort);
+                if (isMounted) setPosts(res);
+            } catch (error) {
+                console.error("Error fetching posts", error);
+            }
+            if (isMounted) setLoading(false);
+        }
         fetchPosts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        return () => { isMounted = false; };
     }, [sort, profile?.id]);
 
     const handleImageUpload = async (e: any) => {

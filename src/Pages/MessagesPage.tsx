@@ -1,7 +1,7 @@
 import { ActionIcon, Avatar, Divider, ScrollArea, TextInput, Indicator, Loader, Skeleton, Badge } from "@mantine/core";
 import { WEBSITE_CONFIG } from "../config";
 import { IconSend, IconSearch, IconDotsVertical, IconPaperclip, IconPhone, IconVideo, IconChecks, IconArrowLeft, IconBriefcase, IconUser } from "@tabler/icons-react";
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { getConversations, getMessages, sendMessage, ChatRoomPayload, MessagePayload } from "../Services/ChatService";
@@ -151,12 +151,12 @@ const MessagesPage = () => {
             .catch((err) => console.error("Failed to send message", err));
     };
 
-    const getChatPartner = (room: ChatRoomPayload) => {
+    const getChatPartner = useCallback((room: ChatRoomPayload) => {
         if (room.user1Id === currentProfileId) {
             return { name: room.user2Name, role: room.user2Role };
         }
         return { name: room.user1Name, role: room.user1Role };
-    };
+    }, [currentProfileId]);
 
     const renderRoleBadge = (role: string) => {
         const isEmployer = role.toUpperCase() === 'EMPLOYER';
@@ -179,8 +179,7 @@ const MessagesPage = () => {
             const partner = getChatPartner(c);
             return partner.name.toLowerCase().includes(searchQuery.toLowerCase());
         });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [conversations, searchQuery]);
+    }, [conversations, searchQuery, getChatPartner]);
 
     if (!currentProfileId) {
         return (

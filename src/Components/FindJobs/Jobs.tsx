@@ -27,13 +27,17 @@ const Jobs = () => {
 
     /* ── Fetch ─────────────────────────────────────────── */
     useEffect(() => {
+        let isMounted = true;
         dispatch(resetSort());
         setIsLoading(true);
         getAllJobs()
-            .then((res) => setJobList(res.filter((j: any) => j.jobStatus === "ACTIVE")))
+            .then((res) => { if (isMounted) setJobList(res.filter((j: any) => j.jobStatus === "ACTIVE")); })
             .catch(console.error)
-            .finally(() => setIsLoading(false));
-        return () => { if (!filter.page) dispatch(resetFilter()); };
+            .finally(() => { if (isMounted) setIsLoading(false); });
+        return () => {
+            isMounted = false;
+            if (!filter.page) dispatch(resetFilter());
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
