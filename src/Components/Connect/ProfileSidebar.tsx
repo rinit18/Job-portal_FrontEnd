@@ -11,19 +11,19 @@ const ProfileSidebar = () => {
     const isLoading = !profile?.id;
 
     return (
-        <div className="bg-mine-shaft-900 rounded-xl overflow-hidden border border-mine-shaft-800 flex flex-col">
+        <div className="bg-mine-shaft-900/40 backdrop-blur-md rounded-2xl overflow-hidden border border-mine-shaft-800/50 shadow-lg flex flex-col hover:border-mine-shaft-700/50 transition-colors">
             {/* Banner */}
-            <div className="h-20 w-full bg-gradient-to-r from-bright-sun-400/80 to-bright-sun-400/40" />
+            <div className="h-24 w-full bg-gradient-to-r from-bright-sun-400 to-yellow-500 opacity-80" />
 
             {/* Avatar */}
-            <div className="flex flex-col items-center px-4 pb-4 -mt-10">
+            <div className="flex flex-col items-center px-5 pb-5 -mt-12">
                 {isLoading ? (
-                    <Skeleton circle height={72} width={72} className="border-4 border-mine-shaft-900" />
+                    <Skeleton circle height={84} width={84} className="border-[6px] border-mine-shaft-950" />
                 ) : (
                     <Avatar
                         src={profile?.picture ? `data:image/jpeg;base64,${profile.picture}` : ""}
-                        size={72}
-                        className="border-4 border-mine-shaft-900 cursor-pointer"
+                        size={84}
+                        className="border-[6px] border-mine-shaft-950 cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)] transition-transform duration-300 hover:scale-105"
                         onClick={() => navigate("/profile")}
                     />
                 )}
@@ -37,14 +37,15 @@ const ProfileSidebar = () => {
                     ) : (
                         <>
                             <div
-                                className="text-lg font-semibold hover:underline cursor-pointer truncate"
+                            <div
+                                className="text-xl font-bold text-mine-shaft-100 hover:text-bright-sun-400 cursor-pointer truncate transition-colors"
                                 onClick={() => navigate("/profile")}
                             >
                                 {user?.name || "User"}
                             </div>
                             {(profile?.jobTitle || profile?.company) && (
-                                <div className="text-sm text-mine-shaft-300 flex items-center justify-center gap-1 mt-0.5">
-                                    <IconBriefcase size={13} stroke={1.5} />
+                                <div className="text-sm font-medium text-mine-shaft-300 flex items-center justify-center gap-1 mt-1">
+                                    <IconBriefcase size={14} className="text-mine-shaft-400" />
                                     <span className="truncate">
                                         {profile.jobTitle || ""}
                                         {profile.jobTitle && profile.company ? " at " : ""}
@@ -53,44 +54,37 @@ const ProfileSidebar = () => {
                                 </div>
                             )}
                             {profile?.location && (
-                                <div className="text-xs text-mine-shaft-400 flex items-center justify-center gap-1 mt-0.5">
-                                    <IconMapPin size={12} stroke={1.5} />
+                                <div className="text-xs font-medium text-mine-shaft-400 flex items-center justify-center gap-1 mt-1">
+                                    <IconMapPin size={14} className="text-mine-shaft-400" />
                                     {profile.location}
                                 </div>
                             )}
                             {!profile?.jobTitle && !profile?.company && (
                                 <div
-                                    className="text-sm text-bright-sun-400/70 hover:text-bright-sun-400 cursor-pointer mt-1 transition-colors"
+                                    className="text-sm font-semibold text-bright-sun-400/80 hover:text-bright-sun-400 cursor-pointer mt-2 bg-bright-sun-400/10 px-4 py-1.5 rounded-full inline-block transition-colors"
                                     onClick={() => navigate("/profile")}
                                 >
-                                    Add your headline →
+                                    + Add Headline
                                 </div>
                             )}
                         </>
                     )}
                 </div>
 
-                <Divider className="w-full my-3 border-mine-shaft-800" />
+                <Divider className="w-full my-4 border-mine-shaft-800/60" />
 
                 {/* Stats Row */}
                 <div className="w-full flex flex-col gap-1">
                     <div
-                        className="w-full flex justify-between text-sm hover:bg-mine-shaft-800 px-2 py-1.5 rounded-lg cursor-pointer transition-colors"
+                        className="w-full flex justify-between items-center text-sm hover:bg-mine-shaft-800/60 px-3 py-2 rounded-xl cursor-pointer transition-colors group"
                         onClick={() => navigate("/network")}
                     >
-                        <span className="text-mine-shaft-300">Connections</span>
+                        <span className="text-mine-shaft-300 font-medium group-hover:text-mine-shaft-100 transition-colors">Connections</span>
                         {isLoading ? (
                             <Skeleton height={14} width={20} />
                         ) : (
-                            <span className="text-bright-sun-400 font-semibold">{profile?.connections?.length || 0}</span>
+                            <span className="text-mine-shaft-100 font-bold group-hover:text-bright-sun-400 transition-colors">{profile?.connections?.length || 0}</span>
                         )}
-                    </div>
-                    <div
-                        className="w-full flex justify-between text-sm hover:bg-mine-shaft-800 px-2 py-1.5 rounded-lg cursor-pointer transition-colors"
-                        onClick={() => navigate("/profile")}
-                    >
-                        <span className="text-mine-shaft-300">Profile Views</span>
-                        <span className="text-bright-sun-400 font-semibold text-xs italic">Coming soon</span>
                     </div>
                 </div>
             </div>

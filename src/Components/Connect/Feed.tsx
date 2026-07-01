@@ -70,16 +70,16 @@ const Feed = () => {
     return (
         <div className="flex flex-col gap-4">
             {/* Create Post Box */}
-            <div className="bg-mine-shaft-900 rounded-xl border border-mine-shaft-800 p-4">
+            <div className="bg-mine-shaft-900/40 backdrop-blur-md rounded-2xl border border-mine-shaft-800/50 p-5 shadow-lg">
                 <div className="flex gap-3 items-start">
                     <Avatar src={profile?.picture ? `data:image/jpeg;base64,${profile.picture}` : ""} radius="xl" />
                     <div className="flex-1 flex flex-col gap-3">
                         <Textarea 
-                            placeholder="Start a post..." 
+                            placeholder="Share your thoughts..." 
                             minRows={2} 
                             autosize 
-                            variant="filled"
-                            className="w-full"
+                            variant="unstyled"
+                            className="w-full bg-mine-shaft-950/30 rounded-xl px-4 py-2 border border-mine-shaft-800/50 focus-within:border-bright-sun-400/30 transition-colors"
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                         />
@@ -96,10 +96,10 @@ const Feed = () => {
                                 </ActionIcon>
                             </div>
                         )}
-                        <div className="flex justify-between items-center">
-                            <label className="cursor-pointer text-mine-shaft-300 hover:text-bright-sun-400 transition-colors flex items-center gap-2">
+                        <div className="flex justify-between items-center mt-1">
+                            <label className="cursor-pointer text-mine-shaft-300 hover:text-bright-sun-400 hover:bg-bright-sun-400/10 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-2">
                                 <IconPhoto size={20} />
-                                <span className="text-sm">Photo</span>
+                                <span className="text-sm font-medium">Photo</span>
                                 <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
                             </label>
                             <Button 
@@ -109,6 +109,7 @@ const Feed = () => {
                                 onClick={handleCreatePost}
                                 loading={isPosting}
                                 disabled={!content.trim() && !image}
+                                className="shadow-md"
                             >
                                 Post
                             </Button>
@@ -118,14 +119,14 @@ const Feed = () => {
             </div>
 
             {/* Divider */}
-            <div className="flex items-center gap-2">
-                <div className="h-[1px] flex-1 bg-mine-shaft-800"></div>
-                <div className="text-xs text-mine-shaft-400 flex items-center gap-2">
+            <div className="flex items-center gap-4 my-2">
+                <div className="h-[1px] flex-1 bg-mine-shaft-800/60"></div>
+                <div className="text-xs font-medium text-mine-shaft-400 flex items-center gap-2">
                     Sort by: 
                     <select 
                         value={sort} 
                         onChange={(e) => setSort(e.target.value)} 
-                        className="bg-mine-shaft-900 border border-mine-shaft-800 rounded px-2 py-1 text-mine-shaft-200 outline-none focus:border-bright-sun-400 cursor-pointer"
+                        className="bg-mine-shaft-900/60 backdrop-blur-md border border-mine-shaft-800/80 rounded-lg px-3 py-1 text-mine-shaft-100 outline-none focus:border-bright-sun-400 cursor-pointer shadow-sm hover:border-mine-shaft-700 transition-colors"
                     >
                         <option value="Recent">Recent</option>
                         <option value="Top">Top</option>
