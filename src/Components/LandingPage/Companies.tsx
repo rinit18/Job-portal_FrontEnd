@@ -2,15 +2,31 @@ import Marquee from "react-fast-marquee";
 import { companies } from "../../Data/Data";
 
 const Companies = () => {
-    return <section className="mt-20 pb-5 ">
-        <h2 data-aos="zoom-out" className="text-4xl  md-mx:text-3xl sm-mx:text-2xl xs-mx:text-xl text-center font-semibold mb-10 text-mine-shaft-100">Trusted By <span className="text-bright-sun-400">1000+</span> Companies</h2>
-        <Marquee pauseOnHover={true}>
-            {
-                companies.map((company, index) => <div  key={index} className="mx-8 sm-mx:mx-6 xs-mx:mx-4 xsm-mx:mx-2 px-2 py-1 hover:bg-mine-shaft-900 rounded-xl cursor-pointer">
-                    <img data-aos="zoom-out" className="h-14" src={`/Companies/${company}.png`} alt={company} loading="lazy" />
-                </div>)
-            }
-        </Marquee>
+    return <section className="mt-8 pb-10 relative">
+        <h2 className="text-center text-xl font-medium text-mine-shaft-400 mb-8 uppercase tracking-widest">
+            Trusted by Industry Leaders
+        </h2>
+        
+        {/* Marquee with fading edges for a seamless look */}
+        <div className="relative max-w-7xl mx-auto">
+            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-mine-shaft-950 to-transparent z-10"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-mine-shaft-950 to-transparent z-10"></div>
+            
+            <Marquee pauseOnHover={true} gradient={false} speed={40}>
+                {companies.map((company, index) => (
+                    <div 
+                        key={index} 
+                        className="mx-12 sm-mx:mx-6 px-4 py-3 rounded-xl hover:bg-mine-shaft-900/50 transition-colors duration-300 cursor-pointer grayscale opacity-60 hover:grayscale-0 hover:opacity-100 flex items-center justify-center"
+                    >
+                        <img 
+                            className="h-10 sm-mx:h-8 object-contain" 
+                            src={`/Companies/${company}.png`} 
+                            alt={`${company} Logo`} 
+                        />
+                    </div>
+                ))}
+            </Marquee>
+        </div>
     </section>
 }
 export default Companies;

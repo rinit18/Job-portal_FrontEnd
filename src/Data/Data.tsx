@@ -68,6 +68,21 @@ const work = [
     }
 ]
 
+const employerWork = [
+    {
+        "name": "Post a Job",
+        "desc": "Create a detailed job listing to attract top talent."
+    },
+    {
+        "name": "Review Applicants",
+        "desc": "Browse profiles and filter candidates easily."
+    },
+    {
+        "name": "Hire the Best",
+        "desc": "Interview and hire the perfect fit for your team."
+    }
+]
+
 
 const testimonials = [
     {
@@ -109,4 +124,4 @@ const footerLinks = [
         { name: "FAQs", url: "/faqs" }
     ] }
 ]
-export { companies, jobCategory, work, testimonials, footerLinks };
+export { companies, jobCategory, work, employerWork, testimonials, footerLinks };

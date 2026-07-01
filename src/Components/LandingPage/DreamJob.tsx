@@ -1,7 +1,6 @@
-import { Avatar, Autocomplete } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import { Avatar, Autocomplete, TextInput } from "@mantine/core";
+import { IconSearch, IconMapPin } from "@tabler/icons-react";
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 import { WEBSITE_CONFIG } from "../../config";
 import { TypeAnimation } from 'react-type-animation';
@@ -13,102 +12,127 @@ const popularSearchTerms = [
     "Google", "Microsoft", "Project Manager", "Sales"
 ];
 
+const popularLocations = [
+    "New York, NY", "San Francisco, CA", "London, UK", 
+    "Berlin, Germany", "Remote", "Bangalore, India", 
+    "Toronto, Canada", "Austin, TX", "Singapore"
+];
+
 const DreamJob = () => {
     const navigate=useNavigate();
     const [query, setQuery] = useState("");
+    const [location, setLocation] = useState("");
 
     const handleClick = () => {
-        navigate(`/search?query=${encodeURIComponent(query)}`);
+        // Construct the query string. If location is provided, append it.
+        const searchQuery = location ? `${query} ${location}`.trim() : query.trim();
+        navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
     }
     
     const { hero } = WEBSITE_CONFIG.landing;
     const { assets } = WEBSITE_CONFIG;
 
     return (
-        <section className="flex md-mx:flex-col-reverse items-center px-16 bs-mx:px-10 md-mx:px-5 sm-mx:px-4 py-12 sm-mx:py-8 relative overflow-hidden">
+        <section className="flex md-mx:flex-col-reverse items-center px-16 bs-mx:px-10 md-mx:px-5 sm-mx:px-4 py-16 sm-mx:py-8 relative overflow-hidden">
             {/* Background glowing decorations */}
-            <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-bright-sun-400/10 rounded-full blur-[100px] pointer-events-none"></div>
-            <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-bright-sun-400/5 rounded-full blur-[120px] pointer-events-none"></div>
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-bright-sun-400/15 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-teal-500/10 rounded-full blur-[150px] pointer-events-none animate-pulse" style={{ animationDelay: '2s' }}></div>
 
-            <div data-aos="zoom-out-right" className="flex flex-col w-[45%] md-mx:w-full gap-5 sm-mx:gap-3 z-10">
-                <h1 className="text-6xl bs-mx:text-5xl md-mx:text-4xl sm-mx:text-3xl font-extrabold leading-tight text-mine-shaft-100 [&>span]:text-bright-sun-400">
+            <div data-aos="zoom-out-right" className="flex flex-col w-[50%] md-mx:w-full gap-6 sm-mx:gap-4 z-10">
+                <h1 className="text-6xl bs-mx:text-5xl md-mx:text-4xl sm-mx:text-3xl font-extrabold leading-[1.15] text-mine-shaft-100 drop-shadow-sm">
                     {hero.titlePart1}{" "}
                     <TypeAnimation
                         sequence={[
-                            'Connection', 2000,
-                            'Colleague', 2000,
-                            'Mentor', 2000,
-                            'Job', 2000,
+                            'Connection', 2500,
+                            'Colleague', 2500,
+                            'Mentor', 2500,
+                            'Job', 2500,
                         ]}
                         wrapper="span"
                         speed={50}
-                        className="text-bright-sun-400"
+                        className="text-transparent bg-clip-text bg-gradient-to-r from-bright-sun-400 to-yellow-300"
                         repeat={Infinity}
                     />{" "}
+                    <br className="hidden md:block"/>
                     {hero.titlePart2}
                 </h1>
-                <div className="text-lg md-mx:text-base sm-mx:text-sm text-mine-shaft-300 leading-relaxed max-w-lg">
+                <div className="text-xl md-mx:text-lg sm-mx:text-base text-mine-shaft-300 leading-relaxed max-w-xl font-light">
                     {hero.subtitle}
                 </div>
                 
-
-                {/* Hero Search Bar (Indeed-style): High contrast, large inputs, prominent button */}
-                <div className="flex md-mx:flex-col gap-3 mt-4 p-3 bg-mine-shaft-900 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-mine-shaft-800 focus-within:border-bright-sun-400/50 transition-all duration-300">
-                    <div className="flex-1 flex gap-2 w-full">
+                {/* Advanced Hero Search Bar */}
+                <div className="flex md-mx:flex-col gap-2 mt-6 p-2 bg-mine-shaft-900/80 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.4)] border border-mine-shaft-800 focus-within:border-bright-sun-400/50 focus-within:shadow-[0_0_20px_rgba(250,204,21,0.15)] transition-all duration-500 w-full max-w-2xl">
+                    
+                    <div className="flex-1 flex items-center border-r border-mine-shaft-800 md-mx:border-r-0 md-mx:border-b px-2">
+                        <IconSearch className="text-mine-shaft-400 ml-2 h-5 w-5" />
                         <Autocomplete 
                             value={query} 
                             onChange={setQuery} 
                             data={popularSearchTerms}
-                            className="flex-1 rounded-lg bg-mine-shaft-950 p-1 text-mine-shaft-100" 
+                            className="flex-1" 
                             variant="unstyled" 
-                            size="lg"
-                            label={<span className="text-xs text-mine-shaft-400 font-bold px-2 uppercase tracking-wider">Search</span>}
-                            placeholder="Find professionals, companies, or jobs..." 
-                            classNames={{ input: 'px-2 font-bold text-lg placeholder:text-mine-shaft-500 placeholder:font-medium', dropdown: 'bg-mine-shaft-900 border-mine-shaft-800' }}
+                            size="md"
+                            placeholder="Job title, keyword, or company" 
+                            classNames={{ input: 'px-3 font-medium text-mine-shaft-100 placeholder:text-mine-shaft-500', dropdown: 'bg-mine-shaft-900 border-mine-shaft-800 rounded-xl' }}
                             onKeyDown={(e) => e.key === 'Enter' && handleClick()}
                         />
                     </div>
+                    
+                    <div className="flex-1 flex items-center px-2">
+                        <IconMapPin className="text-mine-shaft-400 ml-2 h-5 w-5" />
+                        <Autocomplete 
+                            value={location} 
+                            onChange={setLocation} 
+                            data={popularLocations}
+                            className="flex-1" 
+                            variant="unstyled" 
+                            size="md"
+                            placeholder="City, state, or 'Remote'" 
+                            classNames={{ input: 'px-3 font-medium text-mine-shaft-100 placeholder:text-mine-shaft-500', dropdown: 'bg-mine-shaft-900 border-mine-shaft-800 rounded-xl' }}
+                            onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+                        />
+                    </div>
+
                     <button 
                         onClick={handleClick}
                         aria-label="Search"
-                        className="flex items-center justify-center gap-2 md-mx:w-full py-3 sm-mx:py-2 min-h-[44px] px-8 sm-mx:px-4 bg-bright-sun-400 text-mine-shaft-950 font-extrabold text-lg rounded-lg hover:bg-bright-sun-500 shadow-lg shadow-bright-sun-400/20 active:scale-95 transition-all duration-200"
+                        className="flex items-center justify-center gap-2 py-3 px-8 bg-gradient-to-r from-bright-sun-400 to-yellow-400 text-mine-shaft-950 font-bold text-lg rounded-xl hover:from-bright-sun-500 hover:to-yellow-500 shadow-[0_0_15px_rgba(250,204,21,0.3)] active:scale-95 transition-all duration-300"
                     >
-                        <IconSearch className="h-6 w-6 stroke-[2.5]" />
-                        <span className="hidden lg:block">Search</span>
+                        Search
                     </button>
                 </div>
             </div>
             
-            <div data-aos="zoom-out-left" className="w-[55%] md-mx:w-full flex items-center justify-center z-10 mt-5">
-                <div className="w-[30rem] md-mx:w-full md-mx:max-w-[24rem] sm-mx:max-w-[18rem] relative">
-                    <img className="hover:scale-[1.02] transition-transform duration-500" src={assets.heroImage} alt="Professional presenting ideas" />
+            <div data-aos="zoom-out-left" className="w-[50%] md-mx:w-full flex items-center justify-center z-10 mt-5 md-mx:mt-10">
+                <div className="w-[32rem] md-mx:w-full md-mx:max-w-[28rem] sm-mx:max-w-[20rem] relative">
+                    <img className="hover:scale-[1.03] transition-transform duration-700 drop-shadow-[0_20px_30px_rgba(0,0,0,0.5)]" src={assets.heroImage} alt="Professional presenting ideas" />
                     
-                    {/* Glass card floating badges - hidden on very small screens to prevent overflow */}
-                    <div className="absolute -right-6 bs-mx:right-0 sm-mx:hidden w-fit top-[50%] border-mine-shaft-800 bg-mine-shaft-900/60 rounded-2xl p-3 border backdrop-blur-md shadow-xl hover:-translate-y-1 transition-all duration-300">
-                        <div className="text-center mb-1 text-xs font-semibold text-bright-sun-400">{hero.statsText}</div>
-                        <Avatar.Group>
-                            <Avatar src={assets.heroAvatars[0]} />
-                            <Avatar src={assets.heroAvatars[1]} />
-                            <Avatar src={assets.heroAvatars[2]} />
-                            <Avatar color="brightSun.4" className="text-xs font-semibold">
-                                <CountUp start={0} end={9} duration={3} prefix="+" suffix="K" />
+                    {/* Glass card floating badges */}
+                    <div className="absolute -right-8 bs-mx:right-0 sm-mx:hidden w-fit top-[40%] border-white/10 bg-mine-shaft-900/40 rounded-2xl p-4 border backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:-translate-y-2 transition-all duration-500 group">
+                        <div className="text-center mb-2 text-sm font-semibold text-bright-sun-400 group-hover:text-yellow-300 transition-colors">{hero.statsText}</div>
+                        <Avatar.Group spacing="sm">
+                            <Avatar src={assets.heroAvatars[0]} size="md" className="border-mine-shaft-900" />
+                            <Avatar src={assets.heroAvatars[1]} size="md" className="border-mine-shaft-900" />
+                            <Avatar src={assets.heroAvatars[2]} size="md" className="border-mine-shaft-900" />
+                            <Avatar color="brightSun.4" size="md" className="text-xs font-bold border-mine-shaft-900 bg-bright-sun-400 text-mine-shaft-950">
+                                <CountUp start={0} end={10} duration={3} prefix="+" suffix="K" />
                             </Avatar>
                         </Avatar.Group>
                     </div>
                     
-                    <div className="absolute -left-6 w-fit sm-mx:hidden bs-mx:top-[35%] top-[28%] border-mine-shaft-800 bg-mine-shaft-900/60 rounded-2xl p-4 border backdrop-blur-md gap-3 flex flex-col shadow-xl hover:-translate-y-1 transition-all duration-300">
-                        <div className="flex gap-3 items-center ">
-                            <div className="w-10 h-10 p-1 bg-mine-shaft-900 rounded-xl flex items-center justify-center">
-                                <img src={assets.heroCompanyLogo} alt="Company Logo" className="w-6 h-6 object-contain" />
+                    <div className="absolute -left-10 w-fit sm-mx:hidden bs-mx:top-[30%] top-[20%] border-white/10 bg-mine-shaft-900/40 rounded-2xl p-5 border backdrop-blur-xl gap-4 flex flex-col shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:-translate-y-2 transition-all duration-500">
+                        <div className="flex gap-4 items-center ">
+                            <div className="w-12 h-12 p-2 bg-white/5 backdrop-blur-md rounded-xl flex items-center justify-center border border-white/5 shadow-inner">
+                                <img src={assets.heroCompanyLogo} alt="Company Logo" className="w-7 h-7 object-contain drop-shadow-md" />
                             </div>
-                            <div className="text-sm text-mine-shaft-100">
-                                <div className="font-bold">{hero.cardTitle}</div>
-                                <div className="text-mine-shaft-400 text-xs">{hero.cardLocation}</div>
+                            <div className="text-base text-white">
+                                <div className="font-extrabold tracking-wide">{hero.cardTitle}</div>
+                                <div className="text-mine-shaft-300 text-sm font-medium">{hero.cardLocation}</div>
                             </div>
                         </div>
-                        <div className="flex gap-4 justify-between border-t border-mine-shaft-800/50 pt-2 text-mine-shaft-300 text-xs">
-                            <span>{hero.cardTime}</span>
-                            <span className="text-bright-sun-400 font-semibold">{hero.cardApplicants}</span>
+                        <div className="flex gap-6 justify-between border-t border-white/10 pt-3 text-mine-shaft-300 text-sm">
+                            <span className="font-medium">{hero.cardTime}</span>
+                            <span className="text-bright-sun-400 font-bold">{hero.cardApplicants}</span>
                         </div>
                     </div>
                 </div>
