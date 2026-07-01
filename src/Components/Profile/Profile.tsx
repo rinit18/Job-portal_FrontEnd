@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, FileButton, FileInput, Overlay, RingProgress, Text } from "@mantine/core";
+import { Avatar, Button, Divider, FileButton, FileInput, Overlay, RingProgress, Text, Modal } from "@mantine/core";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Info from "./Info";
@@ -9,7 +9,7 @@ import Experience from "./Experience";
 import Certification from "./Certifications";
 import { useHover } from "@mantine/hooks";
 import { successNotification, errorNotification } from "../../Services/NotificationService";
-import { IconFileUpload, IconSparkles, IconCamera } from "@tabler/icons-react";
+import { IconFileUpload, IconSparkles, IconCamera, IconFileText, IconPrinter } from "@tabler/icons-react";
 import { getBase64 } from "../../Services/Utilities";
 import { parseResume } from "../../Services/AiService";
 import { WEBSITE_CONFIG } from "../../config";
@@ -44,6 +44,7 @@ const Profile = () => {
     
     const { hovered, ref } = useHover();
     const [resumeLoading, setResumeLoading] = useState(false);
+    const [resumeModalOpen, setResumeModalOpen] = useState(false);
     const completion = getProfileCompletion(profile, isEmployer);
 
     const handleAvatarChange = async (image: any) => {
@@ -222,6 +223,21 @@ const Profile = () => {
                     </div>
                 )}
 
+                {/* Print ATS Resume Button (Applicants Only) */}
+                {!isEmployer && completion > 40 && (
+                    <div data-aos="fade-up" className="flex justify-end mb-2">
+                        <Button
+                            variant="gradient"
+                            gradient={{ from: 'brightSun.4', to: 'yellow.6', deg: 45 }}
+                            leftSection={<IconFileText size={18} />}
+                            onClick={() => setResumeModalOpen(true)}
+                            className="shadow-[0_0_15px_rgba(250,204,21,0.3)] hover:scale-105 transition-transform"
+                        >
+                            Generate ATS Web Resume
+                        </Button>
+                    </div>
+                )}
+
                 <div className="bg-mine-shaft-900/40 backdrop-blur-md border border-mine-shaft-800/60 rounded-2xl p-6 sm-mx:p-4 shadow-xl flex flex-col gap-8">
                     <Info />
                     <Divider className="border-mine-shaft-800/60" />
@@ -240,6 +256,95 @@ const Profile = () => {
                     )}
                 </div>
             </div>
+
+            {/* ATS Resume Modal */}
+            <Modal 
+                opened={resumeModalOpen} 
+                onClose={() => setResumeModalOpen(false)} 
+                size="1000px" 
+                title={<div className="text-xl font-bold text-white">Your ATS-Friendly Resume</div>}
+                overlayProps={{ backgroundOpacity: 0.8, blur: 10 }}
+                classNames={{ content: '!bg-mine-shaft-950 !border !border-mine-shaft-800' }}
+            >
+                <div className="flex justify-between items-center mb-6">
+                    <p className="text-mine-shaft-300 text-sm">This view is optimized for ATS parsers and printing. Click Print to save as PDF.</p>
+                    <Button color="brightSun.4" leftSection={<IconPrinter size={16}/>} onClick={() => window.print()}>Print / Save PDF</Button>
+                </div>
+                
+                {/* Printable Resume Container (White Background for ATS/Print) */}
+                <div className="print:block print:w-full print:m-0 print:p-0">
+                    <div id="ats-resume" className="bg-white text-black p-10 min-h-[800px] shadow-2xl rounded-sm print:shadow-none print:p-0">
+                        {/* Header */}
+                        <div className="text-center mb-8 border-b-2 border-black pb-4">
+                            <h1 className="text-4xl font-extrabold uppercase tracking-widest">{profile.name || "Your Name"}</h1>
+                            <div className="text-lg font-medium text-gray-700 mt-2">{profile.jobTitle || "Your Job Title"}</div>
+                            <div className="flex justify-center gap-4 text-sm mt-3 font-semibold">
+                                {profile.email && <span>{profile.email}</span>}
+                                {profile.phone && <span>• {profile.phone}</span>}
+                                {profile.location && <span>• {profile.location}</span>}
+                                {profile.website && <span>• {profile.website}</span>}
+                            </div>
+                        </div>
+
+                        {/* Summary */}
+                        {profile.about && (
+                            <div className="mb-6">
+                                <h2 className="text-lg font-bold uppercase tracking-wider mb-2 border-b border-gray-300">Professional Summary</h2>
+                                <p className="text-sm leading-relaxed text-gray-800">{profile.about}</p>
+                            </div>
+                        )}
+
+                        {/* Experience */}
+                        {(profile.experiences?.length > 0 || profile.experience?.length > 0) && (
+                            <div className="mb-6">
+                                <h2 className="text-lg font-bold uppercase tracking-wider mb-2 border-b border-gray-300">Work Experience</h2>
+                                <div className="flex flex-col gap-4">
+                                    {(profile.experiences || profile.experience).map((exp: any, i: number) => (
+                                        <div key={i}>
+                                            <div className="flex justify-between items-baseline font-bold text-gray-900">
+                                                <span>{exp.title}</span>
+                                                <span className="text-sm">{exp.startDate || ""} - {exp.working ? "Present" : exp.endDate || ""}</span>
+                                            </div>
+                                            <div className="text-sm font-semibold italic text-gray-700">{exp.company} • {exp.location}</div>
+                                            <div className="text-sm mt-1 text-gray-800">{exp.description}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Skills */}
+                        {profile.skills?.length > 0 && (
+                            <div className="mb-6">
+                                <h2 className="text-lg font-bold uppercase tracking-wider mb-2 border-b border-gray-300">Core Competencies</h2>
+                                <p className="text-sm font-medium text-gray-800">{profile.skills.join(" • ")}</p>
+                            </div>
+                        )}
+
+                        {/* Certifications */}
+                        {profile.certifications?.length > 0 && (
+                            <div className="mb-6">
+                                <h2 className="text-lg font-bold uppercase tracking-wider mb-2 border-b border-gray-300">Certifications</h2>
+                                <ul className="list-disc list-inside text-sm text-gray-800 flex flex-col gap-1">
+                                    {profile.certifications.map((cert: any, i: number) => (
+                                        <li key={i}><span className="font-bold">{cert.name}</span> - {cert.issuer}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Print Styles */}
+                <style>{`
+                    @media print {
+                        body * { visibility: hidden; }
+                        #ats-resume, #ats-resume * { visibility: visible; }
+                        #ats-resume { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 20px; box-shadow: none; }
+                        ::-webkit-scrollbar { display: none; }
+                    }
+                `}</style>
+            </Modal>
         </div>
     );
 };
