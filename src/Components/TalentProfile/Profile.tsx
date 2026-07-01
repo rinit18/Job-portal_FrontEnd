@@ -115,8 +115,8 @@ const Profile = () => {
     return <div data-aos="zoom-out" className="w-[65%] lg-mx:w-full">
         <div className="bg-mine-shaft-950 rounded-2xl pb-10">
             {/* Hero Banner with Cover Photo */}
-            <div className="relative group rounded-t-2xl overflow-hidden shadow-xl mb-16 md-mx:mb-12">
-                <div className="relative h-64 xs-mx:h-40 w-full bg-mine-shaft-900 overflow-hidden">
+            <div className="relative group mb-16 md-mx:mb-12">
+                <div className="relative h-64 xs-mx:h-40 w-full bg-mine-shaft-900 overflow-hidden rounded-t-2xl shadow-xl">
                     <img 
                         className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
                         src={profile?.coverPhoto ? `data:image/jpeg;base64,${profile?.coverPhoto}` : WEBSITE_CONFIG.assets.profileBanner} 

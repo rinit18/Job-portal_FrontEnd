@@ -98,8 +98,8 @@ const Profile = () => {
     return (
         <div className="w-4/5 lg-mx:w-full mx-auto pb-10">
             {/* Hero Banner with Cover Photo */}
-            <div data-aos="zoom-out" className="relative group rounded-t-2xl overflow-hidden shadow-2xl mb-16 md-mx:mb-12">
-                <div className="relative h-64 xs-mx:h-40 w-full bg-mine-shaft-900 overflow-hidden">
+            <div data-aos="zoom-out" className="relative group mb-16 md-mx:mb-12">
+                <div className="relative h-64 xs-mx:h-40 w-full bg-mine-shaft-900 overflow-hidden rounded-t-2xl shadow-xl">
                     <img 
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                         src={profile.coverPhoto ? `data:image/jpeg;base64,${profile.coverPhoto}` : WEBSITE_CONFIG.assets.profileBanner} 
