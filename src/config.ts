@@ -4,8 +4,8 @@
  * social media links, and global paragraphs are defined here.
  */
 
-// Use process.env.REACT_APP_API_URL if deployed, otherwise fallback to local backend.
-export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+// Use import.meta.env.VITE_API_URL if deployed, otherwise fallback to local backend.
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 export const WEBSITE_CONFIG = {
   name: "CareerConnect",
