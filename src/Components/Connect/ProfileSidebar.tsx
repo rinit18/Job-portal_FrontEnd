@@ -37,7 +37,6 @@ const ProfileSidebar = () => {
                     ) : (
                         <>
                             <div
-                            <div
                                 className="text-xl font-bold text-mine-shaft-100 hover:text-bright-sun-400 cursor-pointer truncate transition-colors"
                                 onClick={() => navigate("/profile")}
                             >
