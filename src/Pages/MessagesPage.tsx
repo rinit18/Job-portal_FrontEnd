@@ -1,7 +1,7 @@
-import { ActionIcon, Avatar, Divider, ScrollArea, TextInput, Indicator, Loader, Skeleton } from "@mantine/core";
+import { ActionIcon, Avatar, Divider, ScrollArea, TextInput, Indicator, Loader, Skeleton, Badge } from "@mantine/core";
 import { WEBSITE_CONFIG } from "../config";
-import { IconSend, IconSearch, IconDotsVertical, IconPaperclip, IconPhone, IconVideo, IconChecks, IconArrowLeft } from "@tabler/icons-react";
-import { useEffect, useState, useRef } from "react";
+import { IconSend, IconSearch, IconDotsVertical, IconPaperclip, IconPhone, IconVideo, IconChecks, IconArrowLeft, IconBriefcase, IconUser } from "@tabler/icons-react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { getConversations, getMessages, sendMessage, ChatRoomPayload, MessagePayload } from "../Services/ChatService";
@@ -23,6 +23,7 @@ const MessagesPage = () => {
     const [loading, setLoading] = useState(true);
     const [showChatList, setShowChatList] = useState(true);
     const scrollAreaRef = useRef<HTMLDivElement>(null);
+    const [searchQuery, setSearchQuery] = useState("");
 
     // Setup STOMP WebSocket Connection
     useEffect(() => {
@@ -35,16 +36,18 @@ const MessagesPage = () => {
                 console.log('Connected to WebSocket');
                 client.subscribe(`/topic/messages/${currentProfileId}`, (message) => {
                     const receivedMessage = JSON.parse(message.body);
-                    setMessages(prev => [...prev, receivedMessage]);
+                    setMessages(prev => {
+                        const newMessages = [...prev, receivedMessage];
+                        setTimeout(() => {
+                            if (scrollAreaRef.current) {
+                                scrollAreaRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                            }
+                        }, 100);
+                        return newMessages;
+                    });
                     
                     // Also refresh conversations to update the snippet/timestamp
                     getConversations(currentProfileId).then(setConversations);
-                    
-                    setTimeout(() => {
-                        if (scrollAreaRef.current) {
-                            scrollAreaRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                        }
-                    }, 100);
                 });
             },
             onStompError: (frame) => {
@@ -59,7 +62,7 @@ const MessagesPage = () => {
         };
     }, [currentProfileId]);
 
-    // Fetch conversations on load and poll every 4 seconds
+    // Fetch conversations on load
     useEffect(() => {
         if (!currentProfileId) return;
 
@@ -132,13 +135,18 @@ const MessagesPage = () => {
 
         sendMessage(payload)
             .then((res) => {
-                setMessages(prev => [...prev, res]);
+                setMessages(prev => {
+                    const updated = [...prev, res];
+                    setTimeout(() => {
+                        if (scrollAreaRef.current) {
+                            scrollAreaRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                        }
+                    }, 100);
+                    return updated;
+                });
                 setMessageInput("");
-                setTimeout(() => {
-                    if (scrollAreaRef.current) {
-                        scrollAreaRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                    }
-                }, 100);
+                // Refresh list snippet instantly
+                getConversations(currentProfileId).then(setConversations);
             })
             .catch((err) => console.error("Failed to send message", err));
     };
@@ -149,6 +157,29 @@ const MessagesPage = () => {
         }
         return { name: room.user1Name, role: room.user1Role };
     };
+
+    const renderRoleBadge = (role: string) => {
+        const isEmployer = role.toUpperCase() === 'EMPLOYER';
+        return (
+            <Badge 
+                color={isEmployer ? 'teal.5' : 'brightSun.4'} 
+                variant="light" 
+                size="sm" 
+                leftSection={isEmployer ? <IconBriefcase size={10} /> : <IconUser size={10} />}
+                className={`border ${isEmployer ? 'border-teal-500/20' : 'border-bright-sun-400/20'}`}
+            >
+                {isEmployer ? 'Company' : 'Candidate'}
+            </Badge>
+        );
+    };
+
+    const filteredConversations = useMemo(() => {
+        if (!searchQuery.trim()) return conversations;
+        return conversations.filter(c => {
+            const partner = getChatPartner(c);
+            return partner.name.toLowerCase().includes(searchQuery.toLowerCase());
+        });
+    }, [conversations, searchQuery]);
 
     if (!currentProfileId) {
         return (
@@ -172,14 +203,17 @@ const MessagesPage = () => {
             <div className="flex-1 flex w-full max-w-7xl mx-auto p-4 sm-mx:p-2 sm-mx:pb-2 gap-5 h-[calc(100vh-80px)] sm-mx:h-[calc(100dvh-140px)] z-10">
                 
                 {/* Left Sidebar - Conversations */}
-                <div className={`w-1/3 flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.2)] relative ${!showChatList ? 'sm-mx:hidden' : 'sm-mx:w-full'}`}>
-                    <div className="p-5 border-b border-mine-shaft-800/60 bg-mine-shaft-900/20">
-                        <div className="text-xl font-semibold text-mine-shaft-100 mb-4">Messaging</div>
+                <div className={`w-1/3 flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-2xl relative ${!showChatList ? 'sm-mx:hidden' : 'sm-mx:w-full'}`}>
+                    <div className="p-5 border-b border-mine-shaft-800/60 bg-mine-shaft-900/40">
+                        <div className="text-2xl font-bold text-mine-shaft-100 mb-5 tracking-tight">Messaging</div>
                         <TextInput 
-                            placeholder="Search messages" 
-                            leftSection={<IconSearch size={16} />} 
+                            placeholder="Search messages by name" 
+                            leftSection={<IconSearch size={16} className="text-mine-shaft-400" />} 
                             variant="filled" 
                             radius="xl"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.currentTarget.value)}
+                            classNames={{ input: 'bg-mine-shaft-950/50 border-mine-shaft-800 focus:border-bright-sun-400/50 text-mine-shaft-200' }}
                         />
                     </div>
                     
@@ -197,15 +231,15 @@ const MessagesPage = () => {
                                     </div>
                                 ))}
                             </div>
-                        ) : conversations.length === 0 ? (
+                        ) : filteredConversations.length === 0 ? (
                             <div className="flex flex-col items-center justify-center h-full opacity-70 p-4 mt-10">
                                 <img src={WEBSITE_CONFIG.assets.workingGirl || "/Working/Girl.png"} className="w-24 h-24 mb-4 opacity-50 grayscale hover:grayscale-0 transition-all duration-300" alt="No messages" />
                                 <div className="text-center text-sm font-medium text-mine-shaft-300 sm-mx:hidden">
-                                    No conversations yet. Go to Find Talent or Job postings to connect!
+                                    {searchQuery ? "No matches found." : "No conversations yet. Connect with Talent or Employers!"}
                                 </div>
                             </div>
                         ) : (
-                            conversations.map((conv) => {
+                            filteredConversations.map((conv) => {
                                 const partner = getChatPartner(conv);
                                 return (
                                     <div 
@@ -215,24 +249,24 @@ const MessagesPage = () => {
                                             setMessages([]);
                                             setShowChatList(false);
                                         }}
-                                        className={`p-4 flex gap-3 cursor-pointer transition-all duration-300 border-b border-mine-shaft-800/40 hover:bg-mine-shaft-800/40 relative ${activeChat?.id === conv.id ? 'bg-bright-sun-400/5' : ''}`}
+                                        className={`p-4 flex gap-3 cursor-pointer transition-all duration-300 border-b border-mine-shaft-800/40 hover:bg-mine-shaft-800/60 relative ${activeChat?.id === conv.id ? 'bg-mine-shaft-800/80 backdrop-blur-md' : 'bg-transparent'}`}
                                     >
                                         {/* Active indicator bar */}
                                         {activeChat?.id === conv.id && (
-                                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-bright-sun-400 rounded-r-md" />
+                                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-bright-sun-400 rounded-r-md shadow-[0_0_10px_rgba(250,204,21,0.5)]" />
                                         )}
                                         <Indicator inline size={12} offset={5} position="bottom-end" color="teal" withBorder>
                                             <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(partner.name)}&background=2a2a2a&color=fab005`} size="lg" radius="xl" />
                                         </Indicator>
                                         <div className="flex-1 min-w-0">
-                                            <div className="flex justify-between items-start">
-                                                <div className="font-semibold text-mine-shaft-100 truncate">{partner.name}</div>
-                                                <div className="text-[10px] text-mine-shaft-400 whitespace-nowrap">
+                                            <div className="flex justify-between items-start mb-0.5">
+                                                <div className={`font-semibold truncate ${activeChat?.id === conv.id ? 'text-bright-sun-400' : 'text-mine-shaft-100'}`}>{partner.name}</div>
+                                                <div className="text-[10px] text-mine-shaft-400 whitespace-nowrap mt-1">
                                                     {conv.lastActive ? new Date(conv.lastActive).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ""}
                                                 </div>
                                             </div>
-                                            <div className="text-xs text-bright-sun-400 truncate mb-1">{partner.role}</div>
-                                            <div className="text-sm truncate text-mine-shaft-400">
+                                            <div className="mb-1.5">{renderRoleBadge(partner.role)}</div>
+                                            <div className={`text-sm truncate ${activeChat?.id === conv.id ? 'text-mine-shaft-300' : 'text-mine-shaft-400'}`}>
                                                 {conv.lastMessage}
                                             </div>
                                         </div>
@@ -244,50 +278,56 @@ const MessagesPage = () => {
                 </div>
 
                 {/* Right Side - Active Chat */}
-                <div className={`flex-1 flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.2)] ${showChatList ? 'sm-mx:hidden' : 'sm-mx:flex'}`}>
+                <div className={`flex-1 flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-2xl ${showChatList ? 'sm-mx:hidden' : 'sm-mx:flex'}`}>
                     {activeChat ? (
                         <>
                             {/* Chat Header */}
                             {(() => {
                                 const partner = getChatPartner(activeChat);
                                 return (
-                                    <div className="p-4 border-b border-mine-shaft-800/60 flex justify-between items-center bg-mine-shaft-900/20 z-10">
-                                        <div className="flex gap-3 items-center">
+                                    <div className="p-4 border-b border-mine-shaft-800/60 flex justify-between items-center bg-mine-shaft-900/60 backdrop-blur-md z-10 shadow-sm">
+                                        <div className="flex gap-4 items-center">
                                             <ActionIcon variant="subtle" color="gray" className="hidden sm-mx:block" onClick={() => setShowChatList(true)}>
                                                 <IconArrowLeft size={20} />
                                             </ActionIcon>
-                                            <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(partner.name)}&background=2a2a2a&color=fab005`} size="md" radius="xl" />
-                                            <div>
-                                                <div className="font-semibold text-mine-shaft-100">{partner.name}</div>
-                                                <div className="text-xs text-mine-shaft-400">{partner.role}</div>
+                                            <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(partner.name)}&background=2a2a2a&color=fab005`} size="md" radius="xl" className="shadow-md" />
+                                            <div className="flex flex-col gap-0.5">
+                                                <div className="font-bold text-lg text-mine-shaft-100 leading-tight">{partner.name}</div>
+                                                <div>{renderRoleBadge(partner.role)}</div>
                                             </div>
                                         </div>
                                         <div className="flex gap-2 text-mine-shaft-300">
-                                            <ActionIcon variant="subtle" color="gray"><IconPhone size={20} /></ActionIcon>
-                                            <ActionIcon variant="subtle" color="gray"><IconVideo size={20} /></ActionIcon>
-                                            <ActionIcon variant="subtle" color="gray"><IconDotsVertical size={20} /></ActionIcon>
+                                            <ActionIcon variant="subtle" color="gray" className="hover:text-bright-sun-400 transition-colors"><IconPhone size={22} /></ActionIcon>
+                                            <ActionIcon variant="subtle" color="gray" className="hover:text-bright-sun-400 transition-colors"><IconVideo size={22} /></ActionIcon>
+                                            <ActionIcon variant="subtle" color="gray" className="hover:text-bright-sun-400 transition-colors"><IconDotsVertical size={22} /></ActionIcon>
                                         </div>
                                     </div>
                                 );
                             })()}
 
                             {/* Chat Messages */}
-                            <ScrollArea className="flex-1 p-5 bg-mine-shaft-950/20">
-                                <div className="flex flex-col gap-5">
-                                    <div className="text-center text-xs text-mine-shaft-500 my-2">Security: Messages are stored securely.</div>
+                            <ScrollArea className="flex-1 p-5 bg-mine-shaft-950/30">
+                                <div className="flex flex-col gap-6">
+                                    <div className="text-center text-xs text-mine-shaft-500 my-2 px-4 py-1.5 bg-mine-shaft-900/50 rounded-full w-max mx-auto border border-mine-shaft-800/50">
+                                        End-to-End Encryption enabled. Messages are securely stored.
+                                    </div>
                                     
                                     {messages.map((msg) => (
-                                        <div key={msg.id} className={`flex max-w-[75%] ${msg.senderId === currentProfileId ? 'self-end' : 'self-start'}`}>
+                                        <div key={msg.id} className={`flex max-w-[80%] ${msg.senderId === currentProfileId ? 'self-end' : 'self-start'}`}>
                                             {msg.senderId !== currentProfileId && (
-                                                <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getChatPartner(activeChat).name)}&background=2a2a2a&color=fab005`} size="sm" radius="xl" className="mr-2 mt-1 shrink-0" />
+                                                <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getChatPartner(activeChat).name)}&background=2a2a2a&color=fab005`} size="sm" radius="xl" className="mr-3 mt-auto shrink-0 shadow-sm" />
                                             )}
                                             <div className={`flex flex-col ${msg.senderId === currentProfileId ? 'items-end' : 'items-start'}`}>
-                                                <div className={`px-4 py-2.5 rounded-2xl text-[13px] shadow-sm max-w-prose leading-relaxed ${msg.senderId === currentProfileId ? 'bg-gradient-to-br from-bright-sun-400 to-bright-sun-500 text-mine-shaft-950 rounded-tr-sm font-medium' : 'bg-mine-shaft-800/80 backdrop-blur-sm text-mine-shaft-100 rounded-tl-sm border border-mine-shaft-700/50'}`}>
+                                                <div className={`px-5 py-3 rounded-[20px] text-[14px] shadow-md max-w-prose leading-relaxed 
+                                                    ${msg.senderId === currentProfileId 
+                                                        ? 'bg-gradient-to-br from-bright-sun-400 to-bright-sun-500 text-mine-shaft-950 rounded-br-sm font-medium shadow-[0_4px_15px_rgba(250,204,21,0.2)]' 
+                                                        : 'bg-mine-shaft-800/90 backdrop-blur-md text-mine-shaft-100 rounded-bl-sm border border-mine-shaft-700/50'}`}
+                                                >
                                                     {msg.text}
                                                 </div>
-                                                <div className="text-[9px] text-mine-shaft-500 mt-1 mx-1 flex items-center gap-1 justify-end">
+                                                <div className="text-[10px] text-mine-shaft-500 mt-1.5 mx-1 flex items-center gap-1.5 justify-end font-medium">
                                                     {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ""}
-                                                    {msg.senderId === currentProfileId && <IconChecks size={14} className="text-teal-400" />}
+                                                    {msg.senderId === currentProfileId && <IconChecks size={15} className="text-bright-sun-400" />}
                                                 </div>
                                             </div>
                                         </div>
@@ -297,35 +337,37 @@ const MessagesPage = () => {
                             </ScrollArea>
 
                             {/* Chat Input */}
-                            <div className="p-4 border-t border-mine-shaft-800/60 bg-mine-shaft-900/20">
-                                <div className="flex gap-2 items-center bg-mine-shaft-950/50 p-2 rounded-xl border border-mine-shaft-800/80 focus-within:border-bright-sun-400/50 focus-within:shadow-[0_0_15px_rgba(255,189,32,0.1)] transition-all">
-                                    <ActionIcon variant="subtle" color="gray" className="shrink-0 hover:bg-mine-shaft-800"><IconPaperclip size={20} /></ActionIcon>
+                            <div className="p-5 border-t border-mine-shaft-800/60 bg-mine-shaft-900/60 backdrop-blur-md">
+                                <div className="flex gap-3 items-center bg-mine-shaft-950 p-2.5 rounded-2xl border border-mine-shaft-800 focus-within:border-bright-sun-400/50 focus-within:shadow-[0_0_20px_rgba(250,204,21,0.1)] transition-all">
+                                    <ActionIcon variant="subtle" color="gray" size="lg" className="shrink-0 hover:bg-mine-shaft-800 hover:text-bright-sun-400"><IconPaperclip size={22} /></ActionIcon>
                                     <input 
                                         type="text"
                                         value={messageInput}
                                         onChange={(e) => setMessageInput(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                                        placeholder="Type a message..."
-                                        className="flex-1 bg-transparent border-none outline-none text-mine-shaft-100 text-sm"
+                                        placeholder="Write your message here..."
+                                        className="flex-1 bg-transparent border-none outline-none text-mine-shaft-100 text-[15px] px-2 placeholder:text-mine-shaft-500"
                                     />
                                     <ActionIcon 
                                         variant="filled" 
                                         color="brightSun.4" 
                                         radius="xl" 
-                                        size="lg"
-                                        className="shrink-0 transition-transform active:scale-95"
+                                        size="xl"
+                                        className="shrink-0 transition-all active:scale-95 hover:shadow-[0_0_15px_rgba(250,204,21,0.4)]"
                                         onClick={handleSendMessage}
                                         disabled={!messageInput.trim()}
                                     >
-                                        <IconSend size={18} className="text-[#111]" />
+                                        <IconSend size={20} className="text-[#111]" />
                                     </ActionIcon>
                                 </div>
                             </div>
                         </>
                     ) : (
-                        <div className="flex-1 flex flex-col justify-center items-center text-mine-shaft-400 p-8">
-                            <img src={WEBSITE_CONFIG.assets.heroImage} className="w-48 mb-6 opacity-30 grayscale" alt="Start messaging" />
-                            <p className="text-lg font-medium text-mine-shaft-300">Select a conversation or start a new one to begin messaging.</p>
+                        <div className="flex-1 flex flex-col justify-center items-center text-mine-shaft-400 p-8 relative">
+                            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-bright-sun-400/5 via-mine-shaft-950/0 to-mine-shaft-950/0 pointer-events-none" />
+                            <img src={WEBSITE_CONFIG.assets.heroImage} className="w-56 mb-8 opacity-20 grayscale hover:opacity-40 hover:grayscale-0 transition-all duration-500" alt="Start messaging" />
+                            <div className="text-2xl font-bold text-mine-shaft-200 mb-2">Your Messages</div>
+                            <p className="text-base text-mine-shaft-400 max-w-sm text-center">Select a conversation from the left sidebar or find talent/jobs to start networking.</p>
                         </div>
                     )}
                 </div>
