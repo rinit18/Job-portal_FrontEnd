@@ -39,7 +39,7 @@ const DreamJob = () => {
     const { assets } = WEBSITE_CONFIG;
 
     return (
-        <section className="flex md-mx:flex-col-reverse items-center px-16 bs-mx:px-10 md-mx:px-5 sm-mx:px-4 py-16 sm-mx:py-8 relative overflow-hidden min-h-[85vh]">
+        <section className="flex md-mx:flex-col items-center px-16 bs-mx:px-10 md-mx:px-5 sm-mx:px-4 py-16 sm-mx:py-8 relative overflow-hidden min-h-[85vh]">
             {/* Background glowing decorations and Aceternity Meteors */}
             <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden hidden sm:block">
                 <Meteors number={15} />
@@ -57,7 +57,7 @@ const DreamJob = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.1 }}
-                    className="text-6xl bs-mx:text-5xl md-mx:text-4xl sm-mx:text-3xl sm-mx:text-center font-extrabold leading-[1.15] text-mine-shaft-100 drop-shadow-sm"
+                    className="text-6xl bs-mx:text-5xl md-mx:text-4xl sm-mx:text-3xl sm-mx:text-center font-extrabold leading-[1.15] text-mine-shaft-100 drop-shadow-sm mt-10 sm-mx:mt-4"
                 >
                     {hero.titlePart1}{" "}
                     <TypeAnimation
@@ -89,27 +89,28 @@ const DreamJob = () => {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.5, ease: "backOut" }}
-                    className="flex flex-col gap-3 mt-6 p-3 bg-mine-shaft-900/80 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.4)] border border-mine-shaft-800 focus-within:border-bright-sun-400/50 focus-within:shadow-[0_0_20px_rgba(250,204,21,0.15)] transition-all duration-500 w-full max-w-2xl"
+                    className="flex flex-col gap-3 mt-6 p-4 sm-mx:p-3 bg-mine-shaft-900/80 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.4)] border border-mine-shaft-800 focus-within:border-bright-sun-400/50 focus-within:shadow-[0_0_20px_rgba(250,204,21,0.15)] transition-all duration-500 w-full max-w-2xl"
                 >
                     
                     {/* Search Type Toggle */}
-                    <div className="flex sm-mx:justify-center">
+                    <div className="flex sm-mx:w-full">
                         <SegmentedControl
                             value={searchType}
                             onChange={setSearchType}
                             data={[
-                                { label: <div className="flex items-center gap-2"><IconBriefcase size={16}/><span className="sm-mx:text-xs">Find Jobs</span></div>, value: 'Jobs' },
-                                { label: <div className="flex items-center gap-2"><IconUsers size={16}/><span className="sm-mx:text-xs">Find Connections</span></div>, value: 'Talent' },
+                                { label: <div className="flex items-center justify-center gap-2"><IconBriefcase size={16}/><span className="sm-mx:text-xs">Jobs</span></div>, value: 'Jobs' },
+                                { label: <div className="flex items-center justify-center gap-2"><IconUsers size={16}/><span className="sm-mx:text-xs">Connections</span></div>, value: 'Talent' },
                             ]}
                             color="brightSun.4"
                             radius="xl"
-                            className="bg-mine-shaft-950 w-fit"
+                            fullWidth
+                            className="bg-mine-shaft-950 sm-mx:w-full w-fit"
                             classNames={{ label: 'font-semibold' }}
                         />
                     </div>
 
-                    <div className="flex md-mx:flex-col gap-3 w-full items-stretch">
-                        <div className={`flex-1 flex items-center px-2 min-w-0 ${searchType === "Jobs" ? "border-r border-mine-shaft-800 md-mx:border-r-0 md-mx:border-b" : ""}`}>
+                    <div className="flex md-mx:flex-col gap-3 md-mx:gap-2 w-full items-stretch">
+                        <div className={`flex-1 flex items-center px-2 min-w-0 ${searchType === "Jobs" ? "border-r border-mine-shaft-800 md-mx:border-r-0 md-mx:border-b md-mx:pb-3 md-mx:mb-1" : ""}`}>
                             <IconSearch className="text-mine-shaft-400 ml-2 h-5 w-5 shrink-0" />
                             <Autocomplete 
                                 value={query} 
@@ -126,7 +127,7 @@ const DreamJob = () => {
                         </div>
                         
                         {searchType === "Jobs" && (
-                            <div className="flex-1 flex items-center px-2 min-w-0">
+                            <div className="flex-1 flex items-center px-2 min-w-0 md-mx:pt-1">
                                 <IconMapPin className="text-mine-shaft-400 ml-2 h-5 w-5 shrink-0" />
                                 <Autocomplete 
                                     value={location} 
@@ -146,7 +147,7 @@ const DreamJob = () => {
                         <button 
                             onClick={handleClick}
                             aria-label="Search"
-                            className="shrink-0 w-auto md-mx:w-full flex items-center justify-center gap-2 py-3 px-8 bg-gradient-to-r from-bright-sun-400 to-yellow-400 text-mine-shaft-950 font-bold text-lg rounded-xl hover:from-bright-sun-500 hover:to-yellow-500 shadow-[0_0_15px_rgba(250,204,21,0.3)] active:scale-95 transition-all duration-300"
+                            className="shrink-0 w-auto md-mx:w-full flex items-center justify-center gap-2 py-3 px-8 bg-gradient-to-r from-bright-sun-400 to-yellow-400 text-mine-shaft-950 font-bold text-lg rounded-xl hover:from-bright-sun-500 hover:to-yellow-500 shadow-[0_0_15px_rgba(250,204,21,0.3)] active:scale-95 transition-all duration-300 mt-2 md-mx:mt-3"
                         >
                             Search
                         </button>
