@@ -113,8 +113,8 @@ const Profile = () => {
         <div className="" >
             <div className="relative">
 
-                <img className="rounded-t-2xl xl-mx:h-40 w-full xs-mx:h-32 " src={WEBSITE_CONFIG.assets.profileBanner} alt="" />
-                <div className="absolute cursor-pointer flex items-center justify-center !rounded-full -bottom-1/3   md-mx:-bottom-10 sm-mx:-bottom-16  left-6">
+                <img className="rounded-t-2xl xl-mx:h-40 w-full xs-mx:h-32 object-cover h-64" src={profile?.coverPhoto ? `data:image/jpeg;base64,${profile?.coverPhoto}` : WEBSITE_CONFIG.assets.profileBanner} alt="Cover" />
+                <div className="absolute cursor-pointer flex items-center justify-center !rounded-full -bottom-1/3 md-mx:-bottom-10 sm-mx:-bottom-16 left-6 z-10">
 
                     <Avatar className="!w-48  !h-48 md-mx:!w-40 md-mx:!h-40 border-mine-shaft-950 border-8  rounded-full sm-mx:!w-36 sm-mx:!h-36 xs-mx:!h-32 xs-mx:!w-32" src={profile?.picture ? `data:image/jpeg;base64,${profile?.picture}` : WEBSITE_CONFIG.assets.defaultAvatar} alt="" />
                 </div>
