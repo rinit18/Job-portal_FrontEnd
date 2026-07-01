@@ -41,11 +41,11 @@ const DreamJob = () => {
     return (
         <section className="flex md-mx:flex-col-reverse items-center px-16 bs-mx:px-10 md-mx:px-5 sm-mx:px-4 py-16 sm-mx:py-8 relative overflow-hidden min-h-[85vh]">
             {/* Background glowing decorations and Aceternity Meteors */}
-            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden hidden sm:block">
                 <Meteors number={15} />
             </div>
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-bright-sun-400/15 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
-            <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-teal-500/10 rounded-full blur-[150px] pointer-events-none animate-pulse" style={{ animationDelay: '2s' }}></div>
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 sm-mx:w-48 sm-mx:h-48 bg-bright-sun-400/15 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] sm-mx:w-64 sm-mx:h-64 bg-teal-500/10 rounded-full blur-[150px] pointer-events-none animate-pulse" style={{ animationDelay: '2s' }}></div>
 
             <motion.div 
                 initial={{ opacity: 0, x: -50 }}
@@ -57,7 +57,7 @@ const DreamJob = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.1 }}
-                    className="text-6xl bs-mx:text-5xl md-mx:text-4xl sm-mx:text-3xl font-extrabold leading-[1.15] text-mine-shaft-100 drop-shadow-sm"
+                    className="text-6xl bs-mx:text-5xl md-mx:text-4xl sm-mx:text-3xl sm-mx:text-center font-extrabold leading-[1.15] text-mine-shaft-100 drop-shadow-sm"
                 >
                     {hero.titlePart1}{" "}
                     <TypeAnimation
@@ -79,7 +79,7 @@ const DreamJob = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.3 }}
-                    className="text-xl md-mx:text-lg sm-mx:text-base text-mine-shaft-300 leading-relaxed max-w-xl font-light"
+                    className="text-xl md-mx:text-lg sm-mx:text-base sm-mx:text-center text-mine-shaft-300 leading-relaxed max-w-xl font-light"
                 >
                     {hero.subtitle}
                 </motion.div>
@@ -93,18 +93,20 @@ const DreamJob = () => {
                 >
                     
                     {/* Search Type Toggle */}
-                    <SegmentedControl
-                        value={searchType}
-                        onChange={setSearchType}
-                        data={[
-                            { label: <div className="flex items-center gap-2"><IconBriefcase size={16}/><span>Find Jobs</span></div>, value: 'Jobs' },
-                            { label: <div className="flex items-center gap-2"><IconUsers size={16}/><span>Find Connections</span></div>, value: 'Talent' },
-                        ]}
-                        color="brightSun.4"
-                        radius="xl"
-                        className="bg-mine-shaft-950 w-fit"
-                        classNames={{ label: 'font-semibold' }}
-                    />
+                    <div className="flex sm-mx:justify-center">
+                        <SegmentedControl
+                            value={searchType}
+                            onChange={setSearchType}
+                            data={[
+                                { label: <div className="flex items-center gap-2"><IconBriefcase size={16}/><span className="sm-mx:text-xs">Find Jobs</span></div>, value: 'Jobs' },
+                                { label: <div className="flex items-center gap-2"><IconUsers size={16}/><span className="sm-mx:text-xs">Find Connections</span></div>, value: 'Talent' },
+                            ]}
+                            color="brightSun.4"
+                            radius="xl"
+                            className="bg-mine-shaft-950 w-fit"
+                            classNames={{ label: 'font-semibold' }}
+                        />
+                    </div>
 
                     <div className="flex md-mx:flex-col gap-3 w-full items-stretch">
                         <div className={`flex-1 flex items-center px-2 min-w-0 ${searchType === "Jobs" ? "border-r border-mine-shaft-800 md-mx:border-r-0 md-mx:border-b" : ""}`}>
