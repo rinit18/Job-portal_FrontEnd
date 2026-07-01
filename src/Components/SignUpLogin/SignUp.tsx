@@ -148,7 +148,7 @@ const SignUp = () => {
 
     if (otpSent) {
         return (
-            <div className="w-1/2 sm-mx:py-10 sm-mx:w-full px-20 bs-mx:px-10 md-mx:px-5 flex flex-col gap-6 justify-center">
+            <div className="w-full max-w-md px-10 sm-mx:px-6 flex flex-col gap-6">
                 <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} loaderProps={{ color: 'brightSun.4', type: 'bars' }} />
                 
                 <Button size="sm" onClick={() => {setOtpSent(false); interval.stop(); setTime(60);}} my="sm" color="mineShaft.3" leftSection={<IconArrowLeft size={16} />} variant="transparent" className="self-start px-0 hover:bg-transparent hover:text-bright-sun-400">Back</Button>
@@ -168,7 +168,7 @@ const SignUp = () => {
     visible={loading}
     zIndex={1000}
     />
-  <div className="w-1/2 sm-mx:py-10 sm-mx:w-full px-20 bs-mx:px-10 md-mx:px-5 flex flex-col gap-4 justify-center">
+  <div className="w-full max-w-md px-10 sm-mx:px-6 flex flex-col gap-4">
         <div className="text-3xl sm-mx:text-2xl xs-mx:text-xl font-bold tracking-tight mb-2">Create Account</div>
         <TextInput value={data.name} error={formError.name} name="name" onChange={handleChange} label="Full Name" withAsterisk placeholder="Your name" size="md" />
         <TextInput error={formError.email} value={data.email} name="email" onChange={handleChange} leftSection={<IconAt size={16} />} label="Email" withAsterisk placeholder="Your email" size="md" />

@@ -1,7 +1,7 @@
 import { Button, LoadingOverlay, PasswordInput, TextInput } from "@mantine/core";
 import { IconAt, IconLock } from "@tabler/icons-react";
 import { useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { loginValidation } from "../../Services/FormValidation";
 import { useDisclosure } from "@mantine/hooks";
 import ResetPassword from "./ResetPassword";
@@ -14,21 +14,21 @@ import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
     const dispatch = useDispatch();
-    const form = {
-        email: "",
-        password: "",
-    }
+    const form = { email: "", password: "" };
     const [opened, { open, close }] = useDisclosure(false);
     const [data, setData] = useState<{ [key: string]: string }>(form);
     const [formError, setFormError] = useState<{ [key: string]: string }>(form);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
     const handleChange = (event: any) => {
-        setFormError({...formError, [event.target.name]:""});
+        setFormError({ ...formError, [event.target.name]: "" });
         setData({ ...data, [event.target.name]: event.target.value });
     }
+
     const handleSubmit = () => {
-        let valid = true, newFormError: { [key: string]: string } = {};
+        let valid = true;
+        let newFormError: { [key: string]: string } = {};
         for (let key in data) {
             newFormError[key] = loginValidation(key, data[key]);
             if (newFormError[key]) valid = false;
@@ -39,35 +39,74 @@ const Login = () => {
             loginUser(data).then((res) => {
                 successNotification("Login Successful", "Redirecting to home page...");
                 dispatch(setJwt(res.jwt));
-                const decoded=jwtDecode(res.jwt);
-                dispatch(setUser({...decoded, email:decoded.sub}));
+                const decoded = jwtDecode(res.jwt);
+                dispatch(setUser({ ...decoded, email: decoded.sub }));
                 setTimeout(() => {
                     navigate("/");
-                }, 4000)
+                }, 1500);
             }).catch((err) => {
                 console.log(err);
                 setLoading(false);
                 const errorMessage = err.response?.data?.errorMessage || "Could not connect to the server. Please try again later.";
                 errorNotification("Login Failed", errorMessage);
             });
-
         }
     }
-    return <>   <LoadingOverlay
-    visible={loading}
-    zIndex={1000}
-    overlayProps={{ radius: 'sm', blur: 2 }}
-    loaderProps={{ color: 'brightSun.4', type: 'bars' }}
-  /><div data-aos="zoom-out" className="w-1/2 sm-mx:w-full sm-mx:py-16 px-20 bs-mx:px-10 md-mx:px-5 flex flex-col gap-4 justify-center">
-        <div className="text-3xl font-bold tracking-tight mb-2">Welcome Back</div>
-        <TextInput value={data.email} error={formError.email} name="email" onChange={handleChange} leftSection={<IconAt size={16} />} label="Email" withAsterisk placeholder="Your email" size="md" />
-        <PasswordInput value={data.password} error={formError.password} name="password" onChange={handleChange} leftSection={<IconLock size={16} />} label="Password" withAsterisk placeholder="Password" size="md" />
-        <Button loading={loading} onClick={handleSubmit} autoContrast variant="filled" size="md" className="mt-2">Login</Button>
-        <div className="text-center sm-mx:text-sm xs-mx:text-xs">Don't have an account? <span className="text-bright-sun-400 hover:underline cursor-pointer" onClick={()=>{navigate("/signup");setFormError(form) ;setData(form)}}>SignUp</span> </div>
-        <div className="text-bright-sun-400 sm-mx:text-sm xs-mx:text-xs hover:underline cursor-pointer text-center" onClick={open}>Forget Password?</div>
 
-    </div>
-    <ResetPassword opened={opened} close={close} />
-    </>
+    return (
+        <div className="w-full max-w-md px-10 sm-mx:px-6 flex flex-col gap-4">
+            <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} loaderProps={{ color: 'brightSun.4', type: 'bars' }} />
+            <div className="text-3xl font-bold tracking-tight mb-2">Welcome Back</div>
+            <TextInput
+                value={data.email}
+                error={formError.email}
+                name="email"
+                onChange={handleChange}
+                leftSection={<IconAt size={16} />}
+                label="Email"
+                withAsterisk
+                placeholder="Your email"
+                size="md"
+            />
+            <PasswordInput
+                value={data.password}
+                error={formError.password}
+                name="password"
+                onChange={handleChange}
+                leftSection={<IconLock size={16} />}
+                label="Password"
+                withAsterisk
+                placeholder="Password"
+                size="md"
+            />
+            <Button
+                loading={loading}
+                onClick={handleSubmit}
+                onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+                autoContrast
+                variant="filled"
+                size="md"
+                className="mt-2"
+            >
+                Login
+            </Button>
+            <div className="text-center sm-mx:text-sm">
+                Don't have an account?{" "}
+                <span
+                    className="text-bright-sun-400 hover:underline cursor-pointer"
+                    onClick={() => { navigate("/signup"); setFormError(form); setData(form); }}
+                >
+                    SignUp
+                </span>
+            </div>
+            <div
+                className="text-bright-sun-400 sm-mx:text-sm hover:underline cursor-pointer text-center"
+                onClick={open}
+            >
+                Forget Password?
+            </div>
+            <ResetPassword opened={opened} close={close} />
+        </div>
+    );
 }
 export default Login;
