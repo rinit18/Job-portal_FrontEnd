@@ -1,6 +1,7 @@
 import { Badge, Tabs } from "@mantine/core";
 import Job from "../JobDesc/Job";
 import KanbanBoard from "./KanbanBoard";
+import Analytics from "./Analytics";
 import { useEffect, useState } from "react";
 
 const PostedJobDesc = (props:any) => {
@@ -18,10 +19,14 @@ const PostedJobDesc = (props:any) => {
                 <Tabs.List className="font-semibold [&_button[data-active='true']]:!border-b-mine-shaft-950 [&_button]:!text-xl sm-mx:[&_button]:!text-lg  xs-mx:[&_button]:!text-base xsm-mx:[&_button]:!text-sm xs-mx:[&_button]:!px-1.5 xs-mx:[&_button]:!py-2 mb-5 [&_button[data-active='true']]:text-bright-sun-400 xs-mx:font-medium">
                     <Tabs.Tab value="overview">Overview</Tabs.Tab>
                     <Tabs.Tab value="pipeline">Pipeline (Kanban)</Tabs.Tab>
+                    <Tabs.Tab value="analytics">Analytics</Tabs.Tab>
                 </Tabs.List>
                 <Tabs.Panel value="overview" className="[&>div]:w-full">{props.jobStatus==="CLOSED"?<Job {...props} edit={true} closed />:<Job {...props} edit={true}  />}</Tabs.Panel>
                 <Tabs.Panel value="pipeline">
                     <KanbanBoard applicants={props.applicants} jobId={props.id} />
+                </Tabs.Panel>
+                <Tabs.Panel value="analytics">
+                    <Analytics applicants={props.applicants} />
                 </Tabs.Panel>
                 
             </Tabs>
