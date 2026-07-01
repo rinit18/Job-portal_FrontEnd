@@ -71,17 +71,28 @@ const SignUp = () => {
         setFormError(newFormError);
         if(valid===true){
             setLoading(true);
-            sendRegistrationOtp(data.email).then((res) => {
-                successNotification("OTP Sent", "Check your email for the verification code.");
-                setOtpSent(true);
+            const signupData = { ...data };
+            delete signupData.confirmPassword;
+            registerUser(signupData).then((regRes) => {
+                // Registered successfully, auto-login
+                loginUser({email: data.email, password: data.password}).then((loginRes) => {
+                    successNotification("Account Created!", "You are now logged in.");
+                    dispatch(setJwt(loginRes.jwt));
+                    const decoded = jwtDecode(loginRes.jwt);
+                    dispatch(setUser({...decoded, email: decoded.sub}));
+                    setTimeout(() => {
+                        navigate("/");
+                        setLoading(false);
+                    }, 2000);
+                }).catch((loginErr) => {
+                    // Fallback to manual login if auto-login fails
+                    successNotification("Registered Successfully", "Please log in.");
+                    navigate("/login");
+                    setLoading(false);
+                });
+            }).catch((regErr) => {
                 setLoading(false);
-                setResendLoader(true);
-                interval.start();
-            }).catch((err) => {
-                console.log(err);
-                setLoading(false);
-                const errorMessage = err.response?.data?.errorMessage || "Could not connect to the server.";
-                errorNotification("Failed to send OTP", errorMessage);
+                errorNotification("Registration Failed", regErr.response?.data?.errorMessage || "Server error.");
             });
         } else {
             setLoading(false);
