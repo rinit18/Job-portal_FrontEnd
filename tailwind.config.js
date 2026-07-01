@@ -39,9 +39,18 @@ module.exports = {
           from: { opacity: '0', transform: 'translateX(-20px)' },
           to: { opacity: '1', transform: 'translateX(0)' },
         },
+        meteor: {
+          "0%": { transform: "rotate(215deg) translateX(0)", opacity: '1' },
+          "70%": { opacity: '1' },
+          "100%": {
+            transform: "rotate(215deg) translateX(-500px)",
+            opacity: '0',
+          },
+        },
       },
       animation: {
         'option-animation': 'option-animation 200ms ease forwards',
+        'meteor-effect': 'meteor 5s linear infinite',
       },
     },
     screens: {
