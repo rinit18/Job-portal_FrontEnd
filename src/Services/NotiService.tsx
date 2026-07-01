@@ -10,5 +10,9 @@ const readNotification = async (id:any)=>{
     return axiosInstance.put(`/notification/read/${id}`)
         .then((result:any) => result.data)
         .catch((error:any) =>{throw error;});
+const readAllNotifications = async ()=>{
+    return axiosInstance.put(`/notification/readAll`)
+        .then((result:any) => result.data)
+        .catch((error:any) =>{throw error;});
 }
-export {getNotifications, readNotification}
+export {getNotifications, readNotification, readAllNotifications}
