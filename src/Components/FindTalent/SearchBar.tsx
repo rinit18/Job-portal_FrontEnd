@@ -2,11 +2,21 @@ import { Input } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { updateFilter } from "../../Slices/FilterSlice";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const SearchBar = () => {
     const dispatch = useDispatch();
     const [query, setQuery] = useState("");
+    const location = useLocation();
+
+    useEffect(() => {
+        const queryParam = new URLSearchParams(location.search).get("query");
+        if (queryParam) {
+            setQuery(queryParam);
+            dispatch(updateFilter({ globalSearch: queryParam }));
+        }
+    }, [location.search, dispatch]);
 
     const handleChange = (event: any) => {
         const val = event.target.value;

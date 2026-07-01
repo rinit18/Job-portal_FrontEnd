@@ -19,7 +19,7 @@ const Companies = () => {
                         className="mx-12 sm-mx:mx-6 px-4 py-3 rounded-xl hover:bg-mine-shaft-900/50 transition-colors duration-300 cursor-pointer grayscale opacity-60 hover:grayscale-0 hover:opacity-100 flex items-center justify-center"
                     >
                         <img 
-                            className="h-10 sm-mx:h-8 object-contain" 
+                            className="h-14 sm-mx:h-10 object-contain" 
                             src={`/Companies/${company}.png`} 
                             alt={`${company} Logo`} 
                         />

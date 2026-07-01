@@ -1,5 +1,5 @@
-import { Avatar, Autocomplete, TextInput } from "@mantine/core";
-import { IconSearch, IconMapPin } from "@tabler/icons-react";
+import { Avatar, Autocomplete, SegmentedControl } from "@mantine/core";
+import { IconSearch, IconMapPin, IconBriefcase, IconUser } from "@tabler/icons-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { WEBSITE_CONFIG } from "../../config";
@@ -22,11 +22,15 @@ const DreamJob = () => {
     const navigate=useNavigate();
     const [query, setQuery] = useState("");
     const [location, setLocation] = useState("");
+    const [searchType, setSearchType] = useState("Jobs");
 
     const handleClick = () => {
-        // Construct the query string. If location is provided, append it.
         const searchQuery = location ? `${query} ${location}`.trim() : query.trim();
-        navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+        if (searchType === "Jobs") {
+            navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+        } else {
+            navigate(`/professionals?query=${encodeURIComponent(searchQuery)}`);
+        }
     }
     
     const { hero } = WEBSITE_CONFIG.landing;
@@ -61,45 +65,61 @@ const DreamJob = () => {
                 </div>
                 
                 {/* Advanced Hero Search Bar */}
-                <div className="flex md-mx:flex-col gap-2 mt-6 p-2 bg-mine-shaft-900/80 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.4)] border border-mine-shaft-800 focus-within:border-bright-sun-400/50 focus-within:shadow-[0_0_20px_rgba(250,204,21,0.15)] transition-all duration-500 w-full max-w-2xl">
+                <div className="flex flex-col gap-3 mt-6 p-3 bg-mine-shaft-900/80 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.4)] border border-mine-shaft-800 focus-within:border-bright-sun-400/50 focus-within:shadow-[0_0_20px_rgba(250,204,21,0.15)] transition-all duration-500 w-full max-w-2xl">
                     
-                    <div className="flex-1 flex items-center border-r border-mine-shaft-800 md-mx:border-r-0 md-mx:border-b px-2">
-                        <IconSearch className="text-mine-shaft-400 ml-2 h-5 w-5" />
-                        <Autocomplete 
-                            value={query} 
-                            onChange={setQuery} 
-                            data={popularSearchTerms}
-                            className="flex-1" 
-                            variant="unstyled" 
-                            size="md"
-                            placeholder="Job title, keyword, or company" 
-                            classNames={{ input: 'px-3 font-medium text-mine-shaft-100 placeholder:text-mine-shaft-500', dropdown: 'bg-mine-shaft-900 border-mine-shaft-800 rounded-xl' }}
-                            onKeyDown={(e) => e.key === 'Enter' && handleClick()}
-                        />
-                    </div>
-                    
-                    <div className="flex-1 flex items-center px-2">
-                        <IconMapPin className="text-mine-shaft-400 ml-2 h-5 w-5" />
-                        <Autocomplete 
-                            value={location} 
-                            onChange={setLocation} 
-                            data={popularLocations}
-                            className="flex-1" 
-                            variant="unstyled" 
-                            size="md"
-                            placeholder="City, state, or 'Remote'" 
-                            classNames={{ input: 'px-3 font-medium text-mine-shaft-100 placeholder:text-mine-shaft-500', dropdown: 'bg-mine-shaft-900 border-mine-shaft-800 rounded-xl' }}
-                            onKeyDown={(e) => e.key === 'Enter' && handleClick()}
-                        />
-                    </div>
+                    {/* Search Type Toggle */}
+                    <SegmentedControl
+                        value={searchType}
+                        onChange={setSearchType}
+                        data={[
+                            { label: <div className="flex items-center gap-2"><IconBriefcase size={16}/><span>Find Jobs</span></div>, value: 'Jobs' },
+                            { label: <div className="flex items-center gap-2"><IconUser size={16}/><span>Find Talent</span></div>, value: 'Talent' },
+                        ]}
+                        color="brightSun.4"
+                        radius="xl"
+                        className="bg-mine-shaft-950 w-fit"
+                        classNames={{ label: 'font-semibold' }}
+                    />
 
-                    <button 
-                        onClick={handleClick}
-                        aria-label="Search"
-                        className="flex items-center justify-center gap-2 py-3 px-8 bg-gradient-to-r from-bright-sun-400 to-yellow-400 text-mine-shaft-950 font-bold text-lg rounded-xl hover:from-bright-sun-500 hover:to-yellow-500 shadow-[0_0_15px_rgba(250,204,21,0.3)] active:scale-95 transition-all duration-300"
-                    >
-                        Search
-                    </button>
+                    <div className="flex md-mx:flex-col gap-2">
+                        <div className="flex-1 flex items-center border-r border-mine-shaft-800 md-mx:border-r-0 md-mx:border-b px-2">
+                            <IconSearch className="text-mine-shaft-400 ml-2 h-5 w-5" />
+                            <Autocomplete 
+                                value={query} 
+                                onChange={setQuery} 
+                                data={popularSearchTerms}
+                                className="flex-1" 
+                                variant="unstyled" 
+                                size="md"
+                                placeholder={searchType === "Jobs" ? "Job title, keyword, or company" : "Name, job title, or skills"}
+                                classNames={{ input: 'px-3 font-medium text-mine-shaft-100 placeholder:text-mine-shaft-500', dropdown: 'bg-mine-shaft-900 border-mine-shaft-800 rounded-xl' }}
+                                onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+                            />
+                        </div>
+                        
+                        <div className="flex-1 flex items-center px-2">
+                            <IconMapPin className="text-mine-shaft-400 ml-2 h-5 w-5" />
+                            <Autocomplete 
+                                value={location} 
+                                onChange={setLocation} 
+                                data={popularLocations}
+                                className="flex-1" 
+                                variant="unstyled" 
+                                size="md"
+                                placeholder="City, state, or 'Remote'" 
+                                classNames={{ input: 'px-3 font-medium text-mine-shaft-100 placeholder:text-mine-shaft-500', dropdown: 'bg-mine-shaft-900 border-mine-shaft-800 rounded-xl' }}
+                                onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+                            />
+                        </div>
+
+                        <button 
+                            onClick={handleClick}
+                            aria-label="Search"
+                            className="flex items-center justify-center gap-2 py-3 px-8 bg-gradient-to-r from-bright-sun-400 to-yellow-400 text-mine-shaft-950 font-bold text-lg rounded-xl hover:from-bright-sun-500 hover:to-yellow-500 shadow-[0_0_15px_rgba(250,204,21,0.3)] active:scale-95 transition-all duration-300"
+                        >
+                            Search
+                        </button>
+                    </div>
                 </div>
             </div>
             
