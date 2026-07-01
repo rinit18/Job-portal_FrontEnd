@@ -33,11 +33,91 @@ function App() {
     primaryColor: 'brightSun',
     primaryShade: 4,
     colors: {
-      'brightSun': ['#fffbeb', '#fff3c6', '#ffe588', '#ffd149', '#ffbd20', '#f99b07', '#dd7302', '#b75006', '#943c0c', '#7a330d', '#461902'
-      ],
-      'mineShaft': ['#f6f6f6', '#e7e7e7', '#d1d1d1', '#b0b0b0', '#888888', '#6d6d6d', '#5d5d5d', '#4f4f4f', '#454545', '#3d3d3d', '#2d2d2d',]
+      'brightSun': ['#fffbeb', '#fff3c6', '#ffe588', '#ffd149', '#ffbd20', '#f99b07', '#dd7302', '#b75006', '#943c0c', '#7a330d', '#461902'],
+      'mineShaft': ['#f6f6f6', '#e7e7e7', '#d1d1d1', '#b0b0b0', '#888888', '#6d6d6d', '#5d5d5d', '#4f4f4f', '#454545', '#3d3d3d', '#2d2d2d']
+    },
+    components: {
+      Button: {
+        defaultProps: {
+          radius: 'md',
+        },
+        styles: {
+          root: {
+            transition: 'all 0.3s ease',
+          }
+        }
+      },
+      TextInput: {
+        styles: {
+          input: {
+            backgroundColor: 'rgba(61, 61, 61, 0.4)',
+            borderColor: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(10px)',
+            transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+          }
+        }
+      },
+      PasswordInput: {
+        styles: {
+          input: {
+            backgroundColor: 'rgba(61, 61, 61, 0.4)',
+            borderColor: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(10px)',
+          }
+        }
+      },
+      Textarea: {
+        styles: {
+          input: {
+            backgroundColor: 'rgba(61, 61, 61, 0.4)',
+            borderColor: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(10px)',
+          }
+        }
+      },
+      Select: {
+        styles: {
+          input: {
+            backgroundColor: 'rgba(61, 61, 61, 0.4)',
+            borderColor: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(10px)',
+          },
+          dropdown: {
+            backgroundColor: 'rgba(45, 45, 45, 0.95)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255,255,255,0.05)',
+          }
+        }
+      },
+      MultiSelect: {
+        styles: {
+          input: {
+            backgroundColor: 'rgba(61, 61, 61, 0.4)',
+            borderColor: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(10px)',
+          },
+          dropdown: {
+            backgroundColor: 'rgba(45, 45, 45, 0.95)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255,255,255,0.05)',
+          }
+        }
+      },
+      Modal: {
+        styles: {
+          content: {
+            backgroundColor: 'rgba(45, 45, 45, 0.9)',
+            backdropFilter: 'blur(25px)',
+            border: '1px solid rgba(255,255,255,0.05)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+          },
+          header: {
+            backgroundColor: 'transparent',
+          }
+        }
+      }
     }
-  })
+  });
   return (
     <Provider store={Store}>
     <MantineProvider defaultColorScheme="dark" theme={theme} >
