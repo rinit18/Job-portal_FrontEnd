@@ -1,6 +1,6 @@
-import { ActionIcon, Badge, Button, Divider, RingProgress, Text } from "@mantine/core";
+import { ActionIcon, Badge, Button, Divider, RingProgress, Text, Progress, Tooltip, CopyButton } from "@mantine/core";
 import { card } from "../../Data/JobDescData";
-import { IconBookmark, IconBookmarkFilled, IconSparkles } from "@tabler/icons-react";
+import { IconBookmark, IconBookmarkFilled, IconSparkles, IconShare, IconCheck, IconChartBar } from "@tabler/icons-react";
 // @ts-ignore
 import DOMPurify from 'dompurify';
 import { Link } from "react-router-dom";
@@ -102,6 +102,24 @@ const Job = (props: any) => {
                                 ? <IconBookmarkFilled onClick={handleSaveJob} className="cursor-pointer text-bright-sun-400 hover:scale-110 transition-transform" stroke={1.5} size={22} />
                                 : <IconBookmark onClick={handleSaveJob} className="cursor-pointer hover:text-bright-sun-400 text-mine-shaft-500 hover:scale-110 transition-all" stroke={1.5} size={22} />
                         }
+                        
+                        {/* Social Share Widget */}
+                        <CopyButton value={window.location.href} timeout={2000}>
+                            {({ copied, copy }) => (
+                                <Tooltip label={copied ? 'Copied' : 'Share Job'} withArrow position="top">
+                                    <ActionIcon 
+                                        color={copied ? 'teal' : 'gray'} 
+                                        variant="subtle" 
+                                        onClick={() => { copy(); successNotification("Link Copied!", "Job link has been copied to your clipboard."); }}
+                                        className="hover:scale-110 transition-transform bg-mine-shaft-900/50 backdrop-blur-md border border-mine-shaft-800/50"
+                                        size="lg"
+                                        radius="md"
+                                    >
+                                        {copied ? <IconCheck size={18} /> : <IconShare size={18} />}
+                                    </ActionIcon>
+                                </Tooltip>
+                            )}
+                        </CopyButton>
                     </div>
                 </div>
             </div>
@@ -125,6 +143,37 @@ const Job = (props: any) => {
                     </div>
                 ))}
             </div>
+
+            {/* ── Salary Comparator Widget ────────────────────── */}
+            {props.packageOffered && (
+                <div className="mb-8 p-4 bg-mine-shaft-900/40 border border-mine-shaft-800/40 rounded-xl">
+                    <div className="flex justify-between items-center mb-2">
+                        <div className="flex items-center gap-1.5 text-sm font-semibold text-mine-shaft-200">
+                            <IconChartBar size={16} className="text-bright-sun-400" />
+                            Market Salary Insight
+                        </div>
+                        <Badge size="xs" color={props.packageOffered >= 1500000 ? "teal" : props.packageOffered >= 800000 ? "yellow" : "red"} variant="light">
+                            {props.packageOffered >= 1500000 ? "Above Market" : props.packageOffered >= 800000 ? "Market Average" : "Below Market"}
+                        </Badge>
+                    </div>
+                    <Progress.Root size="xl" radius="xl" className="mt-3 bg-mine-shaft-800">
+                        <Tooltip label="Below Market (<8 LPA)">
+                            <Progress.Section value={33} color="red.5" className={props.packageOffered < 800000 ? "opacity-100" : "opacity-30"} />
+                        </Tooltip>
+                        <Tooltip label="Market Average (8-15 LPA)">
+                            <Progress.Section value={34} color="yellow.5" className={props.packageOffered >= 800000 && props.packageOffered < 1500000 ? "opacity-100" : "opacity-30"} />
+                        </Tooltip>
+                        <Tooltip label="Above Market (>15 LPA)">
+                            <Progress.Section value={33} color="teal.5" className={props.packageOffered >= 1500000 ? "opacity-100" : "opacity-30"} />
+                        </Tooltip>
+                    </Progress.Root>
+                    <div className="flex justify-between text-[10px] text-mine-shaft-500 font-medium mt-1 px-1">
+                        <span>Entry</span>
+                        <span>Mid-Level</span>
+                        <span>Senior</span>
+                    </div>
+                </div>
+            )}
 
             {/* ── Required Skills ───────────────────────────── */}
             <div className="mb-8">
