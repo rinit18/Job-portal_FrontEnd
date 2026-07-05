@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { getConversations, getMessages, sendMessage, ChatRoomPayload, MessagePayload } from "../Services/ChatService";
 import { Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
 import { API_BASE_URL } from "../config";
 
 const MessagesPage = () => {
@@ -30,11 +29,11 @@ const MessagesPage = () => {
     useEffect(() => {
         if (!currentProfileId) return;
 
-        const socket = new SockJS(`${API_BASE_URL}/ws`);
+        const wsUrl = API_BASE_URL.replace('http://', 'ws://').replace('https://', 'wss://') + '/ws-native';
         const client = new Client({
-            webSocketFactory: () => socket,
+            brokerURL: wsUrl,
             onConnect: () => {
-                console.log('Connected to WebSocket');
+                console.log('Connected to WebSocket natively');
                 client.subscribe(`/topic/messages/${currentProfileId}`, (message) => {
                     const receivedMessage = JSON.parse(message.body);
                     setMessages(prev => {
