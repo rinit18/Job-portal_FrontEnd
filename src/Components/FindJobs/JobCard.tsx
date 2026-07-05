@@ -10,7 +10,7 @@ import {
 } from "@tabler/icons-react";
 
 const formatLPA = (raw: number) => {
-    if (!raw) return "0";
+    if (!raw) return null;
     const lpa = raw / 100000;
     return lpa % 1 === 0 ? lpa.toFixed(0) : lpa.toFixed(1);
 };
@@ -34,7 +34,7 @@ const JobCard = (props: any) => {
     const navigate = useNavigate();
     const profile  = useSelector((state: any) => state.profile);
     const isSaved  = profile.savedJobs?.includes(props.id);
-    const isNew    = new Date().getTime() - new Date(props.postTime).getTime() < 24 * 60 * 60 * 1000;
+    const isNew    = props.postTime ? new Date().getTime() - new Date(props.postTime).getTime() < 24 * 60 * 60 * 1000 : false;
     const lpa      = formatLPA(props.packageOffered);
     const typeStyle = JOB_TYPE_STYLES[props.jobType] ?? "bg-mine-shaft-800/60 text-mine-shaft-400 border-mine-shaft-700/30";
     const expStyle  = EXP_STYLES[props.experience]  ?? "bg-mine-shaft-800/60 text-mine-shaft-400 border-mine-shaft-700/30";
@@ -142,8 +142,14 @@ const JobCard = (props: any) => {
                 <div className="flex items-center justify-between pt-1 border-t border-white/[0.05]">
                     <div className="flex items-center gap-0.5">
                         <IconCurrencyRupee size={15} className="text-bright-sun-400" stroke={2.5} />
-                        <span className="font-bold text-sm text-white">{lpa}</span>
-                        <span className="text-xs text-mine-shaft-500 font-medium ml-1">LPA</span>
+                        {lpa ? (
+                            <>
+                                <span className="font-bold text-sm text-white">{lpa}</span>
+                                <span className="text-xs text-mine-shaft-500 font-medium ml-1">LPA</span>
+                            </>
+                        ) : (
+                            <span className="text-xs text-mine-shaft-500 font-medium ml-1">Not Disclosed</span>
+                        )}
                     </div>
                     <div className="flex items-center gap-1 text-xs text-mine-shaft-500">
                         <IconClockHour3 size={13} stroke={1.5} />

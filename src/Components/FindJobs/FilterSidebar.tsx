@@ -12,7 +12,9 @@ const FilterSidebar = () => {
 
     useEffect(() => {
         if (!filter.salary) setValue([0, 100]);
-        else setValue(filter.salary);
+        else if (Array.isArray(filter.salary) && filter.salary.length === 2) {
+            setValue(filter.salary as [number, number]);
+        }
     }, [filter]);
 
     const handleSalaryChange = (val: any) => dispatch(updateFilter({ salary: val }));

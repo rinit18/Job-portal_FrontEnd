@@ -36,12 +36,12 @@ const Job = (props: any) => {
     const [matchLoading, setMatchLoading] = useState(false);
 
     useEffect(() => {
-        setApplied(props.applicants?.some((a: any) => a.applicantId === user.id) ?? false);
+        setApplied(props.applicants?.some((a: any) => a.applicantId === user?.id) ?? false);
         setMatchScore(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props]);
 
-    const cleanHTML = DOMPurify.sanitize(props.description);
+    const cleanHTML = DOMPurify.sanitize(props.description || "");
 
     const handleClose = () => {
         if (props.closed) return;
@@ -202,7 +202,7 @@ const Job = (props: any) => {
                                     size="xs" variant="filled" color="brightSun.4" loading={matchLoading}
                                     className="!text-mine-shaft-950 font-bold"
                                     onClick={async () => {
-                                        if (!props.about) { errorNotification("No job data", "Job info not loaded yet."); return; }
+                                        if (!props.description && !props.jobTitle) { errorNotification("No job data", "Job info not loaded yet."); return; }
                                         setMatchLoading(true);
                                         try {
                                             const skillsList = profile.skills?.length > 0 ? `Skills: ${profile.skills.join(", ")}` : "Skills: Not specified";
@@ -210,7 +210,7 @@ const Job = (props: any) => {
                                                 ? `Experience: ${profile.experiences.map((e: any) => `${e.title} at ${e.company}`).join("; ")}`
                                                 : "Experience: Not specified";
                                             const profileSummary = [profile.jobTitle ? `Role: ${profile.jobTitle}` : "", skillsList, expList, profile.about ? `About: ${profile.about.substring(0, 200)}` : ""].filter(Boolean).join(". ");
-                                            const jobSummary = `Role: ${props.jobTitle} at ${props.company}. Skills: ${props.skillsRequired?.join(", ")}. ${props.about}`;
+                                            const jobSummary = `Role: ${props.jobTitle} at ${props.company}. Skills: ${props.skillsRequired?.join(", ")}. ${props.description || ""}`;
                                             setMatchScore(await getMatchScore(profileSummary, jobSummary));
                                         } catch (err: any) {
                                             errorNotification("AI Error", err?.response?.data?.description || "Could not calculate match score.");

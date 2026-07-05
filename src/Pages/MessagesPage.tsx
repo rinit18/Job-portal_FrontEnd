@@ -12,6 +12,7 @@ import { API_BASE_URL } from "../config";
 const MessagesPage = () => {
     const profile = useSelector((state: any) => state.profile);
     const currentProfileId = profile?.id;
+    const hasInitialized = useRef(false);
 
     const [searchParams] = useSearchParams();
     const queryRoomId = searchParams.get("roomId");
@@ -47,7 +48,7 @@ const MessagesPage = () => {
                     });
                     
                     // Also refresh conversations to update the snippet/timestamp
-                    getConversations(currentProfileId).then(setConversations);
+                    if (currentProfileId) getConversations(currentProfileId).then(setConversations);
                 });
             },
             onStompError: (frame) => {
@@ -78,9 +79,10 @@ const MessagesPage = () => {
                         if (found) {
                             setActiveChat(found);
                         }
-                    } else if (!activeChat && res.length > 0) {
+                    } else if (!hasInitialized.current && res.length > 0) {
                         // Default to first chat if none active
                         setActiveChat(res[0]);
+                        hasInitialized.current = true;
                     }
                 })
                 .catch((err) => {
@@ -159,7 +161,7 @@ const MessagesPage = () => {
     }, [currentProfileId]);
 
     const renderRoleBadge = (role: string) => {
-        const isEmployer = role.toUpperCase() === 'EMPLOYER';
+        const isEmployer = (role ?? '').toUpperCase() === 'EMPLOYER';
         return (
             <Badge 
                 color={isEmployer ? 'teal.5' : 'brightSun.4'} 
@@ -177,7 +179,7 @@ const MessagesPage = () => {
         if (!searchQuery.trim()) return conversations;
         return conversations.filter(c => {
             const partner = getChatPartner(c);
-            return partner.name.toLowerCase().includes(searchQuery.toLowerCase());
+            return (partner.name ?? "").toLowerCase().includes(searchQuery.toLowerCase());
         });
     }, [conversations, searchQuery, getChatPartner]);
 
@@ -256,7 +258,7 @@ const MessagesPage = () => {
                                             <div className="absolute left-0 top-0 bottom-0 w-1 bg-bright-sun-400 rounded-r-md shadow-[0_0_10px_rgba(250,204,21,0.5)]" />
                                         )}
                                         <Indicator inline size={12} offset={5} position="bottom-end" color="teal" withBorder>
-                                            <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(partner.name)}&background=2a2a2a&color=fab005`} size="lg" radius="xl" />
+                                            <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(partner.name ?? "User")}&background=2a2a2a&color=fab005`} size="lg" radius="xl" />
                                         </Indicator>
                                         <div className="flex-1 min-w-0">
                                             <div className="flex justify-between items-start mb-0.5">
@@ -290,7 +292,7 @@ const MessagesPage = () => {
                                             <ActionIcon variant="subtle" color="gray" className="hidden sm-mx:block" onClick={() => setShowChatList(true)}>
                                                 <IconArrowLeft size={20} />
                                             </ActionIcon>
-                                            <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(partner.name)}&background=2a2a2a&color=fab005`} size="md" radius="xl" className="shadow-md" />
+                                            <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(partner.name ?? "User")}&background=2a2a2a&color=fab005`} size="md" radius="xl" className="shadow-md" />
                                             <div className="flex flex-col gap-0.5">
                                                 <div className="font-bold text-lg text-mine-shaft-100 leading-tight">{partner.name}</div>
                                                 <div>{renderRoleBadge(partner.role)}</div>

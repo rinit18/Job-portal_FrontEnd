@@ -10,7 +10,6 @@ import { setProfile } from "../../Slices/ProfileSlice";
 import NotificationBadge from "./NotificationBadge";
 import { jwtDecode } from "jwt-decode";
 import { setUser } from "../../Slices/UserSlice";
-import { setupResponseInterceptor } from "../../Interceptor/AxiosInterceptor";
 import { useDisclosure } from "@mantine/hooks";
 import { WEBSITE_CONFIG } from "../../config";
 
@@ -27,28 +26,28 @@ const Header = () => {
     const drawerLinks = user?.accountType
         ? allLinks.filter(link => link.roles.includes(user.accountType))
         : [];
-    useEffect(() => {
-        setupResponseInterceptor(navigate, dispatch);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navigate])
+    // NOTE: setupResponseInterceptor is handled in AppRoutes.tsx — do NOT call it here
     const handleClick = (url: string) => {
         navigate(url)
         close();
     }
     useEffect(() => {
         if (token) {
-            if (localStorage.getItem("token")) {
-                const decoded = jwtDecode(localStorage.getItem("token") || "");
-                dispatch(setUser({ ...decoded, email: decoded.sub }));
+            const rawToken = localStorage.getItem("token");
+            if (rawToken) {
+                try {
+                    const decoded = jwtDecode(rawToken);
+                    dispatch(setUser({ ...decoded, email: decoded.sub }));
+                } catch (e) {
+                    console.warn("Invalid token in localStorage, clearing.", e);
+                    localStorage.removeItem("token");
+                }
             }
         }
         if (user?.profileId) {
-            // dispatch(showOverlay())
             getProfile(user?.profileId).then((res) => {
                 dispatch(setProfile(res));
             }).catch((err) => console.log(err))
-            // .finally(()=>dispatch(hideOverlay()));
         }
     }, [token, navigate, user?.profileId, dispatch]);
     return (location.pathname !== "/signup" && location.pathname !== "/login") ? <div data-aos="zoom-out" className="w-full bg-mine-shaft-950/80 backdrop-blur-xl border-b border-white/5 shadow-md text-mine-shaft-100 h-20 flex justify-center font-['poppins'] z-50 sticky top-0 transition-all duration-300">

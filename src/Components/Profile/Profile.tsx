@@ -48,6 +48,7 @@ const Profile = () => {
     const completion = getProfileCompletion(profile, isEmployer);
 
     const handleAvatarChange = async (image: any) => {
+        if (!image) return;
         let picture: any = await getBase64(image);
         let updatedProfile = { ...profile, picture: picture.split(',')[1] };
         dispatch(changeProfile(updatedProfile));
@@ -55,6 +56,7 @@ const Profile = () => {
     };
 
     const handleCoverChange = async (image: any) => {
+        if (!image) return;
         let picture: any = await getBase64(image);
         let updatedProfile = { ...profile, coverPhoto: picture.split(',')[1] };
         dispatch(changeProfile(updatedProfile));
@@ -299,7 +301,7 @@ const Profile = () => {
                             <div className="mb-6">
                                 <h2 className="text-lg font-bold uppercase tracking-wider mb-2 border-b border-gray-300">Work Experience</h2>
                                 <div className="flex flex-col gap-4">
-                                    {(profile.experiences || profile.experience).map((exp: any, i: number) => (
+                                    {(profile.experiences || profile.experience || []).map((exp: any, i: number) => (
                                         <div key={exp.id || i}>
                                             <div className="flex justify-between items-baseline font-bold text-gray-900">
                                                 <span>{exp.title}</span>

@@ -8,8 +8,10 @@ const formatDate=(dateString:string)=>{
   }
 
   function timeAgo(timestamp:string) {
-    const now = new Date();
+    if (!timestamp) return "Unknown";
     const postDate = new Date(timestamp);
+    if (isNaN(postDate.getTime())) return "Unknown";
+    const now = new Date();
     const diffInMs = now.getTime() - postDate.getTime();
 
   
@@ -59,7 +61,9 @@ const openPDF=(base64: string)=>{
   }
 }
 const formatInterviewTime=(dateString:string)=>{
+  if (!dateString) return "Not scheduled";
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "Invalid date";
 
 const options: Intl.DateTimeFormatOptions = {
   year: 'numeric',

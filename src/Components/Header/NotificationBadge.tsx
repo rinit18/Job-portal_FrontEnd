@@ -1,6 +1,6 @@
 import { Indicator } from "@mantine/core";
 import { IconBell } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getNotifications } from "../../Services/NotiService";
@@ -10,28 +10,37 @@ const NotificationBadge = () => {
     const navigate = useNavigate();
     const user = useSelector((state: any) => state.user);
     const [unreadCount, setUnreadCount] = useState(0);
+    const prevCountRef = useRef(0);
+    const errorCountRef = useRef(0);
 
     useEffect(() => {
-        let prevCount = 0;
-
         const fetchNotis = () => {
             if (!user?.id) return;
             getNotifications(user.id).then((res: any[]) => {
                 const unreadNotis = res.filter(n => n.status === 'UNREAD');
-                if (unreadNotis.length > prevCount && prevCount > 0) {
-                    // New notifications arrived! Show toasts for the newest ones.
-                    const newCount = unreadNotis.length - prevCount;
+                if (unreadNotis.length > prevCountRef.current && prevCountRef.current > 0) {
+                    const newCount = unreadNotis.length - prevCountRef.current;
                     for (let i = 0; i < newCount && i < unreadNotis.length; i++) {
                         successNotification(unreadNotis[i].action, unreadNotis[i].message);
                     }
                 }
-                prevCount = unreadNotis.length;
+                prevCountRef.current = unreadNotis.length;
                 setUnreadCount(unreadNotis.length);
-            }).catch((err) => console.log(err));
+                errorCountRef.current = 0;
+            }).catch((err) => {
+                console.log(err);
+                errorCountRef.current++;
+            });
         };
 
         fetchNotis();
-        const interval = setInterval(fetchNotis, 5000); // Poll every 5 seconds
+        const interval = setInterval(() => {
+            if (errorCountRef.current > 5) {
+                clearInterval(interval);
+                return;
+            }
+            fetchNotis();
+        }, 5000); // Poll every 5 seconds
         return () => clearInterval(interval);
     }, [user]);
 

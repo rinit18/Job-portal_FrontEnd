@@ -50,8 +50,8 @@ const ProfileMenu = () => {
             <Menu.Target>
                 <div className="flex items-center gap-3 cursor-pointer p-1.5 rounded-full hover:bg-mine-shaft-900/50 transition-colors border border-transparent hover:border-white/5">
                     <div className='xs-mx:hidden flex flex-col items-end leading-tight'>
-                        <span className="font-semibold text-sm text-mine-shaft-100">{user.name}</span>
-                        <span className="text-[10px] text-bright-sun-400 uppercase tracking-wider">{user.accountType?.toLowerCase()}</span>
+                        <span className="font-semibold text-sm text-mine-shaft-100">{user?.name || user?.email || 'User'}</span>
+                        <span className="text-[10px] text-bright-sun-400 uppercase tracking-wider">{user?.accountType?.toLowerCase()}</span>
                     </div>
                     <Avatar 
                         src={profile?.picture ? `data:image/jpeg;base64,${profile.picture}` : WEBSITE_CONFIG.assets.defaultAvatar} 
@@ -65,8 +65,8 @@ const ProfileMenu = () => {
 
             <Menu.Dropdown onChange={()=>setOpened(true)}>
                 <div className="px-4 py-3 mb-1 border-b border-white/5">
-                    <div className="font-semibold text-mine-shaft-100 truncate">{user.name}</div>
-                    <div className="text-xs text-mine-shaft-400 truncate">{user.email || user.sub}</div>
+                    <div className="font-semibold text-mine-shaft-100 truncate">{user?.name || user?.email || 'User'}</div>
+                    <div className="text-xs text-mine-shaft-400 truncate">{user?.email || user?.sub}</div>
                 </div>
 
                 <Menu.Item component={Link} to="/profile" leftSection={<IconUserCircle size={16} />}>

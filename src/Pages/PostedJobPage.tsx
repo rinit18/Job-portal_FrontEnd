@@ -19,17 +19,16 @@ const PostedJobPage = () => {
     const matches = useMediaQuery('(max-width: 767px)');
 
     useEffect(()=>{
+        if (!user?.id) return;
         window.scrollTo(0,0);
         dispatch(showOverlay());
         getJobsPostedBy(user.id).then((res)=>{
             setJobList(res);
-            if(res && res.length>0 && Number(id) === 0){
-                res.forEach((x:any)=>{
-                    if(x.jobStatus==="ACTIVE"){
-                        navigate(`/posted-jobs/${x.id}`);
-                    }
-
-                }, [])
+            if(res && res.length>0 && (!id || id === "0")){
+                const firstActive = res.find((x:any)=>x.jobStatus==="ACTIVE");
+                if (firstActive) {
+                    navigate(`/posted-jobs/${firstActive.id}`);
+                }
             }
             res.forEach((item:any)=>{
                 if(String(id)===String(item.id))setJob(item);
@@ -64,7 +63,7 @@ const PostedJobPage = () => {
                 )}              
                 
                 <div className="flex-1 flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
-                    <PostedJobDesc {...job} />
+                    <PostedJobDesc {...(job || {})} />
                 </div>
             </div>
         </div>
