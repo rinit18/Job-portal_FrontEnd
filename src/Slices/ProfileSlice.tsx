@@ -8,8 +8,7 @@ const profileSlice = createSlice({
             return action.payload;
         },
         setProfile: (state, action) => {
-            state=action.payload;
-            return state;
+            return action.payload;
         }
     }
 });
