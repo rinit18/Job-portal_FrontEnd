@@ -11,8 +11,11 @@ const AdminDashboardPage = () => {
     const [users, setUsers] = useState<any[]>([]);
     const [jobs, setJobs] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     const fetchDashboardData = async () => {
+        setLoading(true);
+        setError(null);
         try {
             const [statsData, feedbacksData, contactsData, usersData, jobsData] = await Promise.all([
                 getPlatformStats(),
@@ -28,6 +31,7 @@ const AdminDashboardPage = () => {
             setJobs(jobsData);
         } catch (error) {
             console.error("Failed to fetch admin data", error);
+            setError("Failed to load dashboard data. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -42,7 +46,8 @@ const AdminDashboardPage = () => {
             try {
                 await deleteUser(id);
                 successNotification("Success", "User deleted successfully");
-                fetchDashboardData();
+                setUsers(prev => prev.filter(u => u.id !== id));
+                setStats((prev: any) => ({ ...prev, totalUsers: Math.max(0, (prev?.totalUsers || 1) - 1) }));
             } catch (err) {
                 errorNotification("Error", "Failed to delete user");
             }
@@ -54,7 +59,8 @@ const AdminDashboardPage = () => {
             try {
                 await deleteJob(id);
                 successNotification("Success", "Job deleted successfully");
-                fetchDashboardData();
+                setJobs(prev => prev.filter(j => j.id !== id));
+                setStats((prev: any) => ({ ...prev, totalJobs: Math.max(0, (prev?.totalJobs || 1) - 1) }));
             } catch (err) {
                 errorNotification("Error", "Failed to delete job");
             }
@@ -66,7 +72,8 @@ const AdminDashboardPage = () => {
             try {
                 await deleteFeedback(id);
                 successNotification("Success", "Feedback deleted successfully");
-                fetchDashboardData();
+                setFeedbacks(prev => prev.filter(f => f.id !== id));
+                setStats((prev: any) => ({ ...prev, totalFeedback: Math.max(0, (prev?.totalFeedback || 1) - 1) }));
             } catch (err) {
                 errorNotification("Error", "Failed to delete feedback");
             }
@@ -78,7 +85,8 @@ const AdminDashboardPage = () => {
             try {
                 await deleteContactMessage(id);
                 successNotification("Success", "Contact message deleted successfully");
-                fetchDashboardData();
+                setContacts(prev => prev.filter(c => c.id !== id));
+                setStats((prev: any) => ({ ...prev, totalContactMessages: Math.max(0, (prev?.totalContactMessages || 1) - 1) }));
             } catch (err) {
                 errorNotification("Error", "Failed to delete contact message");
             }
@@ -87,6 +95,15 @@ const AdminDashboardPage = () => {
 
     if (loading) {
         return <div className="min-h-[85vh] flex items-center justify-center bg-mine-shaft-950"><Loader color="brightSun.4" size="xl" /></div>;
+    }
+
+    if (error) {
+        return (
+            <div className="min-h-[85vh] flex flex-col gap-4 items-center justify-center bg-mine-shaft-950 text-mine-shaft-300">
+                <div className="text-xl font-bold">{error}</div>
+                <button onClick={fetchDashboardData} className="px-4 py-2 bg-bright-sun-400 text-mine-shaft-950 rounded-lg font-semibold hover:bg-bright-sun-500 transition-colors">Retry</button>
+            </div>
+        );
     }
 
     return (

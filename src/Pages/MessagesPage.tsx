@@ -199,7 +199,7 @@ const MessagesPage = () => {
     }
 
     return (
-        <div className="h-[calc(100vh-80px)] bg-mine-shaft-950 font-['poppins'] flex flex-col relative overflow-hidden">
+        <div className="flex-1 bg-mine-shaft-950 font-['poppins'] flex flex-col relative overflow-hidden">
             {/* Ambient background glows */}
             <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
                 <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] rounded-full bg-bright-sun-400/5 blur-[120px]" />

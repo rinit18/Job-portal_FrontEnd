@@ -16,18 +16,7 @@ import 'aos/dist/aos.css';
 import Chatbot from './Components/Chatbot/Chatbot';
 import { useEffect } from 'react';
 
-function App() {
-  useEffect(()=>{
-    AOS.init({
-      offset: 0,
-      duration: 1000,
-      easing: 'ease-in-out-cubic',
-      once: true
-    });
-    AOS.refresh();
-  }, []);
-
-  const theme = createTheme({
+const theme = createTheme({
     focusRing: "never",
     fontFamily: 'Inter, sans-serif',
     primaryColor: 'brightSun',
@@ -117,7 +106,19 @@ function App() {
         }
       }
     }
-  });
+});
+
+function App() {
+  useEffect(()=>{
+    AOS.init({
+      offset: 0,
+      duration: 1000,
+      easing: 'ease-in-out-cubic',
+      once: true
+    });
+    AOS.refresh();
+  }, []);
+
   return (
     <Provider store={Store}>
     <MantineProvider defaultColorScheme="dark" theme={theme} >
