@@ -15,7 +15,7 @@ const ScrollToTop = () => {
           variant="filled"
           radius="100%"
           onClick={() => scrollTo({ y: 0 })}
-          className="fixed bottom-8 right-8 shadow-[0_8px_30px_rgba(250,204,21,0.3)] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(250,204,21,0.5)] transition-all duration-300"
+          className="fixed bottom-8 right-8 sm-mx:bottom-28 sm-mx:right-4 shadow-[0_8px_30px_rgba(250,204,21,0.3)] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(250,204,21,0.5)] transition-all duration-300"
           aria-label="Scroll to top"
         >
           <IconArrowUp size={24} className="text-mine-shaft-950" stroke={2.5} />

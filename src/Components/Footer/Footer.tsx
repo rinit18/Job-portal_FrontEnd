@@ -13,7 +13,7 @@ const Footer = () => {
     if (shouldHide) return <></>;
 
     return (
-        <div className="flex flex-col mt-auto bg-mine-shaft-950/80 backdrop-blur-xl border-t border-mine-shaft-800/60 shadow-[0_-10px_30px_rgba(0,0,0,0.2)]">
+        <div className="flex flex-col mt-auto bg-mine-shaft-950/80 backdrop-blur-xl border-t border-mine-shaft-800/60 shadow-[0_-10px_30px_rgba(0,0,0,0.2)] overflow-hidden">
             <div className="py-12 sm-mx:py-8 flex gap-8 sm-mx:gap-6 justify-between px-16 sm-mx:px-6 flex-wrap w-full max-w-[1600px] mx-auto">
                 <div data-aos="fade-up" data-aos-offset="0" className="w-1/4 sm-mx:w-1/3 xs-mx:w-1/2 xsm-mx:w-full flex flex-col gap-5">
                     <div className="flex gap-2 items-center text-bright-sun-400">
