@@ -320,26 +320,45 @@ const MessagesPage = () => {
                                         End-to-End Encryption enabled. Messages are securely stored.
                                     </div>
                                     
-                                    {messages.map((msg) => (
-                                        <div key={msg.id} className={`flex max-w-[80%] ${msg.senderId === currentProfileId ? 'self-end' : 'self-start'}`}>
-                                            {msg.senderId !== currentProfileId && (
-                                                <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getChatPartner(activeChat).name)}&background=2a2a2a&color=fab005`} size="sm" radius="xl" className="mr-3 mt-auto shrink-0 shadow-sm" />
-                                            )}
-                                            <div className={`flex flex-col ${msg.senderId === currentProfileId ? 'items-end' : 'items-start'}`}>
-                                                <div className={`px-5 py-3 rounded-[20px] text-[14px] shadow-md max-w-prose leading-relaxed 
-                                                    ${msg.senderId === currentProfileId 
-                                                        ? 'bg-gradient-to-br from-bright-sun-400 to-bright-sun-500 text-mine-shaft-950 rounded-br-sm font-medium shadow-[0_4px_15px_rgba(250,204,21,0.2)]' 
-                                                        : 'bg-mine-shaft-800/90 backdrop-blur-md text-mine-shaft-100 rounded-bl-sm border border-mine-shaft-700/50'}`}
-                                                >
-                                                    {msg.text}
-                                                </div>
-                                                <div className="text-[10px] text-mine-shaft-500 mt-1.5 mx-1 flex items-center gap-1.5 justify-end font-medium">
-                                                    {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ""}
-                                                    {msg.senderId === currentProfileId && <IconChecks size={15} className="text-bright-sun-400" />}
+                                    {messages.map((msg, index) => {
+                                        const isMine = msg.senderId === currentProfileId;
+                                        const prevMsg = index > 0 ? messages[index - 1] : null;
+                                        const showAvatar = !isMine && (!prevMsg || prevMsg.senderId !== msg.senderId);
+                                        const isConsecutive = prevMsg && prevMsg.senderId === msg.senderId;
+                                        
+                                        return (
+                                            <div key={msg.id} className={`flex w-full ${isMine ? 'justify-end' : 'justify-start'} ${isConsecutive ? 'mt-0.5' : 'mt-4'}`}>
+                                                {!isMine && (
+                                                    <div className="w-8 shrink-0 mr-2 flex items-end justify-center pb-1">
+                                                        {showAvatar && (
+                                                            <Avatar src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getChatPartner(activeChat).name)}&background=2a2a2a&color=fab005`} size="sm" radius="xl" className="shadow-sm" />
+                                                        )}
+                                                    </div>
+                                                )}
+                                                
+                                                <div className={`flex flex-col max-w-[75%] ${isMine ? 'items-end' : 'items-start'}`}>
+                                                    <div className={`px-4 py-2.5 text-[15px] leading-relaxed shadow-sm
+                                                        ${isMine 
+                                                            ? 'bg-gradient-to-br from-bright-sun-400 to-bright-sun-500 text-mine-shaft-950 font-medium' 
+                                                            : 'bg-mine-shaft-800 text-mine-shaft-100 border border-mine-shaft-700/50'}
+                                                        ${isMine 
+                                                            ? (isConsecutive ? 'rounded-2xl rounded-tr-[4px]' : 'rounded-2xl rounded-br-[4px]') 
+                                                            : (isConsecutive ? 'rounded-2xl rounded-tl-[4px]' : 'rounded-2xl rounded-bl-[4px]')}`}
+                                                    >
+                                                        {msg.text}
+                                                    </div>
+                                                    
+                                                    {/* Only show timestamp if it's the last in a consecutive group or alone */}
+                                                    {(!messages[index + 1] || messages[index + 1].senderId !== msg.senderId) && (
+                                                        <div className={`text-[10px] text-mine-shaft-500 mt-1 mx-1 flex items-center gap-1 font-medium ${isMine ? 'justify-end' : 'justify-start'}`}>
+                                                            {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ""}
+                                                            {isMine && <IconChecks size={14} className="text-bright-sun-400" />}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                     <div ref={scrollAreaRef} />
                                 </div>
                             </ScrollArea>
