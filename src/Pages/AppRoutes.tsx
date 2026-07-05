@@ -96,7 +96,7 @@ const InterceptorSetup = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setupResponseInterceptor(navigate, dispatch);
+    return setupResponseInterceptor(navigate, dispatch);
   }, [navigate, dispatch]);
 
   return null;

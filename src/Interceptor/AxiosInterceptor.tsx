@@ -22,7 +22,7 @@ axiosInstance.interceptors.request.use(
 )
 
 export const setupResponseInterceptor = (navigate: any, dispatch: any) => {
-    axiosInstance.interceptors.response.use(
+    const id = axiosInstance.interceptors.response.use(
         (response) => {
             return response;
         },
@@ -38,7 +38,8 @@ export const setupResponseInterceptor = (navigate: any, dispatch: any) => {
             }
             return Promise.reject(error);
         }
-    )
+    );
+    return () => axiosInstance.interceptors.response.eject(id);
 }
 
 export default axiosInstance;

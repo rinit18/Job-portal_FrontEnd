@@ -18,6 +18,12 @@ const MessagesPage = () => {
 
     const [conversations, setConversations] = useState<ChatRoomPayload[]>([]);
     const [activeChat, setActiveChat] = useState<ChatRoomPayload | null>(null);
+    const activeChatRef = useRef<ChatRoomPayload | null>(null);
+
+    useEffect(() => {
+        activeChatRef.current = activeChat;
+    }, [activeChat]);
+
     const [messageInput, setMessageInput] = useState("");
     const [messages, setMessages] = useState<MessagePayload[]>([]);
     const [loading, setLoading] = useState(true);
@@ -37,6 +43,7 @@ const MessagesPage = () => {
                 client.subscribe(`/topic/messages/${currentProfileId}`, (message) => {
                     const receivedMessage = JSON.parse(message.body);
                     setMessages(prev => {
+                        if (activeChatRef.current?.id !== receivedMessage.chatRoomId) return prev;
                         const newMessages = [...prev, receivedMessage];
                         setTimeout(() => {
                             if (scrollAreaRef.current) {
