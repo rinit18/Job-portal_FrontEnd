@@ -193,7 +193,7 @@ const MessagesPage = () => {
     }
 
     return (
-        <div className="min-h-[calc(100vh-80px)] bg-mine-shaft-950 font-['poppins'] flex flex-col relative overflow-hidden">
+        <div className="h-[calc(100vh-80px)] bg-mine-shaft-950 font-['poppins'] flex flex-col relative overflow-hidden">
             {/* Ambient background glows */}
             <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
                 <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] rounded-full bg-bright-sun-400/5 blur-[120px]" />
@@ -202,7 +202,7 @@ const MessagesPage = () => {
 
             <Divider className="border-mine-shaft-800/60 z-10" />
             
-            <div className="flex-1 flex w-full max-w-7xl mx-auto p-4 sm-mx:p-2 sm-mx:pb-2 gap-5 h-[calc(100vh-80px)] sm-mx:h-[calc(100dvh-140px)] z-10">
+            <div className="flex-1 min-h-0 flex w-full max-w-7xl mx-auto p-4 sm-mx:p-2 sm-mx:pb-2 gap-5 z-10">
                 
                 {/* Left Sidebar - Conversations */}
                 <div className={`w-1/3 flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-2xl relative ${!showChatList ? 'sm-mx:hidden' : 'sm-mx:w-full'}`}>
@@ -280,7 +280,7 @@ const MessagesPage = () => {
                 </div>
 
                 {/* Right Side - Active Chat */}
-                <div className={`flex-1 flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-2xl ${showChatList ? 'sm-mx:hidden' : 'sm-mx:flex'}`}>
+                <div className={`flex-1 min-h-0 flex flex-col bg-mine-shaft-900/40 border border-mine-shaft-800/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-2xl ${showChatList ? 'sm-mx:hidden' : 'sm-mx:flex'}`}>
                     {activeChat ? (
                         <>
                             {/* Chat Header */}

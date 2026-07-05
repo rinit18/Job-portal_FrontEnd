@@ -1,7 +1,7 @@
 import { Avatar, Tabs } from "@mantine/core";
 import { work, employerWork } from "../../Data/Data";
 import { WEBSITE_CONFIG } from "../../config";
-import { IconBriefcase, IconUserCircle } from "@tabler/icons-react";
+import { IconBriefcase, IconUserCircle, IconFileDescription, IconSearch, IconRosetteDiscountCheck } from "@tabler/icons-react";
 
 const Working = () => {
     const { working } = WEBSITE_CONFIG.landing;
@@ -50,17 +50,27 @@ const Working = () => {
                             </div>
                         </div>
                         <div data-aos="fade-left" className="flex flex-col gap-8 flex-1 max-w-md">
-                            {work.map((item, index) => (
+                            {work.map((item, index) => {
+                                const renderIcon = () => {
+                                    switch(item.name) {
+                                        case 'Build Your Resume': return <IconFileDescription size={28} className="text-mine-shaft-950" stroke={2.5} />;
+                                        case 'Apply for Job': return <IconSearch size={28} className="text-mine-shaft-950" stroke={2.5} />;
+                                        case 'Get Hired': return <IconRosetteDiscountCheck size={28} className="text-mine-shaft-950" stroke={2.5} />;
+                                        default: return <IconBriefcase size={28} className="text-mine-shaft-950" stroke={2.5} />;
+                                    }
+                                };
+                                return (
                                 <div key={index} className="flex items-start gap-5 p-4 rounded-2xl hover:bg-mine-shaft-900/40 border border-transparent hover:border-mine-shaft-800 transition-all duration-300">
-                                    <div className="p-3 bg-gradient-to-br from-bright-sun-400 to-yellow-500 rounded-xl shadow-lg shrink-0 mt-1">
-                                        <img className="h-8 w-8 object-contain drop-shadow-md invert" src={`/Working/${item.name}.png`} alt={item.name} loading="lazy" />
+                                    <div className="p-3 bg-gradient-to-br from-bright-sun-400 to-yellow-500 rounded-xl shadow-lg shrink-0 mt-1 flex items-center justify-center h-14 w-14">
+                                        {renderIcon()}
                                     </div>
                                     <div>
                                         <div className="text-mine-shaft-100 text-2xl font-bold tracking-tight mb-2">{item.name}</div>
                                         <div className="text-mine-shaft-300 text-base leading-relaxed">{item.desc}</div>
                                     </div>
                                 </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                 </Tabs.Panel>
