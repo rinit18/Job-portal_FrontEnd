@@ -25,7 +25,7 @@ CareerConnect is a modern, highly interactive job portal designed to bridge the 
 
 ### 4. Interactive & Real-time Features
 - **Real-time Messaging:** An integrated chat interface allowing recruiters and applicants to communicate seamlessly. Features include auto-scrolling to the latest message, message timestamps, active chat highlighting, and a responsive mobile single-view layout.
-- **Notifications:** Custom toast notifications (`NotificationService`) alert users of successful job posts, OTP triggers, and profile updates.
+- **Notifications:** Custom toast notifications (`NotificationService`) alert users of successful job posts, messages, and profile updates.
 
 ## 🛠️ Technology Stack
 
@@ -48,7 +48,7 @@ While the frontend operates independently, it communicates continuously with the
 ### How the Frontend Communicates with the Backend
 1. **Axios Services (`src/Services/`):** All HTTP requests are abstracted into specialized services (e.g., `JobService.tsx`, `UserService.tsx`, `ChatService.tsx`).
 2. **JWT Authentication Flow:**
-   - **Login/Signup:** Upon sending an OTP and verifying it, the backend returns a JSON Web Token (JWT).
+   - **Login/Signup:** Upon successful registration or login, the backend returns a JSON Web Token (JWT).
    - **Interceptor:** An Axios Interceptor automatically reads this token from LocalStorage and attaches it as a `Bearer` token in the `Authorization` header of every subsequent authenticated request.
 3. **CORS:** The backend is configured to accept Cross-Origin Resource Sharing from the frontend's specific development or production port.
 
